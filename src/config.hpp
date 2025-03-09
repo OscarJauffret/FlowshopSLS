@@ -8,9 +8,13 @@
 #include <string>
 using std::string;
 
+/**
+ * @namespace config
+ * @brief Namespace that contains configuration variables
+ */
 namespace config {
 
-    const string instancePath = "../instances/Benchmarks/";
+    const string instancePath = "../instances/Benchmarks/";     // Path to the instances
 }
 
 #endif //FLOWSHOPSLS_CONFIG_HPP

@@ -3,18 +3,15 @@
 //
 
 #include <iostream>
-#include "dataAnalysis.hpp"
+#include "instance.hpp"
+#include "config.hpp"
 
 using std::cout;
 using std::endl;
 
 int main() {
-    cout << "Checking if all processing times are below 255..." << endl;
-    if (checkAllProcessingTimes(config::instancePath)) {
-        cout << "All processing times are below 255" << endl;
-    } else {
-        cout << "Some processing times exceed 255 -> Cannot use uint8_t" << endl;
-    }
-
+    string instancePath = config::instancePath + "ta051";
+    Instance instance(instancePath);
+    cout << instance << endl;
     return 0;
 }

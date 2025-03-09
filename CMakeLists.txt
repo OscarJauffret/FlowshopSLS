@@ -7,4 +7,5 @@ add_executable(FlowshopSLS src/main.cpp
         src/instance.hpp
         src/dataAnalysis.cpp
         src/config.hpp
-        src/dataAnalysis.hpp)
+        src/dataAnalysis.hpp
+        src/instance.cpp)
