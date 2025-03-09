@@ -24,3 +24,7 @@ uint64_t Solution::evaluate() {
     totalCompletionTime = 80;       //TODO: Implement this
     return 0;
 }
+
+uint64_t Solution::updateEvaluation(uint8_t job, uint8_t position) {    //TODO: Implement this
+    return 0;
+}
