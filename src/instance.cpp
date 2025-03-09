@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "instance.hpp"
+#include "include/instance.hpp"
 
 using std::ifstream;
 using std::cerr;

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
-#include "dataAnalysis.hpp"
+#include "include/dataAnalysis.hpp"
 
 using namespace std;
 

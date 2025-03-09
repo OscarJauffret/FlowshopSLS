@@ -14,6 +14,7 @@ using std::string;
  */
 namespace config {
 
+    constexpr uint32_t seed = 42;                               // Seed for the random number generator
     const string instancePath = "../instances/Benchmarks/";     // Path to the instances
 }
 
