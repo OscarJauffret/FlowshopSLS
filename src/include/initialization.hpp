@@ -2,6 +2,12 @@
 // Created by oscar on 09/03/2025.
 //
 
+/**
+ * @file initialization.hpp
+ * @brief The initialization namespace contains the functions to initialize the solution. The initialization functions
+ * include random initialization and simplified RZ initialization.
+ */
+
 #include "solution.hpp"
 #include <random>
 #include <algorithm>

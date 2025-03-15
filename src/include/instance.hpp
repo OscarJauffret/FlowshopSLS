@@ -2,6 +2,15 @@
 // Created by oscar on 09/03/2025.
 //
 
+/**
+ * @file instance.hpp
+ * @brief Implementation of the Instance class. This class represents an instance of the Flowshop Scheduling Problem.
+ * It contains the number of jobs, the number of machines, and the processing times for each job in each machine.
+ * This is not the class that stores the solution, it is only used to load the instances from a file.
+ *
+ * @see instance.cpp
+ */
+
 #ifndef FLOWSHOPSLS_INSTANCE_HPP
 #define FLOWSHOPSLS_INSTANCE_HPP
 

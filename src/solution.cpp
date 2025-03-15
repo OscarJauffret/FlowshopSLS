@@ -2,6 +2,13 @@
 // Created by oscar on 09/03/2025.
 //
 
+/**
+ * @file solution.cpp
+ * @brief The solution class is the class that will contain the current candidate solution to the given instance.
+ *
+ * @see solution.hpp
+ */
+
 #include "include/solution.hpp"
 #include <iostream>
 

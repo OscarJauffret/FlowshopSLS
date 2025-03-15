@@ -2,6 +2,13 @@
 // Created by oscar on 09/03/2025.
 //
 
+/**
+ * @file solution.hpp
+ * @brief The solution class is the class that will contain the current candidate solution to the given instance.
+ *
+ * @see solution.cpp
+ */
+
 #ifndef FLOWSHOPSLS_SOLUTION_HPP
 #define FLOWSHOPSLS_SOLUTION_HPP
 

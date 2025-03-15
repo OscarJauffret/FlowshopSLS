@@ -1,6 +1,11 @@
 //
 // Created by oscar on 09/03/2025.
 //
+/**
+ * @file dataAnalysis.cpp
+ * @brief The role of this file is to provide functions to analyze the data. It checks the processing times of the
+ * instances to see if they are below 255. This is useful to know if we can use uint8_t to store the processing times.
+ */
 
 #include <iostream>
 #include <fstream>

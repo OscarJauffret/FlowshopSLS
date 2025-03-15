@@ -18,3 +18,10 @@ The algorithms differ in the way they
 - Choose a candidate solution in the neighborhood
   1. Best improvement
   2. First improvement
+
+---
+## Steps so far
+- The [instance](./src/include) class implements the data structure for the problem instance. It holds the number of jobs, 
+the number of machines, and the processing times for each job in each machine.
+- The [solution](./src/include) class implements the data structure for the solution. This is the class that will hold the current candidate solution.
+- The [dataAnalysis](./src/include) file has functions to check if all the processing times are below 255, so that we can use a `uint8_t` data type.
