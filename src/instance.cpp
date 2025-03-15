@@ -69,6 +69,7 @@ ostream& operator<<(ostream& os, const Instance& instance) {
     os << "Machines: " << static_cast<int>(instance.machines) << endl;
     os << "Processing times:" << endl;
     for (int i = 0; i < instance.jobs; ++i) {
+        os << "Job " << i << ": ";
         for (int j = 0; j < instance.machines; ++j) {
             os << static_cast<int>(instance.processingTimes[i][j]) << " ";
         }

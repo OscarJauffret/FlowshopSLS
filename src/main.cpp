@@ -14,6 +14,8 @@ int main() {
     string instancePath = config::instancePath + "ta051";
     Instance instance(instancePath);
 
+    cout << instance << endl;
+
     std::mt19937 rng(config::seed);
 
     Solution solution = initialization::random(instance, rng);

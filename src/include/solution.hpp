@@ -18,7 +18,7 @@ class Solution {
     private:
         const Instance& instance;
         vector<uint8_t> permutation;
-        uint64_t totalCompletionTime = 0;
+        uint64_t sumOfCompletionTimes = 0;
 
     public:
         Solution(const Instance& instance, const vector<uint8_t>& permutation);
