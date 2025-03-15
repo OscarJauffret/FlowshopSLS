@@ -11,4 +11,11 @@ add_executable(FlowshopSLS src/main.cpp
         src/instance.cpp
         src/solution.cpp
         src/include/solution.hpp
-        src/include/initialization.hpp)
+        src/include/initialization.hpp
+        src/flowShopII.cpp
+        src/include/flowShopII.hpp
+        src/include/neighborhood.hpp
+        src/include/neighborhood.hpp
+        src/initialization.cpp
+        src/initialization.cpp
+        src/neighborhood.cpp)
