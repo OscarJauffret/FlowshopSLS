@@ -23,6 +23,7 @@ class Solution {
     public:
         Solution(const Instance& instance, const vector<uint8_t>& permutation);
         uint64_t evaluate();
+        uint64_t evaluate2();
         uint64_t updateEvaluation(uint8_t job, uint8_t position);
         friend ostream &operator<<(ostream &os, const Solution &solution);
 
