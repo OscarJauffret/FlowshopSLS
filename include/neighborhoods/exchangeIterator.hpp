@@ -27,6 +27,11 @@ public:
         }
         return neighbor;
     }
+
+    void reset() override {
+        i = 0;
+        j = 1;
+    }
 };
 
 #endif //FLOWSHOPSLS_EXCHANGEITERATOR_HPP

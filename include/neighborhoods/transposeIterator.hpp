@@ -23,6 +23,10 @@ public:
         return current.transpose(position++);
     }
 
+    void reset() override {
+        position = 0;
+    }
+
 };
 
 

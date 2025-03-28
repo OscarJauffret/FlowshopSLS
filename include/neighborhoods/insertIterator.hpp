@@ -31,6 +31,12 @@ public:
         return neighbor;
     }
 
+    void reset() override {
+        from = 0;
+        to = 1;
+        moveToNextValid();
+    }
+
 private:
     void moveToNextValid() {
         while (from < current.getNumberOfJobs() && from == to) {
