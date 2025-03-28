@@ -15,6 +15,8 @@ public:
     virtual bool hasNext() = 0;
     virtual Solution next() = 0;
     virtual void reset() = 0;
+
+    virtual void setSolution(const Solution& newSolution) = 0;
 };
 
 #endif //FLOWSHOPSLS_NEIGHBORHOODITERATOR_HPP

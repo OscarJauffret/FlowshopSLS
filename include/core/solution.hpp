@@ -89,6 +89,13 @@ class Solution {
          */
         friend ostream &operator<<(ostream &os, const Solution &solution);
 
+        /**
+         * @brief The copy constructor of the Solution class.
+         * @param other The solution to copy.
+         * @return The new solution.
+         */
+        Solution& operator=(const Solution& other);
+
 };
 
 

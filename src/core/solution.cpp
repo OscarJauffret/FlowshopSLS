@@ -85,3 +85,14 @@ ostream &operator<<(ostream &os, const Solution &solution) {
     }
     return os;
 }
+
+Solution &Solution::operator=(const Solution &other) {
+    if (this != &other) {
+        if (&instance != &other.instance) {
+            throw std::logic_error("Cannot assign solutions from different instances");
+        }
+        permutation = other.permutation;
+        sumOfCompletionTimes = other.sumOfCompletionTimes;
+    }
+    return *this;
+}

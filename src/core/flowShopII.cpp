@@ -3,52 +3,64 @@
 //
 
 #include "../../include/core/flowShopII.hpp"
+#include "../../include/neighborhoods/transposeIterator.hpp"
+#include "../../include/neighborhoods/exchangeIterator.hpp"
+#include "../../include/neighborhoods/insertIterator.hpp"
+
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 FlowShopII::FlowShopII(const Instance &instance, NeighbourhoodStructure neighborhoodStruct, PivotingRule pivotRule,
                        InitializationMethod initMethod, std::mt19937 rng)
-                       : neighbourhoodStructure(neighborhoodStruct),
-                       pivotingRule(pivotRule),
+                       : pivotingRule(pivotRule),
                        candidate(initMethod == InitializationMethod::RANDOM
                                     ? initialization::random(instance, rng)
                                     : initialization::simplifiedRZ(instance))
                        {
-
+    switch(neighborhoodStruct) {
+        case NeighbourhoodStructure::TRANSPOSE:
+            neighborhoodIterator = std::make_unique<TransposeIterator>(candidate);
+            break;
+        case NeighbourhoodStructure::EXCHANGE:
+            neighborhoodIterator = std::make_unique<ExchangeIterator>(candidate);
+            break;
+        case NeighbourhoodStructure::INSERT:
+            neighborhoodIterator = std::make_unique<InsertIterator>(candidate);
+            break;
+    }
 }
 
 Solution FlowShopII::run() {
-    switch(pivotingRule) {
-        case PivotingRule::BEST_IMPROVEMENT:
-            return runBestImprovement();
-        case PivotingRule::FIRST_IMPROVEMENT:
-            return runFirstImprovement();
-    }
+    Solution prev(candidate);
+    do {
+        cout << "Candidate: " << candidate << endl;
+        prev = candidate;
+        candidate = step();
+    } while(candidate.getFitness() < prev.getFitness());
+
+    return candidate;
 }
 
-Solution FlowShopII::runBestImprovement() {
+Solution FlowShopII::step() {
     Solution best = candidate;
-    bool improved = true;
-    while(improved) {
-        improved = false;
-        for(uint8_t i = 0; i < candidate.size(); i++) {
-            for(uint8_t j = i + 1; j < candidate.size(); j++) {
-                getNeighbour(i, j);
-                if(candidate.cost() < best.cost()) {
-                    best = candidate;
-                    improved = true;
-                }
+
+    neighborhoodIterator->setSolution(candidate);
+
+    while(neighborhoodIterator->hasNext()) {
+        Solution neighbor = neighborhoodIterator->next();
+
+        if (neighbor.evaluate() < best.getFitness()) {
+            if (pivotingRule == PivotingRule::FIRST_IMPROVEMENT) {
+                return neighbor;
+            } else {
+                best = neighbor;
             }
         }
     }
+
     return best;
+
 }
 
-void FlowShopII::getNeighbour(uint8_t i, uint8_t j) {
-    switch(neighbourhoodStructure) {
-        case NeighbourhoodStructure::TRANSPOSE:
-            candidate.transpose(i);
-        case NeighbourhoodStructure::EXCHANGE:
-            candidate.exchange(i, j);
-        case NeighbourhoodStructure::INSERT:
-            candidate.insert(i, j);
-    }
-}

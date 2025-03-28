@@ -7,25 +7,27 @@
 
 #include "neighborhoodIterator.hpp"
 
+#include <iostream>
+
 class InsertIterator: public NeighborhoodIterator {
-    const Solution &current;
+    const Solution* current;
     uint8_t from, to;
 
 public:
 
-    explicit InsertIterator(const Solution &sol): current(sol), from(0), to(1) {
+    explicit InsertIterator(const Solution &sol): current(&sol), from(0), to(0) {
         moveToNextValid();
     }
 
     bool hasNext() override {
-        return from < current.getNumberOfJobs();
+        return from < current->getNumberOfJobs();
     }
 
     Solution next() override {
-        Solution neighbor = current.insert(from, to++);
-        if (to == current.getNumberOfJobs()) {
+        Solution neighbor = current->insert(from, to++);
+        if (to >= current->getNumberOfJobs()) {
             from++;
-            to = from + 1;
+            to = 0;
         }
         moveToNextValid();
         return neighbor;
@@ -37,11 +39,16 @@ public:
         moveToNextValid();
     }
 
+    void setSolution(const Solution& newSolution) override {
+        current = &newSolution;
+        reset();
+    }
+
 private:
     void moveToNextValid() {
-        while (from < current.getNumberOfJobs() && from == to) {
+        while (from < current->getNumberOfJobs() && from == to) {
             to++;
-            if (to == current.getNumberOfJobs()) {
+            if (to >= current->getNumberOfJobs()) {
                 from++;
                 to = 0;
             }

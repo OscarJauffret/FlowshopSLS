@@ -13,6 +13,7 @@
 #define FLOWSHOPSLS_FLOWSHOPII_HPP
 #include "solution.hpp"
 #include "../initialization/initialization.hpp"
+#include "../neighborhoods/neighborhoodIterator.hpp"
 
 
 enum class InitializationMethod {
@@ -33,16 +34,15 @@ enum class PivotingRule {
 
 class FlowShopII {
     Solution candidate;
-    NeighbourhoodStructure neighbourhoodStructure;
     PivotingRule pivotingRule;
+    std::unique_ptr<NeighborhoodIterator> neighborhoodIterator;
+
 
     public:
         FlowShopII(const Instance &instance, NeighbourhoodStructure neighborhoodStruct, PivotingRule pivotRule,
                    InitializationMethod initMethod, std::mt19937 rng);
         Solution run();
-        Solution runBestImprovement();
-        Solution runFirstImprovement();
-        void getNeighbour(uint8_t i, uint8_t j);
+        Solution step();
 };
 
 
