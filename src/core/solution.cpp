@@ -9,7 +9,7 @@
  * @see solution.hpp
  */
 
-#include "include/solution.hpp"
+#include "../include/core/solution.hpp"
 #include <iostream>
 
 using std::endl;

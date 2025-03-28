@@ -3,9 +3,9 @@
 //
 
 #include <iostream>
-#include "include/instance.hpp"
 #include "config.hpp"
-#include "include/initialization.hpp"
+#include "../include/core/instance.hpp"
+#include "../include/initialization/initialization.hpp"
 
 using std::cout;
 using std::endl;

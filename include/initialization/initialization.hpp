@@ -2,7 +2,7 @@
 // Created by oscar on 09/03/2025.
 //
 
-#include "solution.hpp"
+#include "../core/solution.hpp"
 #include <random>
 #include <algorithm>
 #include <numeric>

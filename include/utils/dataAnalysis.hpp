@@ -6,7 +6,7 @@
 #define FLOWSHOPSLS_DATAANALYSIS_HPP
 
 #include <string>
-#include "../config.hpp"
+#include "../../src/config.hpp"
 
 using std::string;
 

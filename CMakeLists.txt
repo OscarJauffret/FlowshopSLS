@@ -4,18 +4,15 @@ project(FlowshopSLS)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(FlowshopSLS src/main.cpp
-        src/include/instance.hpp
-        src/dataAnalysis.cpp
+        ../include/core/instance.hpp
+        src/utils/dataAnalysis.cpp
         src/config.hpp
-        src/include/dataAnalysis.hpp
-        src/instance.cpp
-        src/solution.cpp
-        src/include/solution.hpp
-        src/include/initialization.hpp
-        src/flowShopII.cpp
-        src/include/flowShopII.hpp
-        src/include/neighborhood.hpp
-        src/include/neighborhood.hpp
-        src/initialization.cpp
-        src/initialization.cpp
-        src/neighborhood.cpp)
+        ../include/utils/dataAnalysis.hpp
+        src/core/instance.cpp
+        src/core/solution.cpp
+        ../include/core/solution.hpp
+        ../include/initialization/initialization.hpp
+        src/core/flowShopII.cpp
+        ../include/core/flowShopII.hpp
+        src/initialization/initialization.cpp
+        ../include/neighborhoods/neighborhoodIterator.hpp)

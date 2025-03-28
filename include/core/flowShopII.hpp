@@ -12,7 +12,7 @@
 #ifndef FLOWSHOPSLS_FLOWSHOPII_HPP
 #define FLOWSHOPSLS_FLOWSHOPII_HPP
 #include "solution.hpp"
-#include "initialization.hpp"
+#include "../initialization/initialization.hpp"
 
 
 enum class InitializationMethod {
@@ -40,6 +40,8 @@ class FlowShopII {
         FlowShopII(const Instance &instance, NeighbourhoodStructure neighborhoodStruct, PivotingRule pivotRule,
                    InitializationMethod initMethod, std::mt19937 rng);
         Solution run();
+        Solution runBestImprovement();
+        Solution runFirstImprovement();
         void getNeighbour(uint8_t i, uint8_t j);
 };
 

@@ -2,7 +2,7 @@
 // Created by oscar on 15/03/2025.
 //
 
-#include "include/initialization.hpp"
+#include "../../include/initialization/initialization.hpp"
 
 /**
  * @brief The random function initializes the solution with a random permutation of the jobs.
