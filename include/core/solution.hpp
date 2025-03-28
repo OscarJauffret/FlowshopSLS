@@ -76,6 +76,12 @@ class Solution {
         uint64_t getFitness() const;
 
         /**
+         * @brief The getNumberOfJobs function returns the number of jobs in the instance.
+         * @return The number of jobs in the instance.
+         */
+         [[nodiscard]] uint8_t getNumberOfJobs() const;
+
+        /**
          * @brief The << operator is overloaded to print the solution. It prints the sum of the completion times and the permutation of the jobs. This is useful for debugging.
          * @param os The output stream.
          * @param solution The solution to print.

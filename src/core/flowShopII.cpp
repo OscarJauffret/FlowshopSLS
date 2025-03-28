@@ -2,7 +2,7 @@
 // Created by oscar on 15/03/2025.
 //
 
-#include "../include/core/flowShopII.hpp"
+#include "../../include/core/flowShopII.hpp"
 
 FlowShopII::FlowShopII(const Instance &instance, NeighbourhoodStructure neighborhoodStruct, PivotingRule pivotRule,
                        InitializationMethod initMethod, std::mt19937 rng)

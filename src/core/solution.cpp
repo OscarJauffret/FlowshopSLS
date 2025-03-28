@@ -9,7 +9,7 @@
  * @see solution.hpp
  */
 
-#include "../include/core/solution.hpp"
+#include "../../include/core/solution.hpp"
 #include <iostream>
 
 using std::endl;
@@ -71,6 +71,10 @@ Solution Solution::insert(uint8_t from, uint8_t to) const {
 
 uint64_t Solution::getFitness() const {
     return sumOfCompletionTimes;
+}
+
+uint8_t Solution::getNumberOfJobs() const {
+    return instance.jobs;
 }
 
 ostream &operator<<(ostream &os, const Solution &solution) {

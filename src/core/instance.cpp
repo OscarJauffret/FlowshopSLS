@@ -14,7 +14,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "../include/core/instance.hpp"
+#include "../../include/core/instance.hpp"
 
 using std::ifstream;
 using std::cerr;
