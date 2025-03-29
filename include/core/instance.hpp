@@ -23,8 +23,14 @@ using std::string;
 using std::ostream;
 
 /**
+ * @file instance.hpp
  * @struct Instance
  * @brief Structure that represents an instance of the Flowshop Scheduling Problem
+ * @field jobs - Number of jobs
+ * @field machines - Number of machines
+ * @field processingTimes - Processing times for each job in each machine [job][machine]
+ *
+ * @see instance.cpp
  */
 struct Instance {
     uint8_t jobs = 0;       // Number of jobs

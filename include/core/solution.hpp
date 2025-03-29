@@ -10,6 +10,7 @@
 
 /**
  * @file solution.hpp
+ * @class Solution
  * @brief The solution class is the class that will contain the current candidate solution to the given instance.
  * @field instance - The instance of the problem.
  * @field permutation - The permutation of the jobs.
@@ -20,9 +21,9 @@
 
 class Solution {
     private:
-        const Instance& instance;
-        vector<uint8_t> permutation;
-        uint64_t sumOfCompletionTimes = 0;
+        const Instance& instance;                   // The instance of the problem
+        vector<uint8_t> permutation;                // The current permutation of the jobs
+        uint64_t sumOfCompletionTimes = 0;          // The sum of the completion times of the jobs in the permutation
         vector<vector<uint64_t>> completionTimes;   // Stores the completion times of the jobs in the permutation [job][machine]
 
     public:
