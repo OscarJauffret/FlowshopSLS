@@ -2,13 +2,6 @@
 // Created by oscar on 09/03/2025.
 //
 
-/**
- * @file solution.cpp
- * @brief The solution class is the class that will contain the current candidate solution to the given instance.
- *
- * @see solution.hpp
- */
-
 #include "../../include/core/solution.hpp"
 #include <iostream>
 
@@ -20,18 +13,19 @@ Solution::Solution(const Instance& instance, const vector<uint8_t>& permutation)
     evaluate(0);
 }
 
-uint64_t Solution::evaluate(uint8_t from, uint8_t upTo) {
-    if (upTo == 0) {
+void Solution::evaluate(uint8_t from, uint8_t upTo) {
+    if (upTo == 0) {    // If upTo is 0, we evaluate all the jobs
         upTo = instance.jobs;
     }
     const uint8_t m = instance.machines;
 
     for (uint8_t jobIdx = from; jobIdx < upTo; jobIdx++) {
-        uint8_t job = permutation[jobIdx];
+        uint8_t job = permutation[jobIdx];  // Get the job from the permutation
         for (uint8_t machine = 0; machine < m; machine++) {
-            uint64_t prevJobCompletion = (jobIdx > 0) ? completionTimes[jobIdx - 1][machine] : 0;
-            uint64_t prevMachineCompletion = (machine > 0) ? completionTimes[jobIdx][machine - 1] : 0;
+            uint64_t prevJobCompletion = (jobIdx > 0) ? completionTimes[jobIdx - 1][machine] : 0;       // Get the completion time of the previous job
+            uint64_t prevMachineCompletion = (machine > 0) ? completionTimes[jobIdx][machine - 1] : 0;  // Get the completion time of the previous machine
 
+            // The completion time of the job in the machine is the maximum between the completion time of the previous job in the machine and the completion time of the job in the previous machine plus the processing time
             completionTimes[jobIdx][machine] = std::max(prevJobCompletion, prevMachineCompletion) + instance.processingTimes[job][machine];
         }
     }
@@ -41,27 +35,28 @@ uint64_t Solution::evaluate(uint8_t from, uint8_t upTo) {
         sumOfCompletionTimes += completionTimes[jobIdx][m - 1];
     }
 
-    return sumOfCompletionTimes;
 }
 
 
 Solution Solution::transpose(uint8_t i) const{
-    return exchange(i, i + 1);
+    return exchange(i, i + 1);  // Transpose is the same as exchanging two consecutive jobs
 }
 
 Solution Solution::exchange(uint8_t i, uint8_t j) const {
-    Solution neighbor(*this);
-    std::swap(neighbor.permutation[i], neighbor.permutation[j]);
-    neighbor.evaluate(std::min(i, j));
+    Solution neighbor(*this);    // Create a copy of the current solution
+    std::swap(neighbor.permutation[i], neighbor.permutation[j]);    // Swap the jobs
+    neighbor.evaluate(std::min(i, j));  // Evaluate the new solution, only the jobs that changed need to be evaluated
     return neighbor;
 }
 
 Solution Solution::insert(uint8_t from, uint8_t to, uint8_t calculateFitnessUpTo) const {
-    Solution neighbor(*this);
+    Solution neighbor(*this);       // Create a copy of the current solution
     uint8_t job = neighbor.permutation[from];
+
+    // Remove the job from the permutation and insert it in the new position
     neighbor.permutation.erase(neighbor.permutation.begin() + from);
     neighbor.permutation.insert(neighbor.permutation.begin() + to, job);
-    neighbor.evaluate(std::min(from, to), calculateFitnessUpTo);
+    neighbor.evaluate(std::min(from, to), calculateFitnessUpTo);    // Evaluate the new solution, only the jobs that changed need to be evaluated
     return neighbor;
 }
 

@@ -37,10 +37,9 @@ class Solution {
         /**
          * @brief The evaluate function calculates the sum of the completion times of the jobs in the permutation.
          * @param from The index of the first job to consider in the evaluation. This is useful when evaluating a neighbor of the solution because we only need to evaluate the changed jobs.
-         * @param upTo The number of jobs to consider in the evaluation. If 0, all the jobs are considered.
-         * @return The sum of the completion times of the jobs in the permutation.  //TODO: necessary to return?
+         * @param upTo The number of jobs to consider in the evaluation. If 0, all the jobs are considered. This parameter is used when evaluating the solutions in the Simplified RZ heuristic.
          */
-        uint64_t evaluate(uint8_t from, uint8_t upTo = 0);
+        void evaluate(uint8_t from, uint8_t upTo = 0);
 
         /**
          * @brief The transpose function transposes two consecutive jobs in the permutation. It creates a new solution with the transposed jobs.
@@ -61,7 +60,7 @@ class Solution {
          * @brief The insert function inserts a job in a new position in the permutation. It creates a new solution with the inserted job.
          * @param from The index of the job to insert.
          * @param to The index where the job will be inserted.
-         * @param calculateFitnessUpTo The number of jobs to consider in the evaluation. If 0, all the jobs are considered.
+         * @param calculateFitnessUpTo The number of jobs to consider in the evaluation. If 0, all the jobs are considered. This parameter is used when evaluating the solutions in the Simplified RZ heuristic.
          * @return A new solution with the inserted job.
          */
         [[nodiscard]] Solution insert(uint8_t from, uint8_t to, uint8_t calculateFitnessUpTo = 0) const;

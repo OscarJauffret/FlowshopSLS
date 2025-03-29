@@ -21,11 +21,6 @@ using std::cerr;
 using std::endl;
 using std::cout;
 
-/**
- * @brief Load an instance from a file
- * @param filename Path to the instance file (has to be in the format described in the instructions)
- * @return Instance
- */
 Instance::Instance(const std::string& filename) {
     ifstream instanceFile(filename);
 
@@ -34,9 +29,11 @@ Instance::Instance(const std::string& filename) {
     }
 
     int numJobs, numMachines;
-    instanceFile >> numJobs >> numMachines;
+    instanceFile >> numJobs >> numMachines; // Read the number of jobs and machines
 
     if (numJobs > 255 || numMachines > 255) {
+        // If the number of jobs or machines is above 255, we cannot use uint8_t, so we throw an exception
+        // we know that the number of jobs and machines will be below 255 in the instances we are using
         throw std::runtime_error("The number of jobs and machines must be below 255");
     }
 
@@ -50,18 +47,13 @@ Instance::Instance(const std::string& filename) {
         for (int j = 0; j < machines; ++j) {
             int machineNumber, processingTime;
             instanceFile >> machineNumber >> processingTime;
+            // Here again we know that the processing times will be below 255 because we checked every processing time in the data analysis phase (@see dataAnalysis.hpp in the include/utils folder)
             processingTimes[i][j] = static_cast<uint8_t>(processingTime);
         }
     }
     instanceFile.close();
 }
 
-/**
- * @brief Overload of the << operator to print an instance
- * @param os The output stream
- * @param instance The instance to print
- * @return The output stream
- */
 ostream& operator<<(ostream& os, const Instance& instance) {
     os << "Jobs: " << static_cast<int>(instance.jobs) << endl;
     os << "Machines: " << static_cast<int>(instance.machines) << endl;
