@@ -4,7 +4,6 @@
 
 #include "../../include/initialization/initialization.hpp"
 
-#include <iostream> // TODO; Remove this line
 /**
  * @brief The random function initializes the solution with a random permutation of the jobs.
  * @param instance The instance of the problem.
@@ -42,10 +41,6 @@ Solution initialization::simplifiedRZ(const Instance &instance) {
 
     // Now we have the permutation ordered by the sum of the processing times
     // We will now apply the RZ heuristic
-    for (uint8_t i = 0; i < jobs; i++) {
-        std::cout << (int) permutation[i] << " ";
-    }
-    std::cout << std::endl;
     vector<uint8_t> bestPermutation = permutation;
     for (uint8_t currentNumberOfJobs = 1; currentNumberOfJobs < jobs; currentNumberOfJobs++) {
         uint64_t bestCost = std::numeric_limits<uint64_t>::max();
@@ -54,9 +49,7 @@ Solution initialization::simplifiedRZ(const Instance &instance) {
             Solution candidate(instance, permutation);
             candidate = candidate.insert(currentNumberOfJobs, insert_position);
             uint64_t candidateCost = candidate.evaluate(currentNumberOfJobs + 1);
-            std::cout << "Candidate: " << candidate << std::endl;
             if (candidateCost < bestCost) {
-                std::cout << "Candidate cost is better" << std::endl;
                 bestCost = candidateCost;
                 bestPermutation = candidate.getPermutation();
             }
