@@ -16,6 +16,9 @@ FlowShopConfig::FlowShopConfig(int argc, char* argv[]) {
         throw invalid_argument("Usage: ./pfsp-ii --first|--best --transpose|--exchange|--insert --srz|--random-init");
     }
 
+    // Parse the arguments
+
+    // The first argument is the pivoting rule
     string pivotArg = argv[1];
     if (pivotArg == "--first") {
         pivotRule = PivotingRule::FIRST_IMPROVEMENT;
@@ -25,6 +28,7 @@ FlowShopConfig::FlowShopConfig(int argc, char* argv[]) {
         throw invalid_argument("Invalid pivoting rule! Use --first or --best.");
     }
 
+    // The second argument is the neighbourhood structure
     string neighborhoodArg = argv[2];
     if (neighborhoodArg == "--transpose") {
         neighbourhood = NeighbourhoodStructure::TRANSPOSE;
@@ -36,6 +40,7 @@ FlowShopConfig::FlowShopConfig(int argc, char* argv[]) {
         throw invalid_argument("Invalid neighbourhood structure! Use --transpose, --exchange or --insert.");
     }
 
+    // The third argument is the initialization method
     string initArg = argv[3];
     if (initArg == "--srz") {
         initMethod = InitializationMethod::SIMPLIFIED_RZ;
