@@ -14,35 +14,23 @@
 #include "solution.hpp"
 #include "../initialization/initialization.hpp"
 #include "../neighborhoods/neighborhoodIterator.hpp"
+#include "../neighborhoods/transposeIterator.hpp"
+#include "../neighborhoods/exchangeIterator.hpp"
+#include "../neighborhoods/insertIterator.hpp"
+#include "../utils/flowShopConfig.hpp"
 
-
-enum class InitializationMethod {
-    RANDOM,
-    SIMPLIFIED_RZ
-};
-
-enum class NeighbourhoodStructure {
-    TRANSPOSE,
-    EXCHANGE,
-    INSERT
-};
-
-enum class PivotingRule {
-    FIRST_IMPROVEMENT,
-    BEST_IMPROVEMENT
-};
 
 class FlowShopII {
     Solution candidate;
     PivotingRule pivotingRule;
     std::unique_ptr<NeighborhoodIterator> neighborhoodIterator;
 
-
-    public:
-        FlowShopII(const Instance &instance, NeighbourhoodStructure neighborhoodStruct, PivotingRule pivotRule,
-                   InitializationMethod initMethod, std::mt19937 rng);
-        Solution run();
-        Solution step();
+private:
+    Solution step();
+public:
+    FlowShopII(const Instance &instance, NeighbourhoodStructure neighborhoodStruct, PivotingRule pivotRule,
+               InitializationMethod initMethod, std::mt19937 rng);
+    Solution run();
 };
 
 

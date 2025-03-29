@@ -6,20 +6,20 @@
 #include "config.hpp"
 #include "../include/core/instance.hpp"
 #include "../include/core/flowShopII.hpp"
+#include "../include/utils/flowShopConfig.hpp"
 
 using std::cout;
 using std::endl;
+using std::cerr;
 
-int main() {
+int main(int argc, char* argv[]) {
     string instancePath = config::instancePath + "ta051";
     Instance instance(instancePath);
     std::mt19937 rng(config::seed);
 
-    FlowShopII flowShopII(instance, NeighbourhoodStructure::INSERT, PivotingRule::FIRST_IMPROVEMENT, InitializationMethod::RANDOM, rng);
+    FlowShopConfig config(argc, argv);
+
+    FlowShopII flowShopII(instance, config.getNeighbourhood(), config.getPivotRule(), config.getInitMethod(), rng);
     flowShopII.run();
-//    Solution sol = initialization::random(instance, rng);
-//    cout << sol << endl;
-//    Solution newSol = sol.insert(0, sol.getNumberOfJobs()-1);
-//    cout << newSol << endl;
     return 0;
 }

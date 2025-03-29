@@ -3,10 +3,6 @@
 //
 
 #include "../../include/core/flowShopII.hpp"
-#include "../../include/neighborhoods/transposeIterator.hpp"
-#include "../../include/neighborhoods/exchangeIterator.hpp"
-#include "../../include/neighborhoods/insertIterator.hpp"
-
 #include <iostream>
 
 using std::cout;
