@@ -5,12 +5,7 @@
 #include "../../include/initialization/initialization.hpp"
 
 #include <iostream>
-/**
- * @brief The random function initializes the solution with a random permutation of the jobs.
- * @param instance The instance of the problem.
- * @param rng The random number generator.
- * @return The solution with a random permutation of the jobs.
- */
+
 Solution initialization::random(const Instance &instance, std::mt19937 &rng) {
     uint8_t jobs = instance.jobs;
     vector<uint8_t> permutation(jobs);
@@ -20,11 +15,6 @@ Solution initialization::random(const Instance &instance, std::mt19937 &rng) {
     return {instance, permutation};
 }
 
-/**
- * @brief The simplifiedRZ function initializes the solution with the simplified RZ heuristic.
- * @param instance The instance of the problem.
- * @return The solution with the simplified RZ heuristic.
- */
 Solution initialization::simplifiedRZ(const Instance &instance) {
     uint8_t jobs = instance.jobs;
     vector<uint8_t> permutation(jobs);
@@ -36,6 +26,7 @@ Solution initialization::simplifiedRZ(const Instance &instance) {
         sumOfProcessingTimes[job] = std::accumulate(instance.processingTimes[job].begin(), instance.processingTimes[job].end(), 0ULL);
     }
 
+    // Sort the permutation by the sum of the processing times (sort the indexes)
     std::sort(permutation.begin(), permutation.end(), [&](uint8_t i, uint8_t j) {
         return sumOfProcessingTimes[i] < sumOfProcessingTimes[j];
     });
