@@ -4,6 +4,7 @@
 
 #include "../../include/initialization/initialization.hpp"
 
+#include <iostream>
 /**
  * @brief The random function initializes the solution with a random permutation of the jobs.
  * @param instance The instance of the problem.
@@ -47,15 +48,13 @@ Solution initialization::simplifiedRZ(const Instance &instance) {
         permutation = bestPermutation;
         for (uint8_t insert_position = 0; insert_position <= currentNumberOfJobs; insert_position++) {
             Solution candidate(instance, permutation);
-            candidate = candidate.insert(currentNumberOfJobs, insert_position);
-            uint64_t candidateCost = candidate.evaluate(currentNumberOfJobs + 1);
-            if (candidateCost < bestCost) {
-                bestCost = candidateCost;
+            candidate = candidate.insert(currentNumberOfJobs, insert_position, currentNumberOfJobs + 1);
+            if (candidate.getFitness() < bestCost) {
+                bestCost = candidate.getFitness();
                 bestPermutation = candidate.getPermutation();
             }
         }
     }
-
 
     return {instance, bestPermutation};
 }

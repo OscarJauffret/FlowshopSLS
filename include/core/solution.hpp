@@ -23,6 +23,7 @@ class Solution {
         const Instance& instance;
         vector<uint8_t> permutation;
         uint64_t sumOfCompletionTimes = 0;
+        vector<vector<uint64_t>> completionTimes;   // Stores the completion times of the jobs in the permutation [job][machine]
 
     public:
         /**
@@ -34,25 +35,18 @@ class Solution {
 
         /**
          * @brief The evaluate function calculates the sum of the completion times of the jobs in the permutation.
+         * @param from The index of the first job to consider in the evaluation. This is useful when evaluating a neighbor of the solution because we only need to evaluate the changed jobs.
          * @param upTo The number of jobs to consider in the evaluation. If 0, all the jobs are considered.
          * @return The sum of the completion times of the jobs in the permutation.  //TODO: necessary to return?
          */
-        uint64_t evaluate(uint8_t upTo = 0);
-
-        /**
-         * @brief The updateEvaluation function updates the sum of the completion times of the jobs in the permutation after a change in the permutation.
-         * @param job The job that was moved.
-         * @param position The position where the job was moved.
-         * @return The sum of the completion times of the jobs in the permutation after the change.  //TODO: necessary to return?
-         */
-        uint64_t updateEvaluation(uint8_t job, uint8_t position);
+        uint64_t evaluate(uint8_t from, uint8_t upTo = 0);
 
         /**
          * @brief The transpose function transposes two consecutive jobs in the permutation. It creates a new solution with the transposed jobs.
          * @param i The index of the job to transpose. It will be transposed with the next job.
          * @return A new solution with the transposed jobs.
          */
-        Solution transpose(uint8_t i) const;
+        [[nodiscard]] Solution transpose(uint8_t i) const;
 
         /**
          * @brief The exchange function exchanges two jobs in the permutation. It creates a new solution with the exchanged jobs.
@@ -60,21 +54,22 @@ class Solution {
          * @param j The index of the second job to exchange.
          * @return A new solution with the exchanged jobs.
          */
-        Solution exchange(uint8_t i, uint8_t j) const;
+        [[nodiscard]] Solution exchange(uint8_t i, uint8_t j) const;
 
         /**
          * @brief The insert function inserts a job in a new position in the permutation. It creates a new solution with the inserted job.
          * @param from The index of the job to insert.
          * @param to The index where the job will be inserted.
+         * @param calculateFitnessUpTo The number of jobs to consider in the evaluation. If 0, all the jobs are considered.
          * @return A new solution with the inserted job.
          */
-        Solution insert(uint8_t from, uint8_t to) const;
+        [[nodiscard]] Solution insert(uint8_t from, uint8_t to, uint8_t calculateFitnessUpTo = 0) const;
 
         /**
          * @brief The getFitness function returns the sum of the completion times of the jobs in the permutation.
          * @return The sum of the completion times of the jobs in the permutation.
          */
-        uint64_t getFitness() const;
+        [[nodiscard]] uint64_t getFitness() const;
 
         /**
          * @brief The getNumberOfJobs function returns the number of jobs in the instance.

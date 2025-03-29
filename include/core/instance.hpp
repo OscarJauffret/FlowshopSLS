@@ -29,7 +29,7 @@ using std::ostream;
 struct Instance {
     uint8_t jobs = 0;       // Number of jobs
     uint8_t machines = 0;   // Number of machines
-    vector<vector<uint8_t>> processingTimes;    // Processing times for each job in each machine
+    vector<vector<uint8_t>> processingTimes;    // Processing times for each job in each machine [job][machine]
 
     /**
      * @brief Load an instance from a file

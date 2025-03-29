@@ -16,38 +16,37 @@ using std::endl;
 using std::cout;
 
 Solution::Solution(const Instance& instance, const vector<uint8_t>& permutation) : instance(instance), permutation(permutation) {
-    evaluate();
+    completionTimes = vector<vector<uint64_t>>(instance.jobs, vector<uint64_t>(instance.machines, 0));
+    evaluate(0);
 }
 
-uint64_t Solution::evaluate(uint8_t upTo) {
+uint64_t Solution::evaluate(uint8_t from, uint8_t upTo) {
     if (upTo == 0) {
         upTo = instance.jobs;
     }
     const uint8_t m = instance.machines;
 
-    vector<uint64_t> prevCompletion(m, 0);  // Stores the completion time of the previous job in each machine
-    vector<uint64_t> currCompletion(m, 0);  // Stores the completion time of the current job in each machine
+    for (uint8_t jobIdx = from; jobIdx < upTo; jobIdx++) {
+        uint8_t job = permutation[jobIdx];
+        for (uint8_t machine = 0; machine < m; machine++) {
+            if (jobIdx == 0 && machine == 0) {      // First job in the first machine
+                completionTimes[jobIdx][machine] = instance.processingTimes[job][machine];
+            } else if (jobIdx == 0) {               // First job in any other machine
+                completionTimes[jobIdx][machine] = completionTimes[jobIdx][machine - 1] + instance.processingTimes[job][machine];
+            } else if (machine == 0) {              // Any job in the first machine
+                completionTimes[jobIdx][machine] = completionTimes[jobIdx - 1][machine] + instance.processingTimes[job][machine];
+            } else {                // Any job in any other machine
+                completionTimes[jobIdx][machine] = std::max(completionTimes[jobIdx][machine - 1], completionTimes[jobIdx - 1][machine]) + instance.processingTimes[job][machine];
+            }
+        }
+    }
 
     sumOfCompletionTimes = 0;
-
     for (uint8_t jobIdx = 0; jobIdx < upTo; jobIdx++) {
-        for (uint8_t machineIdx = 0; machineIdx < m; machineIdx++) {
-
-            uint64_t completionPrevMachine = (machineIdx > 0) ? currCompletion[machineIdx - 1] : 0;
-            uint64_t completionPrevJob = prevCompletion[machineIdx];    // If this is the first job, the completion time of the previous job is 0 because we initialized it that way
-
-            currCompletion[machineIdx] = std::max(completionPrevMachine, completionPrevJob) + instance.processingTimes[permutation[jobIdx]][machineIdx];
-        }
-
-        sumOfCompletionTimes += currCompletion[m - 1];  // Add the completion time of this job
-        std::swap(prevCompletion, currCompletion);  // The current completion times become the previous completion times
+        sumOfCompletionTimes += completionTimes[jobIdx][m - 1];
     }
 
     return sumOfCompletionTimes;
-}
-
-uint64_t Solution::updateEvaluation(uint8_t job, uint8_t position) {    //TODO: Implement this
-    return 0;
 }
 
 
@@ -58,16 +57,16 @@ Solution Solution::transpose(uint8_t i) const{
 Solution Solution::exchange(uint8_t i, uint8_t j) const {
     Solution neighbor(*this);
     std::swap(neighbor.permutation[i], neighbor.permutation[j]);
-    neighbor.evaluate();    //TODO: should not recompute the whole thing
+    neighbor.evaluate(std::min(i, j));
     return neighbor;
 }
 
-Solution Solution::insert(uint8_t from, uint8_t to) const {
+Solution Solution::insert(uint8_t from, uint8_t to, uint8_t calculateFitnessUpTo) const {
     Solution neighbor(*this);
     uint8_t job = neighbor.permutation[from];
     neighbor.permutation.erase(neighbor.permutation.begin() + from);
     neighbor.permutation.insert(neighbor.permutation.begin() + to, job);
-    neighbor.evaluate();    //TODO: should not recompute the whole thing
+    neighbor.evaluate(std::min(from, to), calculateFitnessUpTo);
     return neighbor;
 }
 

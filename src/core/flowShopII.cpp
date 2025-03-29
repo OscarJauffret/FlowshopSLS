@@ -45,9 +45,9 @@ Solution FlowShopII::step() {
     neighborhoodIterator->setSolution(candidate);
 
     while(neighborhoodIterator->hasNext()) {
-        Solution neighbor = neighborhoodIterator->next();
+        Solution neighbor = neighborhoodIterator->next();   // Get the next neighbor. The fitness will be calculated here.
 
-        if (neighbor.evaluate() < best.getFitness()) {
+        if (neighbor.getFitness() < best.getFitness()) {
             if (pivotingRule == PivotingRule::FIRST_IMPROVEMENT) {
                 return neighbor;
             } else {
