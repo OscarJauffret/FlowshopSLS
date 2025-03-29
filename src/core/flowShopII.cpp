@@ -34,7 +34,7 @@ Solution FlowShopII::run() {
         cout << "Candidate: " << candidate << endl;
         prev = candidate;
         candidate = step();
-    } while(candidate.getFitness() < prev.getFitness());
+    } while (candidate.getFitness() < prev.getFitness());
 
     return candidate;
 }
@@ -55,8 +55,6 @@ Solution FlowShopII::step() {
             }
         }
     }
-
     return best;
-
 }
 

@@ -29,15 +29,10 @@ uint64_t Solution::evaluate(uint8_t from, uint8_t upTo) {
     for (uint8_t jobIdx = from; jobIdx < upTo; jobIdx++) {
         uint8_t job = permutation[jobIdx];
         for (uint8_t machine = 0; machine < m; machine++) {
-            if (jobIdx == 0 && machine == 0) {      // First job in the first machine
-                completionTimes[jobIdx][machine] = instance.processingTimes[job][machine];
-            } else if (jobIdx == 0) {               // First job in any other machine
-                completionTimes[jobIdx][machine] = completionTimes[jobIdx][machine - 1] + instance.processingTimes[job][machine];
-            } else if (machine == 0) {              // Any job in the first machine
-                completionTimes[jobIdx][machine] = completionTimes[jobIdx - 1][machine] + instance.processingTimes[job][machine];
-            } else {                // Any job in any other machine
-                completionTimes[jobIdx][machine] = std::max(completionTimes[jobIdx][machine - 1], completionTimes[jobIdx - 1][machine]) + instance.processingTimes[job][machine];
-            }
+            uint64_t prevJobCompletion = (jobIdx > 0) ? completionTimes[jobIdx - 1][machine] : 0;
+            uint64_t prevMachineCompletion = (machine > 0) ? completionTimes[jobIdx][machine - 1] : 0;
+
+            completionTimes[jobIdx][machine] = std::max(prevJobCompletion, prevMachineCompletion) + instance.processingTimes[job][machine];
         }
     }
 
@@ -98,6 +93,7 @@ Solution &Solution::operator=(const Solution &other) {
         }
         permutation = other.permutation;
         sumOfCompletionTimes = other.sumOfCompletionTimes;
+        completionTimes = other.completionTimes;
     }
     return *this;
 }

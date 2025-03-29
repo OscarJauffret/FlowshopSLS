@@ -14,7 +14,7 @@ using std::cerr;
 
 int main(int argc, char* argv[]) {
     try {
-        string instancePath = config::instancePath + "custom";
+        string instancePath = config::instancePath + "ta051";
         Instance instance(instancePath);
         std::mt19937 rng(config::seed);
         cout << instance << endl;
