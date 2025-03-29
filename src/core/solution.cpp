@@ -19,8 +19,10 @@ Solution::Solution(const Instance& instance, const vector<uint8_t>& permutation)
     evaluate();
 }
 
-uint64_t Solution::evaluate() {
-    const uint8_t n = instance.jobs;
+uint64_t Solution::evaluate(uint8_t upTo) {
+    if (upTo == 0) {
+        upTo = instance.jobs;
+    }
     const uint8_t m = instance.machines;
 
     vector<uint64_t> prevCompletion(m, 0);  // Stores the completion time of the previous job in each machine
@@ -28,7 +30,7 @@ uint64_t Solution::evaluate() {
 
     sumOfCompletionTimes = 0;
 
-    for (uint8_t jobIdx = 0; jobIdx < n; jobIdx++) {
+    for (uint8_t jobIdx = 0; jobIdx < upTo; jobIdx++) {
         for (uint8_t machineIdx = 0; machineIdx < m; machineIdx++) {
 
             uint64_t completionPrevMachine = (machineIdx > 0) ? currCompletion[machineIdx - 1] : 0;
@@ -75,6 +77,10 @@ uint64_t Solution::getFitness() const {
 
 uint8_t Solution::getNumberOfJobs() const {
     return instance.jobs;
+}
+
+const vector<uint8_t> &Solution::getPermutation() const {
+    return permutation;
 }
 
 ostream &operator<<(ostream &os, const Solution &solution) {

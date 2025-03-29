@@ -34,9 +34,10 @@ class Solution {
 
         /**
          * @brief The evaluate function calculates the sum of the completion times of the jobs in the permutation.
+         * @param upTo The number of jobs to consider in the evaluation. If 0, all the jobs are considered.
          * @return The sum of the completion times of the jobs in the permutation.  //TODO: necessary to return?
          */
-        uint64_t evaluate();
+        uint64_t evaluate(uint8_t upTo = 0);
 
         /**
          * @brief The updateEvaluation function updates the sum of the completion times of the jobs in the permutation after a change in the permutation.
@@ -80,6 +81,12 @@ class Solution {
          * @return The number of jobs in the instance.
          */
          [[nodiscard]] uint8_t getNumberOfJobs() const;
+
+         /**
+          * @brief The getPermutation function returns the permutation of the jobs.
+          * @return The permutation of the jobs.
+          */
+         [[nodiscard]] const vector<uint8_t>& getPermutation() const;
 
         /**
          * @brief The << operator is overloaded to print the solution. It prints the sum of the completion times and the permutation of the jobs. This is useful for debugging.

@@ -14,9 +14,10 @@ using std::cerr;
 
 int main(int argc, char* argv[]) {
     try {
-        string instancePath = config::instancePath + "ta051";
+        string instancePath = config::instancePath + "custom";
         Instance instance(instancePath);
         std::mt19937 rng(config::seed);
+        cout << instance << endl;
 
         FlowShopConfig config(argc, argv);
 
