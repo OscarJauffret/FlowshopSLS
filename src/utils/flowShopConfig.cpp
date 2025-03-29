@@ -4,38 +4,47 @@
 
 #include "../../include/utils/flowShopConfig.hpp"
 
+#include <iostream>
+
+using std::cerr;
+using std::endl;
 using std::invalid_argument;
 
 FlowShopConfig::FlowShopConfig(int argc, char* argv[]) {
     if (argc != 4) {
-        throw invalid_argument("Usage: pfsp-ii (--first|--best) (--transpose|--exchange|--insert) (--srz|--random-init)");
+        cerr << "Invalid number of arguments!" << endl;
+        throw invalid_argument("Usage: ./pfsp-ii --first|--best --transpose|--exchange|--insert --srz|--random-init");
     }
 
     string pivotArg = argv[1];
-    if (pivotArg == "--first")
+    if (pivotArg == "--first") {
         pivotRule = PivotingRule::FIRST_IMPROVEMENT;
-    else if (pivotArg == "--best")
+    } else if (pivotArg == "--best") {
         pivotRule = PivotingRule::BEST_IMPROVEMENT;
-    else
-        throw invalid_argument("Invalid pivot rule! Use --first or --best.");
+    } else {
+        throw invalid_argument("Invalid pivoting rule! Use --first or --best.");
+    }
 
     string neighborhoodArg = argv[2];
-    if (neighborhoodArg == "--transpose")
+    if (neighborhoodArg == "--transpose") {
         neighbourhood = NeighbourhoodStructure::TRANSPOSE;
-    else if (neighborhoodArg == "--exchange")
+    } else if (neighborhoodArg == "--exchange") {
         neighbourhood = NeighbourhoodStructure::EXCHANGE;
-    else if (neighborhoodArg == "--insert")
+    } else if (neighborhoodArg == "--insert") {
         neighbourhood = NeighbourhoodStructure::INSERT;
-    else
-        throw invalid_argument("Invalid neighborhood structure! Use --transpose, --exchange, or --insert.");
+    } else {
+        throw invalid_argument("Invalid neighbourhood structure! Use --transpose, --exchange or --insert.");
+    }
 
     string initArg = argv[3];
-    if (initArg == "--srz")
+    if (initArg == "--srz") {
         initMethod = InitializationMethod::SIMPLIFIED_RZ;
-    else if (initArg == "--random-init")
+    } else if (initArg == "--random-init") {
         initMethod = InitializationMethod::RANDOM;
-    else
+    } else {
         throw invalid_argument("Invalid initialization method! Use --srz or --random-init.");
+    }
+
 }
 
 PivotingRule FlowShopConfig::getPivotRule() const {

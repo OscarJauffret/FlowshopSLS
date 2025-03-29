@@ -30,16 +30,14 @@ Instance::Instance(const std::string& filename) {
     ifstream instanceFile(filename);
 
     if (!instanceFile.is_open()) {
-        cerr << "Unable to open file: " << filename << endl;
-        return;
+        throw std::runtime_error("Unable to open file: " + filename);
     }
 
     int numJobs, numMachines;
     instanceFile >> numJobs >> numMachines;
 
     if (numJobs > 255 || numMachines > 255) {
-        cerr << "The number of jobs and machines must be less than 256" << endl;
-        return;
+        throw std::runtime_error("The number of jobs and machines must be below 255");
     }
 
     jobs = static_cast<uint8_t>(numJobs);
