@@ -6,6 +6,17 @@ This project is a heuristic optimization implementation for the Flowshop schedul
 > This is a university project for the course of Heuristic Optimization. The instructions for the project can be found in the file `implementation_1_2025.pdf`, in the `doc`directory.
 
 ---
+# How to run
+
+To run the project, you need to have `cmake` installed. Then, you can run the following commands in the root of the project:
+
+```shell
+cmake -B build
+cmake --build build
+./build/pfsp-ii <pivoting_rule> <neighborhood_structure> <initialization_method>
+```
+---
+
 ## Implemented algorithms
 The algorithms differ in the way they
 - Generate the initial solution
