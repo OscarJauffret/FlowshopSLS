@@ -15,7 +15,11 @@ using std::unique_ptr;
  * @brief The FlowShopII class is the class that implements the iterative improvement algorithm for the FlowShop problem.
  * It uses a neighborhood structure and a pivoting rule to explore the solution space.
  * @field neighborhoodIterator The neighborhood iterator to use.
- * @see flowShopII.cpp in the src/core directory
+ * @see
+ * <ul>
+ * <li/> flowShopII.cpp in the src/core directory
+ * <li/> flowShopSLS.hpp in the include/core directory
+ * </ul>
  */
 class FlowShopII : public FlowShopSLS {
 private:

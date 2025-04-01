@@ -22,6 +22,13 @@ using std::unique_ptr;
  * <li/> Transpose-Insert-Exchange
  * </ul>
  * The initialization method is the simplified RZ heuristic.
+ *
+ * @field neighborhoodIterators The neighborhood iterators to use.
+ * @see
+ * <ul>
+ * <li/> flowShopVnd.cpp in the src/core directory
+ * <li/> flowShopSLS.hpp in the include/core directory
+ * </ul>
  */
 class FlowShopVND : public FlowShopSLS {
 private:
