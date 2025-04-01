@@ -8,7 +8,9 @@ This project is a heuristic optimization implementation for the Flowshop schedul
 ---
 # How to run
 
-Please note that the rng is different depending on the compiler used. For example, the same seed may produce different results when using `cmake` or `make` (although a seed is not used in the testing phase).
+> [!Important]
+> Please note that the rng is different depending on the compiler used. For example, the same seed may produce different results when using `cmake` or `make` (although a seed is not used in the testing phase).
+
 ## If you have CMake installed
 If you have `cmake` (at least version 3.26) installed, you can run the following commands in the root of the project:
 
@@ -42,8 +44,3 @@ The algorithms differ in the way they
   2. First improvement
 
 ---
-## Steps so far
-- The [instance](include) class implements the data structure for the problem instance. It holds the number of jobs, 
-the number of machines, and the processing times for each job in each machine.
-- The [solution](include) class implements the data structure for the solution. This is the class that will hold the current candidate solution.
-- The [dataAnalysis](include) file has functions to check if all the processing times are below 255, so that we can use a `uint8_t` data type.
