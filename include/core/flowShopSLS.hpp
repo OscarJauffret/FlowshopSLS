@@ -13,12 +13,23 @@
 #include "../neighborhoods/insertIterator.hpp"
 #include "../utils/flowShopConfig.hpp"
 
+#include <iostream>
+
+
+/**
+ * @file flowShopSLS.hpp
+ * @class FlowShopSLS
+ * @brief The FlowShopSLS class is an abstract class that represents a Stochastic Local Search algorithm for the Flow Shop Scheduling Problem.
+ * It uses a neighborhood iterator and a pivoting rule to explore the solution space.
+ * @field candidate The current candidate solution.
+ * @field pivotingRule The pivoting rule to use.
+ * @see flowShopII.hpp, flowShopVnd.hpp in the include/core directory
+ */
 class FlowShopSLS {
 protected:
 
     Solution candidate;                                         // The current candidate solution
     PivotingRule pivotingRule;                                  // The pivoting rule to use
-    std::unique_ptr<NeighborhoodIterator> neighborhoodIterator; // The neighborhood iterator to use
 
     /**
      * @brief The step function performs a single step of the SLS algorithm. It uses the neighborhood iterator to explore the solution space.
@@ -49,7 +60,16 @@ public:
      * @brief The run function runs the SLS algorithm until no improvement is found.
      * @return The best solution found by the algorithm.
      */
-    virtual Solution run() = 0;
+    Solution run() {
+        Solution prev(candidate);
+        do {
+            std::cout << "Candidate: " << candidate << std::endl;
+            prev = candidate;
+            candidate = step();
+        } while (candidate.getFitness() < prev.getFitness());
+
+        return candidate;
+    }
 };
 
 #endif //PFSP_II_FLOWSHOPSLS_HPP

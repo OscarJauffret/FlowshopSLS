@@ -45,6 +45,11 @@ enum class PivotingRule {
     BEST_IMPROVEMENT
 };
 
+enum class VNDStrategy {
+    TEI,        // Transpose -> Exchange -> Insert
+    TIE,        // Transpose -> Insert -> Exchange
+};
+
 
 /**
  * @class FlowShopConfig

@@ -25,17 +25,6 @@ FlowShopII::FlowShopII(const Instance &instance, NeighbourhoodStructure neighbor
     }
 }
 
-Solution FlowShopII::run() {
-    Solution prev(candidate);
-    do {
-        cout << "Candidate: " << candidate << endl;
-        prev = candidate;
-        candidate = step();
-    } while (candidate.getFitness() < prev.getFitness());
-
-    return candidate;
-}
-
 Solution FlowShopII::step() {
     Solution best = candidate;
 

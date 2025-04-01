@@ -13,4 +13,5 @@ add_executable(pfsp-ii
         src/initialization/initialization.cpp
         src/utils/dataAnalysis.cpp
         src/utils/flowShopConfig.cpp
+        src/core/flowShopVnd.cpp
 )
