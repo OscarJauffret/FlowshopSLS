@@ -5,13 +5,7 @@
 
 #ifndef FLOWSHOPSLS_FLOWSHOPII_HPP
 #define FLOWSHOPSLS_FLOWSHOPII_HPP
-#include "solution.hpp"
-#include "../initialization/initialization.hpp"
-#include "../neighborhoods/neighborhoodIterator.hpp"
-#include "../neighborhoods/transposeIterator.hpp"
-#include "../neighborhoods/exchangeIterator.hpp"
-#include "../neighborhoods/insertIterator.hpp"
-#include "../utils/flowShopConfig.hpp"
+#include "flowShopSLS.hpp"
 
 
 /**
@@ -24,17 +18,13 @@
  * @field neighborhoodIterator The neighborhood iterator to use.
  * @see flowShopII.cpp in the src/core directory
  */
-class FlowShopII {
-    Solution candidate;                                         // The current candidate solution
-    PivotingRule pivotingRule;                                  // The pivoting rule to use
-    std::unique_ptr<NeighborhoodIterator> neighborhoodIterator; // The neighborhood iterator to use
-
+class FlowShopII : public FlowShopSLS {
 private:
     /**
      * @brief The step function performs a single step of the iterative improvement algorithm. It uses the neighborhood iterator to explore the solution space.
      * @return The best neighbor found in the neighborhood or the first neighbor that improves the current solution depending on the pivoting rule.
      */
-    Solution step();
+    Solution step() override;
 public:
 
     /**
@@ -52,7 +42,7 @@ public:
      * @brief The run function runs the iterative improvement algorithm until no improvement is found.
      * @return The best solution found by the algorithm.
      */
-    Solution run();
+    Solution run() override;
 };
 
 

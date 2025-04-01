@@ -10,10 +10,7 @@ using std::endl;
 
 FlowShopII::FlowShopII(const Instance &instance, NeighbourhoodStructure neighborhoodStruct, PivotingRule pivotRule,
                        InitializationMethod initMethod, std::mt19937 rng)
-                       : pivotingRule(pivotRule),
-                       candidate(initMethod == InitializationMethod::RANDOM
-                                    ? initialization::random(instance, rng)
-                                    : initialization::simplifiedRZ(instance))
+                       : FlowShopSLS(instance, pivotRule, initMethod, rng)
                        {
     switch(neighborhoodStruct) {
         case NeighbourhoodStructure::TRANSPOSE:

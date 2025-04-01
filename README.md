@@ -8,7 +8,7 @@ This project is a heuristic optimization implementation for the Flowshop schedul
 ---
 # How to run
 
-To run the project, you need to have `cmake` installed. Then, you can run the following commands in the root of the project:
+To run the project, you need to have `cmake` (at least version 3.26) installed. Then, you can run the following commands in the root of the project:
 
 ```shell
 cmake -B build
