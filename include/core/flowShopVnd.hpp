@@ -8,6 +8,7 @@
 #include "flowShopSLS.hpp"
 
 #include <vector>
+#include <memory>
 
 using std::vector;
 using std::unique_ptr;

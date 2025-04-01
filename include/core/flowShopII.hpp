@@ -7,6 +7,8 @@
 #define FLOWSHOPSLS_FLOWSHOPII_HPP
 #include "flowShopSLS.hpp"
 
+#include <memory>
+
 using std::unique_ptr;
 
 /**

@@ -8,13 +8,24 @@ This project is a heuristic optimization implementation for the Flowshop schedul
 ---
 # How to run
 
-To run the project, you need to have `cmake` (at least version 3.26) installed. Then, you can run the following commands in the root of the project:
+Please note that the rng is different depending on the compiler used. For example, the same seed may produce different results when using `cmake` or `make` (although a seed is not used in the testing phase).
+## If you have CMake installed
+If you have `cmake` (at least version 3.26) installed, you can run the following commands in the root of the project:
 
 ```shell
 cmake -B build
 cmake --build build
-./build/pfsp-ii <pivoting_rule> <neighborhood_structure> <initialization_method>
+./build/Debug/pfsp-ii <pivoting_rule> <neighborhood_structure> <initialization_method>
 ```
+
+## If you don't have CMake installed
+If you don't have `cmake` installed, you should have `make` installed. You can run the following commands in the root of the project:
+
+```shell
+make
+./bin/pfsp-ii <pivoting_rule> <neighborhood_structure> <initialization_method>
+```
+
 ---
 
 ## Implemented algorithms

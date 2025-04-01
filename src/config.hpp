@@ -6,6 +6,7 @@
 #define FLOWSHOPSLS_CONFIG_HPP
 
 #include <string>
+#include <cstdint>
 using std::string;
 
 /**
