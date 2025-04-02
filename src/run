@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Config
+EXEC="../bin/pfsp-ii"
+INSTANCE_DIR="../instances/Benchmarks"
+REPEAT=10
+
+# Parameters
+PIVOTS=(--first --best)
+NEIGHBORHOODS=(--transpose --exchange --insert)
+INITS=(--random-init --srz)
+
+# Loop over all instances
+for instance_file in "$INSTANCE_DIR"/*; do
+    instance_name=$(basename "$instance_file")  # e.g., ta051
+
+    echo "Running on instance: $instance_name"
+
+    # Loop over all parameter combinations
+    for pivot in "${PIVOTS[@]}"; do
+        for neighborhood in "${NEIGHBORHOODS[@]}"; do
+            for init in "${INITS[@]}"; do
+                echo "  [$pivot $neighborhood $init]"
+
+                # Repeat each combination
+                for ((i=1; i<=REPEAT; i++)); do
+                    echo "    Run $i..."
+                    $EXEC --$instance_name $pivot $neighborhood $init
+                done
+            done
+        done
+    done
+done
