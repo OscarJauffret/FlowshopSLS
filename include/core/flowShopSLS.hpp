@@ -48,7 +48,7 @@ protected:
             pivotingRule(pivotRule),
             candidate(initMethod == InitializationMethod::RANDOM
                     ? initialization::random(instance, rng)
-                    : initialization::simplifiedRZ(instance)) {}
+                    : initialization::simplifiedRZ(instance, rng)) {}
 public:
 
     /**
@@ -63,7 +63,6 @@ public:
     Solution run() {
         Solution prev(candidate);
         do {
-            std::cout << "Candidate: " << candidate << std::endl;
             prev = candidate;
             candidate = step();
         } while (candidate.getFitness() < prev.getFitness());

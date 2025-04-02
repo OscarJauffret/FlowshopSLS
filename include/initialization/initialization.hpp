@@ -32,7 +32,8 @@ namespace initialization {
     /**
      * @brief The simplifiedRZ function initializes the solution with the simplified RZ heuristic.
      * @param instance The instance of the problem.
+     * @param rng The random number generator.
      * @return The solution with the simplified RZ heuristic.
      */
-    Solution simplifiedRZ(const Instance& instance);
+    Solution simplifiedRZ(const Instance &instance, std::mt19937 &rng);
 }
