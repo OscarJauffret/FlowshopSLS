@@ -5,7 +5,7 @@
 #ifndef FLOWSHOPSLS_INSERTITERATOR_HPP
 #define FLOWSHOPSLS_INSERTITERATOR_HPP
 
-#include "neighborhoodIterator.hpp"
+#include "neighbourhoodIterator.hpp"
 
 #include <iostream>
 
@@ -16,9 +16,9 @@
  * @field current - The current solution.
  * @field from - The index of the job to insert.
  * @field to - The index where to insert the job.
- * @see neighborhoodIterator.hpp
+ * @see neighbourhoodIterator.hpp
  */
-class InsertIterator: public NeighborhoodIterator {
+class InsertIterator: public NeighbourhoodIterator {
     const Solution* current;
     uint8_t from, to;
 

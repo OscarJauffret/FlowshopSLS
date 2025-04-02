@@ -5,7 +5,7 @@
 #ifndef FLOWSHOPSLS_EXCHANGEITERATOR_HPP
 #define FLOWSHOPSLS_EXCHANGEITERATOR_HPP
 
-#include "neighborhoodIterator.hpp"
+#include "neighbourhoodIterator.hpp"
 
 /**
  * @file exchangeIterator.hpp
@@ -14,9 +14,9 @@
  * @field current - The current solution.
  * @field i - The index of the first job to exchange.
  * @field j - The index of the second job to exchange.
- * @see neighborhoodIterator.hpp
+ * @see neighbourhoodIterator.hpp
  */
-class ExchangeIterator: public NeighborhoodIterator {
+class ExchangeIterator: public NeighbourhoodIterator {
     const Solution* current;
     uint8_t i, j;
 

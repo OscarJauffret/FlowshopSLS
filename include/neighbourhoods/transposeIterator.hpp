@@ -5,7 +5,7 @@
 #ifndef FLOWSHOPSLS_TRANSPOSEITERATOR_HPP
 #define FLOWSHOPSLS_TRANSPOSEITERATOR_HPP
 
-#include "neighborhoodIterator.hpp"
+#include "neighbourhoodIterator.hpp"
 
 /**
  * @file transposeIterator.hpp
@@ -13,9 +13,9 @@
  * @brief Class that implements the transpose neighborhood iterator. It has methods to iterate over the transpose neighborhood of a solution.
  * @field current - The current solution.
  * @field position - The index of the job to transpose.
- * @see neighborhoodIterator.hpp
+ * @see neighbourhoodIterator.hpp
  */
-class TransposeIterator: public NeighborhoodIterator{
+class TransposeIterator: public NeighbourhoodIterator{
     const Solution* current;
     uint8_t position;
 
