@@ -1,1 +1,1 @@
-instance, fitness, pctDev, pivotRule, neighborhood, initializationMethod, time_ms
+instance, nJobs, fitness, pctDev, pivotRule, neighborhood, initializationMethod, time_ms

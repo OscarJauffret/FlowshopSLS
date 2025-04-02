@@ -31,9 +31,8 @@ int main(int argc, char* argv[]) {
         double elapsed = std::chrono::duration<double, std::milli>(end - start).count();
 
         RunAnalyzer analyzer;
-        analyzer.log(config.getInstancePath(), solution, config.getPivotRule(),
-                     config.getNeighbourhood(), config.getInitMethod(), elapsed);
-        cout << "Done for instance " << config.getInstancePath() << endl;
+        analyzer.log(config.getInstancePath(), instance.jobs, config.getPivotRule(),
+                     config.getNeighbourhood(), config.getInitMethod(), elapsed, solution);
     } catch (const std::exception &e) {
         cerr << "Error: " << e.what() << endl;
         return 1;

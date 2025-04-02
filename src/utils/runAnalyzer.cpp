@@ -56,9 +56,9 @@ string RunAnalyzer::getInstanceName(const string &fullpath) {
     return fs::path(fullpath).filename().string();
 }
 
-void RunAnalyzer::log(const string &instancePath, const Solution &solution, const PivotingRule &rule,
+void RunAnalyzer::log(const string &instancePath, const uint8_t nJobs, const PivotingRule &rule,
                       const NeighbourhoodStructure &neighbourhood, const InitializationMethod &initMethod,
-                      const double time_ms) const {
+                      const double time_ms, const Solution &solution) const {
 
     uint64_t fitness = solution.getFitness();
     double pctDev = getPercentDeviation(instancePath, fitness);
@@ -68,6 +68,7 @@ void RunAnalyzer::log(const string &instancePath, const Solution &solution, cons
         throw std::runtime_error("Could not open results file: " + config::resultsPath);
     }
     file << getInstanceName(instancePath) << ","
+         << static_cast<int>(nJobs) << ","
          << fitness << ","
          << pctDev << ","
          << stringify::pivot(rule) << ","

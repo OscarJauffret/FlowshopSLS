@@ -47,15 +47,16 @@ public:
     /**
      * @brief Log the results of a run to the results file.
      * @param instancePath The path to the instance file.
+     * @param nJobs The number of jobs in the instance.
      * @param solution The solution found.
      * @param rule The pivoting rule used.
      * @param neighbourhood The neighbourhood structure used.
      * @param initMethod The initialization method used.
      * @param time_ms The time taken to find the solution in milliseconds.
      */
-    void log(const string &instancePath, const Solution &solution, const PivotingRule &rule,
+    void log(const string &instancePath, uint8_t nJobs, const PivotingRule &rule,
              const NeighbourhoodStructure &neighbourhood, const InitializationMethod &initMethod,
-             double time_ms) const;
+             double time_ms, const Solution &solution) const;
 
 };
 
