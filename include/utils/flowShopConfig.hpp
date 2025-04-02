@@ -14,7 +14,7 @@
 #define FLOWSHOPSLS_FLOWSHOPCONFIG_HPP
 
 #include <string>
-#include "../neighborhoods/neighborhoodIterator.hpp"
+#include "../neighbourhoods/neighbourhoodIterator.hpp"
 #include "../initialization/initialization.hpp"
 
 
@@ -46,6 +46,10 @@ enum class PivotingRule {
     BEST_IMPROVEMENT
 };
 
+/**
+ * @enum VNDStrategy
+ * @brief Enumeration type that defines the VND strategies available for the Flow Shop algorithm.
+ */
 enum class VNDStrategy {
     TEI,        // Transpose -> Exchange -> Insert
     TIE,        // Transpose -> Insert -> Exchange

@@ -8,19 +8,19 @@
 using std::cout;
 using std::endl;
 
-FlowShopII::FlowShopII(const Instance &instance, NeighbourhoodStructure neighborhoodStruct, PivotingRule pivotRule,
+FlowShopII::FlowShopII(const Instance &instance, NeighbourhoodStructure neighbourhoodStructure, PivotingRule pivotRule,
                        InitializationMethod initMethod, std::mt19937 rng)
                        : FlowShopSLS(instance, pivotRule, initMethod, rng)
                        {
-    switch(neighborhoodStruct) {
+    switch(neighbourhoodStructure) {
         case NeighbourhoodStructure::TRANSPOSE:
-            neighborhoodIterator = std::make_unique<TransposeIterator>(candidate);
+            neighbourhoodIterator = std::make_unique<TransposeIterator>(candidate);
             break;
         case NeighbourhoodStructure::EXCHANGE:
-            neighborhoodIterator = std::make_unique<ExchangeIterator>(candidate);
+            neighbourhoodIterator = std::make_unique<ExchangeIterator>(candidate);
             break;
         case NeighbourhoodStructure::INSERT:
-            neighborhoodIterator = std::make_unique<InsertIterator>(candidate);
+            neighbourhoodIterator = std::make_unique<InsertIterator>(candidate);
             break;
     }
 }
@@ -28,10 +28,10 @@ FlowShopII::FlowShopII(const Instance &instance, NeighbourhoodStructure neighbor
 Solution FlowShopII::step() {
     Solution best = candidate;
 
-    neighborhoodIterator->setSolution(candidate);
+    neighbourhoodIterator->setSolution(candidate);
 
-    while(neighborhoodIterator->hasNext()) {
-        Solution neighbor = neighborhoodIterator->next();   // Get the next neighbor. The fitness will be calculated here.
+    while(neighbourhoodIterator->hasNext()) {
+        Solution neighbor = neighbourhoodIterator->next();   // Get the next neighbor. The fitness will be calculated here.
 
         if (neighbor.getFitness() < best.getFitness()) {
             if (pivotingRule == PivotingRule::FIRST_IMPROVEMENT) {

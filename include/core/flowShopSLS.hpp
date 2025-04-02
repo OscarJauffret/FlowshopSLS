@@ -7,10 +7,10 @@
 
 #include "solution.hpp"
 #include "../initialization/initialization.hpp"
-#include "../neighborhoods/neighborhoodIterator.hpp"
-#include "../neighborhoods/transposeIterator.hpp"
-#include "../neighborhoods/exchangeIterator.hpp"
-#include "../neighborhoods/insertIterator.hpp"
+#include "../neighbourhoods/neighbourhoodIterator.hpp"
+#include "../neighbourhoods/transposeIterator.hpp"
+#include "../neighbourhoods/exchangeIterator.hpp"
+#include "../neighbourhoods/insertIterator.hpp"
 #include "../utils/flowShopConfig.hpp"
 
 #include <iostream>

@@ -4,13 +4,17 @@
 
 #include <iostream>
 #include <random>
+#include <chrono>
+
 #include "config.hpp"
 #include "../include/core/instance.hpp"
 #include "../include/core/flowShopII.hpp"
+#include "../include/utils/runAnalyzer.hpp"
 
 using std::cout;
 using std::endl;
 using std::cerr;
+using Clock = std::chrono::high_resolution_clock;
 
 int main(int argc, char* argv[]) {
     try {
@@ -19,10 +23,17 @@ int main(int argc, char* argv[]) {
 
         FlowShopConfig config(argc, argv);
 
+        auto start = Clock::now();
         Instance instance(config.getInstancePath());
         FlowShopII flowShopII(instance, config.getNeighbourhood(), config.getPivotRule(), config.getInitMethod(), rng);
         Solution solution = flowShopII.run();
-        cout << "Best solution found: " << endl << solution << endl;
+        auto end = Clock::now();
+        double elapsed = std::chrono::duration<double, std::milli>(end - start).count();
+
+        RunAnalyzer analyzer;
+        analyzer.log(config.getInstancePath(), solution, config.getPivotRule(),
+                     config.getNeighbourhood(), config.getInitMethod(), elapsed);
+        cout << "Done for instance " << config.getInstancePath() << endl;
     } catch (const std::exception &e) {
         cerr << "Error: " << e.what() << endl;
         return 1;
