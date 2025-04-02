@@ -13,6 +13,7 @@
 #ifndef FLOWSHOPSLS_FLOWSHOPCONFIG_HPP
 #define FLOWSHOPSLS_FLOWSHOPCONFIG_HPP
 
+#include <string>
 #include "../neighborhoods/neighborhoodIterator.hpp"
 #include "../initialization/initialization.hpp"
 
@@ -61,6 +62,7 @@ enum class VNDStrategy {
  * @field initMethod The initialization method to use.
  */
 class FlowShopConfig {
+    string instancePath;
     PivotingRule pivotRule;
     NeighbourhoodStructure neighbourhood;
     InitializationMethod initMethod;
@@ -73,6 +75,12 @@ public:
      * @param argv The command-line arguments.
      */
     explicit FlowShopConfig(int argc, char* argv[]);
+
+    /**
+     * @brief The getInstancePath function returns the path to the instance file.
+     * @return The path to the instance file.
+     */
+    [[nodiscard]] string getInstancePath() const;
 
     /**
      * @brief The getPivotRule function returns the pivoting rule to use.
