@@ -8,7 +8,7 @@ CXXFLAGS += -DPROJECT_SOURCE_DIR=\"$(shell pwd | sed 's/ /\\ /g')\"
 # Source and object files
 SRC_DIR = src
 OBJ_DIR = obj
-BIN = pfsp-ii
+BIN = pfsp
 
 SRCS = $(wildcard $(SRC_DIR)/**/*.cpp) $(wildcard $(SRC_DIR)/*.cpp)
 OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
