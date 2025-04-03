@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Config
+EXEC="../bin/pfsp"
+INSTANCE_DIR="../instances/Benchmarks"
+REPEAT=10
+
+# Parameters
+NEIGHBORHOODS=(--tei --tie)
+
+# Loop over all instances
+for instance_file in "$INSTANCE_DIR"/*; do
+    instance_name=$(basename "$instance_file")  # e.g., ta051
+
+    echo "Running on instance: $instance_name"
+
+    # Loop over all possible neighborhoods
+    for neighborhood in "${NEIGHBORHOODS[@]}"; do
+        echo "  [$neighborhood]"
+
+        # Repeat each combination
+        for ((i=1; i<=REPEAT; i++)); do
+            printf "\r    Run %2d..." "$i"
+            $EXEC --$instance_name $neighborhood
+        done
+        echo
+    done
+done
