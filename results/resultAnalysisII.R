@@ -1,35 +1,60 @@
-setwd("A:/C Projects/FlowshopSLS")
+setwd("A:/C Projects/FlowshopSLS/results")
 library(dplyr)
 # Load the file
 results <- read.csv("resultsII.csv")
 comparison_results <- data.frame()
 
-print_results <- function(cmp1, cmp2, param1, param2, w_test, t_test, mean1, mean2, significant_w_test, significant_t_test) {
+print_results <- function(cmp1, cmp2, param1, param2, w_quality_test, t_quality_test, mean_quality_1, mean_quality_2,
+                          significant_w_quality_test, significant_t_quality_test, w_time_test, t_time_test, mean_time_1, mean_time_2,
+                          significant_w_time_test, significant_t_time_test) {
   cat("\n----------------------------------------------\n")
   cat("Comparing:", cmp1, "vs", cmp2, "\n")
   cat("Other parameters: ", param1, "|", param2, "\n")
-  cat("Average dev from optimal:", cmp1, "=", round(mean1, 3), "% |", cmp2, "=", round(mean2, 3), "%\n")
-  cat("Wilcoxon p-value: ", w_test, "| Significant difference: ", significant_w_test, "\n")
-  cat("T-test p-value: ", t_test, "| Significant difference: ", significant_t_test, "\n")
+  cat("Average dev from optimal:", cmp1, "=", round(mean_quality_1, 3), "% |", cmp2, "=", round(mean_quality_2, 3), "%\n")
+  cat("Average time taken: ", cmp1, "=", round(mean_time_1, 3), "ms |", cmp2, "=", round(mean_time_2, 3), "ms\n")
+  cat("Wilcoxon quality p-value: ", w_quality_test, "| Significant difference: ", significant_w_quality_test, "\n")
+  cat("T-test quality p-value: ", t_quality_test, "| Significant difference: ", significant_t_quality_test, "\n")
+  cat("Wilcoxon time p-value: ", w_time_test, "| Significant difference: ", significant_w_time_test, "\n")
+  cat("T-test time p-value: ", t_time_test, "| Significant difference: ", significant_t_time_test, "\n")
   
-  if (significant_w_test) {
-    if (mean1 < mean2) {
-      cat("Wilcoxon test >>>", cmp1, "is better on average.\n")
-    } else if (mean2 < mean1) {
-      cat("Wilcoxon test >>>", cmp2, "is better on average.\n")
+  if (significant_w_quality_test) {
+    if (mean_quality_1 < mean_quality_2) {
+      cat("Wilcoxon quality test >>>", cmp1, "is better on average.\n")
+    } else if (mean_quality_2 < mean_quality_1) {
+      cat("Wilcoxon quality test >>>", cmp2, "is better on average.\n")
     } else {
-      cat("Wilcoxon test >>> Both are identical.\n")
+      cat("Wilcoxon quality test >>> Both are identical.\n")
     }
   }
   
   
-  if (significant_t_test) {
-    if (mean1 < mean2) {
-      cat("T-test >>>", cmp1, "is better on average.\n")
-    } else if (mean2 < mean1) {
-      cat("T-test >>>", cmp2, "is better on average.\n")
+  if (significant_t_quality_test) {
+    if (mean_quality_1 < mean_quality_2) {
+      cat("T-test quality >>>", cmp1, "is better on average.\n")
+    } else if (mean_quality_2 < mean_quality_1) {
+      cat("T-test quality >>>", cmp2, "is better on average.\n")
     } else {
-      cat("T-test >>> Both are identical.\n")
+      cat("T-test quality >>> Both are identical.\n")
+    }
+  }
+  
+  if (significant_w_time_test) {
+    if (mean_time_1 < mean_time_2) {
+      cat("Wilcoxon time test >>>", cmp1, "is faster on average.\n")
+    } else if (mean_time_2 < mean_time_1) {
+      cat("Wilcoxon time test >>>", cmp2, "is faster on average.\n")
+    } else {
+      cat("Wilcoxon time test >>> Both are identical.\n")
+    }
+  }
+  
+  if (significant_t_time_test) {
+    if (mean_time_1 < mean_time_2) {
+      cat("T-test time >>>", cmp1, "is faster on average.\n")
+    } else if (mean_time_2 < mean_time_1) {
+      cat("T-test time >>>", cmp2, "is faster on average.\n")
+    } else {
+      cat("T-test time >>> Both are identical.\n")
     }
   }
   
@@ -38,18 +63,26 @@ print_results <- function(cmp1, cmp2, param1, param2, w_test, t_test, mean1, mea
     cmp2 = cmp2,
     param1 = param1,
     param2 = param2,
-    mean1 = round(mean1, 3),
-    mean2 = round(mean2, 3),
-    p_wilcoxon = w_test,
-    p_ttest = t_test,
-    significant_wilcoxon = significant_w_test,
-    significant_ttest = significant_t_test,
-    better = if (mean1 < mean2) cmp1 else if (mean2 < mean1) cmp2 else "equal",
-    agreement = significant_w_test == significant_t_test # If both tests agree
+    mean_quality_1 = round(mean_quality_1, 3),
+    mean_quality_2 = round(mean_quality_2, 3),
+    p_wilcoxon_quality = w_quality_test,
+    p_ttest_quality = t_quality_test,
+    significant_wilcoxon_quality = significant_w_quality_test,
+    significant_ttest_quality = significant_t_quality_test,
+    better_quality = if (mean_quality_1 < mean_quality_2) cmp1 else if (mean_quality_2 < mean_quality_1) cmp2 else "equal",
+    agreement_quality = significant_w_quality_test == significant_t_quality_test, # If both tests agree
+    mean_time_1 = round(mean_time_1, 3),
+    mean_time_2 = round(mean_time_2, 3),
+    p_wilcoxon_time = w_time_test,
+    p_ttest_time = t_time_test,
+    significant_wilcoxon_time = significant_w_time_test,
+    significant_ttest_time = significant_t_time_test,
+    better_time = if (mean_time_1 < mean_time_2) cmp1 else if (mean_time_2 < mean_time_1) cmp2 else "equal",
+    agreement_time = significant_w_time_test == significant_t_time_test # If both tests agree
   ))
 }
 
-perform_tests <- function(merged) {
+perform_quality_tests <- function(merged) {
   # The null hypothesis in the Wilcoxon signed-rank test is that the median difference between the paired observations is zero, 
   # i.e., there is no systematic difference in central tendency between the two groups
   alpha <- 0.05   # The maximum allowable probability of incorrectly rejecting the null hypothesis
@@ -85,15 +118,42 @@ perform_tests <- function(merged) {
   ))
 }
 
+perform_time_tests <- function(merged) {
+  alpha <- 0.05
+  
+  w_test <- wilcox.test(merged$time_ms_1, merged$time_ms_2, paired=TRUE)$p.value
+  t_test <- t.test(merged$time_ms_1, merged$time_ms_2, paired=TRUE)$p.value
+  
+  # Test the significance
+  significant_w_test <- w_test < alpha # If true, we reject the null hypothesis -> one configuration is better than the other
+  significant_t_test <- t_test < alpha
+  
+  mean1 <- mean(merged$time_ms_1)
+  mean2 <- mean(merged$time_ms_2)
+  
+  return(list(
+    w_test = w_test,
+    t_test = t_test,
+    significant_w_test = significant_w_test,
+    significant_t_test = significant_t_test,
+    mean1 = mean1,
+    mean2 = mean2
+  ))
+}
+
 compare_init <- function(init1, init2, pivot, neigh) {
   a1 <- results %>% filter(initialization_method  == init1, pivot_rule  == pivot, neighborhood == neigh)  # Selects only the lines that respect the conditions
   a2 <- results %>% filter(initialization_method  == init2, pivot_rule  == pivot, neighborhood == neigh)
   
   merged <- merge(a1, a2, by = "instance", suffixes = c("_1", "_2"))  # Merge the two tables, and puts _1 as a suffix for the columns of a1, and _2 for a2
 
-  test_results <- perform_tests(merged)
-  print_results(init1, init2, pivot, neigh, test_results$w_test, test_results$t_test, test_results$mean1, 
-                test_results$mean2, test_results$significant_w_test, test_results$significant_t_test)
+  quality_test_results <- perform_quality_tests(merged)
+  time_test_results <- perform_time_tests(merged)
+  
+  print_results(init1, init2, pivot, neigh, quality_test_results$w_test, quality_test_results$t_test, quality_test_results$mean1, 
+                quality_test_results$mean2, quality_test_results$significant_w_test, quality_test_results$significant_t_test,
+                time_test_results$w_test, time_test_results$t_test, time_test_results$mean1, time_test_results$mean2,
+                time_test_results$significant_w_test, time_test_results$significant_t_test)
 }
 
 compare_pivots <- function(pivot1, pivot2, init, neigh) {
@@ -102,9 +162,13 @@ compare_pivots <- function(pivot1, pivot2, init, neigh) {
   
   merged <- merge(a1, a2, by = "instance", suffixes = c("_1", "_2"))  # Merge the two tables, and puts _1 as a suffix for the columns of a1, and _2 for a2
   
-  test_results <- perform_tests(merged)
-  print_results(pivot1, pivot2, init, neigh, test_results$w_test, test_results$t_test, test_results$mean1, 
-                test_results$mean2, test_results$significant_w_test, test_results$significant_t_test)
+  quality_test_results <- perform_quality_tests(merged)
+  time_test_results <- perform_time_tests(merged)
+  
+  print_results(pivot1, pivot2, init, neigh, quality_test_results$w_test, quality_test_results$t_test, quality_test_results$mean1, 
+                quality_test_results$mean2, quality_test_results$significant_w_test, quality_test_results$significant_t_test,
+                time_test_results$w_test, time_test_results$t_test, time_test_results$mean1, time_test_results$mean2,
+                time_test_results$significant_w_test, time_test_results$significant_t_test)
 }
 
 compare_neighs <- function(neigh1, neigh2, init, pivot) {
@@ -113,9 +177,13 @@ compare_neighs <- function(neigh1, neigh2, init, pivot) {
   
   merged <- merge(a1, a2, by = "instance", suffixes = c("_1", "_2"))  # Merge the two tables, and puts _1 as a suffix for the columns of a1, and _2 for a2
   
-  test_results <- perform_tests(merged)
-  print_results(neigh1, neigh2, init, pivot, test_results$w_test, test_results$t_test, test_results$mean1, 
-                test_results$mean2, test_results$significant_w_test, test_results$significant_t_test)
+  quality_test_results <- perform_quality_tests(merged)
+  time_test_results <- perform_time_tests(merged)
+  
+  print_results(neigh1, neigh2, init, pivot, quality_test_results$w_test, quality_test_results$t_test, quality_test_results$mean1, 
+                quality_test_results$mean2, quality_test_results$significant_w_test, quality_test_results$significant_t_test,
+                time_test_results$w_test, time_test_results$t_test, time_test_results$mean1, time_test_results$mean2,
+                time_test_results$significant_w_test, time_test_results$significant_t_test)
 }
 
 inits <- c("random", "srz")
