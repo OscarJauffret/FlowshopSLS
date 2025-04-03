@@ -25,7 +25,7 @@ for instance_file in "$INSTANCE_DIR"/*; do
                 # Repeat each combination
                 for ((i=1; i<=REPEAT; i++)); do
                     printf "\r    Run %2d..." "$i"
-                    $EXEC --$instance_name $pivot $neighborhood $init
+                    $EXEC "--ii" --$instance_name $pivot $neighborhood $init
                 done
                 echo
             done

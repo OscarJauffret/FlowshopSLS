@@ -4,9 +4,9 @@
 EXEC="../bin/pfsp"
 INSTANCE_DIR="../instances/Benchmarks"
 REPEAT=10
-
-# Parameters
 NEIGHBORHOODS=(--tei --tie)
+
+MAX_JOBS=10
 
 # Loop over all instances
 for instance_file in "$INSTANCE_DIR"/*; do
@@ -14,15 +14,23 @@ for instance_file in "$INSTANCE_DIR"/*; do
 
     echo "Running on instance: $instance_name"
 
-    # Loop over all possible neighborhoods
+    # Loop over all VND strategies
     for neighborhood in "${NEIGHBORHOODS[@]}"; do
-        echo "  [$neighborhood]"
+        echo -n "  [$neighborhood] "
 
-        # Repeat each combination
-        for ((i=1; i<=REPEAT; i++)); do
-            printf "\r    Run %2d..." "$i"
-            $EXEC --$instance_name $neighborhood
+        # Run REPEAT times in parallel
+        for ((i = 1; i <= REPEAT; i++)); do
+            $EXEC "--vnd" --"$instance_name" $neighborhood > /dev/null &
+
+            # Check the number of running jobs
+            while (( $(jobs -r | wc -l) >= MAX_JOBS )); do
+                sleep 0.2  # Wait for a bit before checking again
+            done
+
+            echo -n "."
         done
-        echo
+
+        wait
+        echo "done"
     done
 done
