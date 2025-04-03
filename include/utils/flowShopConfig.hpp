@@ -55,21 +55,51 @@ enum class VNDStrategy {
     TIE,        // Transpose -> Insert -> Exchange
 };
 
+/**
+ * @enum AlgorithmType
+ * @brief Enumeration type that defines the algorithm types available for the Flow Shop algorithm.
+ */
+enum class AlgorithmType {
+    II,         // Iterative Improvement
+    VND         // Variable Neighbourhood Descent
+};
+
 
 /**
  * @class FlowShopConfig
  * @brief The FlowShopConfig class parses and stores the command-line configuration parameters
  *       used to control the behavior of the Flow Shop algorithm.
  *       The configuration parameters are the pivoting rule, the neighbourhood structure, and the initialization method.
- * @field pivotRule The pivoting rule to use.
- * @field neighbourhood The neighbourhood structure to use.
- * @field initMethod The initialization method to use.
+ * @field algorithmType The algorithm type to use (Iterative Improvement or Variable Neighbourhood Descent).
+ * @field instancePath The path to the instance file.
+ * @field pivotRule The pivoting rule to use. (only for Iterative Improvement)
+ * @field neighbourhood The neighbourhood structure to use. (only for Iterative Improvement)
+ * @field initMethod The initialization method to use. (only for Iterative Improvement)
+ * @field vndStrategy The VND strategy to use (only for Variable Neighbourhood Descent).
  */
 class FlowShopConfig {
+    AlgorithmType algorithmType;
     string instancePath;
+
     PivotingRule pivotRule;
     NeighbourhoodStructure neighbourhood;
     InitializationMethod initMethod;
+
+    VNDStrategy vndStrategy;
+
+    /**
+     * @brief The parseArgumentsII function parses the command-line arguments for the Iterative Improvement algorithm.
+     * @param argc The number of command-line arguments.
+     * @param argv The command-line arguments.
+     */
+    void parseArgumentsII(int argc, char* argv[]);
+
+    /**
+     * @brief The parseArgumentsVND function parses the command-line arguments for the Variable Neighbourhood Descent algorithm.
+     * @param argc The number of command-line arguments.
+     * @param argv The command-line arguments.
+     */
+    void parseArgumentsVND(int argc, char* argv[]);
 
 public:
 
@@ -79,6 +109,12 @@ public:
      * @param argv The command-line arguments.
      */
     explicit FlowShopConfig(int argc, char* argv[]);
+
+    /**
+     * @brief The getAlgorithmType function returns the algorithm type to use.
+     * @return The algorithm type to use.
+     */
+    [[nodiscard]] AlgorithmType getAlgorithmType() const;
 
     /**
      * @brief The getInstancePath function returns the path to the instance file.
@@ -103,6 +139,12 @@ public:
      * @return The initialization method to use.
      */
     [[nodiscard]] InitializationMethod getInitMethod() const;
+
+    /**
+     * @brief The getVNDStrategy function returns the VND strategy to use.
+     * @return The VND strategy to use.
+     */
+    [[nodiscard]] VNDStrategy getVNDStrategy() const;
 };
 
 

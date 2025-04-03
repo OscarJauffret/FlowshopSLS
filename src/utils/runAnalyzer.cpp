@@ -56,16 +56,16 @@ string RunAnalyzer::getInstanceName(const string &fullpath) {
     return fs::path(fullpath).filename().string();
 }
 
-void RunAnalyzer::log(const string &instancePath, const uint8_t nJobs, const PivotingRule &rule,
-                      const NeighbourhoodStructure &neighbourhood, const InitializationMethod &initMethod,
-                      const double time_ms, const Solution &solution) const {
+void RunAnalyzer::logII(const string &instancePath, uint8_t nJobs, const PivotingRule &rule,
+                        const NeighbourhoodStructure &neighbourhood, const InitializationMethod &initMethod,
+                        double time_ms, const Solution &solution) const {
 
     uint64_t fitness = solution.getFitness();
     double pctDev = getPercentDeviation(instancePath, fitness);
 
-    std::ofstream file(config::resultsPath, std::ios_base::app);
+    std::ofstream file(config::resultsPathII, std::ios_base::app);
     if (!file.is_open()) {
-        throw std::runtime_error("Could not open results file: " + config::resultsPath);
+        throw std::runtime_error("Could not open results file: " + config::resultsPathII);
     }
     file << getInstanceName(instancePath) << ","
          << static_cast<int>(nJobs) << ","
@@ -76,4 +76,25 @@ void RunAnalyzer::log(const string &instancePath, const uint8_t nJobs, const Piv
          << stringify::init(initMethod) << ","
          << time_ms
          << std::endl;
+}
+
+void RunAnalyzer::logVND(const string &instancePath, uint8_t nJobs, const VNDStrategy &vndStrategy, double time_ms,
+                         const Solution &solution) const {
+
+    uint64_t fitness = solution.getFitness();
+    double pctDev = getPercentDeviation(instancePath, fitness);
+
+    std::ofstream file(config::resultsPathVND, std::ios_base::app);
+    if (!file.is_open()) {
+        throw std::runtime_error("Could not open results file: " + config::resultsPathVND);
+    }
+
+    file << getInstanceName(instancePath) << ","
+         << static_cast<int>(nJobs) << ","
+         << fitness << ","
+         << pctDev << ","
+         << stringify::vnd(vndStrategy) << ","
+         << time_ms
+         << std::endl;
+
 }

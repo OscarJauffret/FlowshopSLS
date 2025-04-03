@@ -45,7 +45,7 @@ public:
     RunAnalyzer();
 
     /**
-     * @brief Log the results of a run to the results file.
+     * @brief Log the results of an iterative improvement run to the results file.
      * @param instancePath The path to the instance file.
      * @param nJobs The number of jobs in the instance.
      * @param solution The solution found.
@@ -54,9 +54,20 @@ public:
      * @param initMethod The initialization method used.
      * @param time_ms The time taken to find the solution in milliseconds.
      */
-    void log(const string &instancePath, uint8_t nJobs, const PivotingRule &rule,
-             const NeighbourhoodStructure &neighbourhood, const InitializationMethod &initMethod,
-             double time_ms, const Solution &solution) const;
+    void logII(const string &instancePath, uint8_t nJobs, const PivotingRule &rule,
+               const NeighbourhoodStructure &neighbourhood, const InitializationMethod &initMethod,
+               double time_ms, const Solution &solution) const;
+
+    /**
+     * @brief Log the results of a variable neighbourhood descent run to the results file.
+     * @param instancePath The path to the instance file.
+     * @param nJobs The number of jobs in the instance.
+     * @param vndStrategy The VND strategy used.
+     * @param time_ms The time taken to find the solution in milliseconds.
+     * @param solution The solution found.
+     */
+    void logVND(const string &instancePath, uint8_t nJobs, const VNDStrategy &vndStrategy,
+               double time_ms, const Solution &solution) const;
 
 };
 

@@ -38,6 +38,15 @@ namespace stringify {
 
         return "unknown";
     }
+
+    inline string vnd(VNDStrategy v) {
+        switch (v) {
+            case VNDStrategy::TEI: return "tei";
+            case VNDStrategy::TIE: return "tie";
+        }
+
+        return "unknown";
+    }
 }
 
 #endif //PFSP_II_STRINGIFY_HPP
