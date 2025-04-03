@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
             double elapsed = std::chrono::duration<double, std::milli>(end - start).count();
             RunAnalyzer analyzer;
             analyzer.logVND(config.getInstancePath(), instance.jobs, config.getVNDStrategy(),
-                           config.getInitMethod(), elapsed, solution);
+                           elapsed, solution);
         }
     } catch (const std::exception &e) {
         cerr << "Error: " << e.what() << endl;
