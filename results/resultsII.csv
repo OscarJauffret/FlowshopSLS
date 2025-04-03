@@ -1,4 +1,4 @@
-instance, nJobs, fitness, pctDev, pivotRule, neighborhood, initializationMethod, time_ms
+instance, n_jobs, fitness, pct_dev, pivot_rule, neighborhood, initialization_method, time_ms
 ta051,50,149480,18.7943,first,transpose,random,4.86196
 ta051,50,143771,14.2572,first,transpose,random,3.9977
 ta051,50,144879,15.1378,first,transpose,random,4.53071

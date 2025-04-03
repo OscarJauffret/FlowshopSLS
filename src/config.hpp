@@ -19,8 +19,8 @@ namespace config {
     const string instancePath = projectRoot + "/instances/Benchmarks/";           // Path to the instances
     const string bestKnownPath = projectRoot + "/instances/bestKnownTCT.txt";     // Path to the best known solutions
 
-    const string resultsPathII = projectRoot + "/resultsII.csv";                      // Path to the results
-    const string resultsPathVND = projectRoot + "/resultsVND.csv";                    // Path to the results
+    const string resultsPathII = projectRoot + "/results/resultsII.csv";                      // Path to the results
+    const string resultsPathVND = projectRoot + "/results/resultsVND.csv";                    // Path to the results
 }
 
 #endif //FLOWSHOPSLS_CONFIG_HPP

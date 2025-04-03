@@ -54,7 +54,7 @@ void FlowShopConfig::parseArgumentsII(int argc, char* argv[]) {
     // --pivoting-rule --neighbourhood --initialization-method
     if (argc != 6) {
         cerr << "Invalid number of arguments for II!" << endl;
-        throw invalid_argument("Usage: ./pfsp --ii --instance --first|--best --transpose|--exchange|--insert --srz|--random-init");
+        throw invalid_argument("Usage: ./pfsp --ii --instance <arguments>");
     }
 
     // The third argument is the pivoting rule
