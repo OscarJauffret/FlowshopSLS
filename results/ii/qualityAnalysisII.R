@@ -149,4 +149,4 @@ for (pair in neigh_pairs) {
 }
 
 
-write.csv(comparison_results, "ii_quality_comparison.csv", row.names = FALSE)
+write.csv(comparison_results, "./ii/quality_comparison.csv", row.names = FALSE)
