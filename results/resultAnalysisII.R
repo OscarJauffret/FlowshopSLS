@@ -1,4 +1,4 @@
-setwd("A:/C Projects/FlowshopSLS")
+setwd("A:/C Projects/FlowshopSLS/results")
 library(dplyr)
 # Load the file
 results <- read.csv("resultsII.csv")
