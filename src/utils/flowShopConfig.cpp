@@ -17,7 +17,7 @@ using std::invalid_argument;
 FlowShopConfig::FlowShopConfig(int argc, char* argv[]) {
     if (argc != 6 and argc != 4) {
         cerr << "Invalid number of arguments!" << endl;
-        throw invalid_argument("Usage: ./pfsp --ii|--vnd --instance --first|--best --transpose|--exchange|--insert --srz|--random-init");
+        throw invalid_argument("Usage: ./pfsp --ii|--vnd --instance <arguments>");
     }
 
     // Parse the arguments
@@ -54,7 +54,7 @@ void FlowShopConfig::parseArgumentsII(int argc, char* argv[]) {
     // --pivoting-rule --neighbourhood --initialization-method
     if (argc != 6) {
         cerr << "Invalid number of arguments for II!" << endl;
-        throw invalid_argument("Usage: ./pfsp --ii --instance <arguments>");
+        throw invalid_argument("Usage: ./pfsp --ii --instance --first|--best --transpose|--exchange|--insert --srz|--random-init");
     }
 
     // The third argument is the pivoting rule

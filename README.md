@@ -8,39 +8,47 @@ This project is a heuristic optimization implementation for the Flowshop schedul
 ---
 # How to run
 
+## Running the project
 > [!Important]
+> The two building methods are equivalent, use whatever you prefer.
 > Please note that the rng is different depending on the compiler used. For example, the same seed may produce different results when using `cmake` or `make` (although a seed is not used in the testing phase).
 
-## If you have CMake installed
+### Using Make
+If you have `make` installed. You can run the following command in the root of the project:
+
+```shell
+make
+```
+
+#### For the iterative improvement algorithm
+```shell
+./bin/pfsp --ii --instance_name --first|--best --transpose|--exchange|--insert --srz|--random-init
+```
+
+#### For the Variable Neighborhood Descent algorithm
+```shell
+./bin/pfsp --vnd --instance_name --tei|--tie
+```
+Where --tei represents a neighborhood order of transpose -> exchange -> insert and --tie represents a neighborhood order of transpose -> insert -> exchange.
+
+---
+
+### Using CMake
 If you have `cmake` (at least version 3.26) installed, you can run the following commands in the root of the project:
 
 ```shell
 cmake -B build
 cmake --build build
-./build/Debug/pfsp-ii <pivoting_rule> <neighborhood_structure> <initialization_method>
 ```
-
-## If you don't have CMake installed
-If you don't have `cmake` installed, you should have `make` installed. You can run the following commands in the root of the project:
-
+#### For the iterative improvement algorithm
 ```shell
-make
-./bin/pfsp-ii <pivoting_rule> <neighborhood_structure> <initialization_method>
+./build/Debug/pfsp --ii --instance_name --first|--best --transpose|--exchange|--insert --srz|--random-init
 ```
 
----
-
-## Implemented algorithms
-The algorithms differ in the way they
-- Generate the initial solution
-  1. Random initial solution
-  2. Simplified RZ heuristic
-- Explore the neighborhood
-  1. Transpose
-  2. Exchange
-  3. Insert
-- Choose a candidate solution in the neighborhood
-  1. Best improvement
-  2. First improvement
+#### For the Variable Neighborhood Descent algorithm
+```shell
+./build/Debug/pfsp --vnd --instance_name --tei|--tie
+```
+Where --tei represents a neighborhood order of transpose -> exchange -> insert and --tie represents a neighborhood order of transpose -> insert -> exchange.
 
 ---
