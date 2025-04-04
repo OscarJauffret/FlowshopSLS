@@ -1,0 +1,2 @@
+"cmp1","cmp2","mean1","mean2","p_wilcoxon","p_ttest","significant_wilcoxon","significant_ttest","better","agreement"
+"tei","tie",3.343,3.42,1.62398267621411e-14,1.38690165819263e-11,TRUE,TRUE,"tei",TRUE
