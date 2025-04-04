@@ -87,9 +87,9 @@ perform_tests <- function(merged) {
   ))
 }
 
-compare_init <- function(init1, init2, pivot, neigh, n_jobs) {
-  a1 <- results %>% filter(initialization_method  == init1, pivot_rule  == pivot, neighborhood == neigh, n_jobs=n_jobs)  # Selects only the lines that respect the conditions
-  a2 <- results %>% filter(initialization_method  == init2, pivot_rule  == pivot, neighborhood == neigh, n_jobs=n_jobs)
+compare_init <- function(init1, init2, pivot, neigh, jobs) {
+  a1 <- results %>% filter(initialization_method  == init1, pivot_rule  == pivot, neighborhood == neigh, n_jobs==jobs)  # Selects only the lines that respect the conditions
+  a2 <- results %>% filter(initialization_method  == init2, pivot_rule  == pivot, neighborhood == neigh, n_jobs==jobs)
   
   merged <- merge(a1, a2, by = "instance", suffixes = c("_1", "_2"))  # Merge the two tables, and puts _1 as a suffix for the columns of a1, and _2 for a2
   
@@ -98,9 +98,9 @@ compare_init <- function(init1, init2, pivot, neigh, n_jobs) {
                 test_results$mean2, test_results$significant_w_test, test_results$significant_t_test)
 }
 
-compare_pivots <- function(pivot1, pivot2, init, neigh, n_jobs) {
-  a1 <- results %>% filter(initialization_method  == init, pivot_rule  == pivot1, neighborhood == neigh, n_jobs=n_jobs)  # Selects only the lines that respect the conditions
-  a2 <- results %>% filter(initialization_method  == init, pivot_rule  == pivot2, neighborhood == neigh, n_jobs=n_jobs)
+compare_pivots <- function(pivot1, pivot2, init, neigh, jobs) {
+  a1 <- results %>% filter(initialization_method  == init, pivot_rule  == pivot1, neighborhood == neigh, n_jobs==jobs)  # Selects only the lines that respect the conditions
+  a2 <- results %>% filter(initialization_method  == init, pivot_rule  == pivot2, neighborhood == neigh, n_jobs==jobs)
   
   merged <- merge(a1, a2, by = "instance", suffixes = c("_1", "_2"))  # Merge the two tables, and puts _1 as a suffix for the columns of a1, and _2 for a2
   
@@ -109,9 +109,9 @@ compare_pivots <- function(pivot1, pivot2, init, neigh, n_jobs) {
                 test_results$mean2, test_results$significant_w_test, test_results$significant_t_test)
 }
 
-compare_neighs <- function(neigh1, neigh2, init, pivot, n_jobs) {
-  a1 <- results %>% filter(initialization_method  == init, pivot_rule  == pivot, neighborhood == neigh1, n_jobs=n_jobs)  # Selects only the lines that respect the conditions
-  a2 <- results %>% filter(initialization_method  == init, pivot_rule  == pivot, neighborhood == neigh2, n_jobs=n_jobs)
+compare_neighs <- function(neigh1, neigh2, init, pivot, jobs) {
+  a1 <- results %>% filter(initialization_method  == init, pivot_rule  == pivot, neighborhood == neigh1, n_jobs==jobs)  # Selects only the lines that respect the conditions
+  a2 <- results %>% filter(initialization_method  == init, pivot_rule  == pivot, neighborhood == neigh2, n_jobs==jobs)
   
   merged <- merge(a1, a2, by = "instance", suffixes = c("_1", "_2"))  # Merge the two tables, and puts _1 as a suffix for the columns of a1, and _2 for a2
   
