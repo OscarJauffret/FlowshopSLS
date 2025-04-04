@@ -94,3 +94,5 @@ compare_init <- function(strategy1, strategy2) {
                 test_results$mean2, test_results$significant_w_test, test_results$significant_t_test)
 }
 
+compare_strategies("tei", "tie")
+write.csv(comparison_results, "./vnd/quality_comparison.csv", row.names = FALSE)
