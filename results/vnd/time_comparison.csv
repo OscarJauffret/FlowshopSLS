@@ -1,0 +1,4 @@
+"cmp1","cmp2","n_jobs","mean1","mean2","p_wilcoxon","p_ttest","significant_wilcoxon","significant_ttest","better","agreement"
+"tei","tie",50,103.079,88.807,1.70629538017527e-09,1.85492247096864e-20,TRUE,TRUE,"tie",TRUE
+"tei","tie",100,1239.346,1280.9,0.00431186444584981,0.0271993919396467,TRUE,TRUE,"tei",TRUE
+"tei","tie",200,18825.496,19512.161,0.00265374885077739,0.000584271173287719,TRUE,TRUE,"tei",TRUE
