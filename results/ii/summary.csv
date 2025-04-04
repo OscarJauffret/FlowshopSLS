@@ -1,0 +1,7 @@
+"initialization_method","n_jobs","avg_pct_dev","total_time_ms"
+"random",50,9.027,68042.2
+"random",100,9.511,1228812.8
+"random",200,9.951,24790052.1
+"srz",50,4.341,25786.7
+"srz",100,5.023,449621.1
+"srz",200,4.441,7166216.2
