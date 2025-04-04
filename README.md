@@ -24,7 +24,6 @@ The subdirectories are:
 - `initialization`: Contains the class responsible for the initialization of the solution.
 - `neighbourhoods`: Contains the iterator classes for the neighbourhoods.
 - `utils`: Contains the utility classes of the project.
-- 
 ---
 # How to run
 
