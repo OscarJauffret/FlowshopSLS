@@ -10,7 +10,7 @@ This project is a heuristic optimization implementation for the Flowshop schedul
 ## Repository structure
 
 - `src`: Contains the source code of the project.
-- `include`: Contains the header files of the project.
+- `include`: Contains the header files of the project and the documentation for the classes is there.
 - `doc`: Contains the instructions for the project and the report.
 - `results`: Contains the results of the tests.
 - `instances`: Contains the instances and the best known solutions for the instances.

@@ -17,6 +17,9 @@ using std::endl;
 using std::cerr;
 using Clock = std::chrono::high_resolution_clock;
 
+/**
+ * @brief Main function of the program. It runs the Flow Shop Scheduling Problem algorithm.
+ */
 int main(int argc, char* argv[]) {
     try {
         std::random_device rd;
