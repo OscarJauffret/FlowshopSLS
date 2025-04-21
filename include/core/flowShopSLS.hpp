@@ -7,13 +7,8 @@
 
 #include "solution.hpp"
 #include "../initialization/initialization.hpp"
-#include "../neighbourhoods/neighbourhoodIterator.hpp"
-#include "../neighbourhoods/transposeIterator.hpp"
-#include "../neighbourhoods/exchangeIterator.hpp"
-#include "../neighbourhoods/insertIterator.hpp"
 #include "../utils/flowShopConfig.hpp"
 
-#include <iostream>
 
 
 /**
