@@ -36,7 +36,7 @@ FlowShopConfig::FlowShopConfig(int argc, char* argv[]) {
     if (instancePath.rfind("--", 0) == 0) {
         instancePath = instancePath.substr(2);
     }
-    fs::path path = fs::path(config::instancePath) / instancePath;
+    fs::path path = fs::path(config::paths::instancePath) / instancePath;
     if (!fs::exists(path)) {
         throw invalid_argument("Instance file not found: " + path.string());
     }

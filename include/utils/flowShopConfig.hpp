@@ -61,7 +61,8 @@ enum class VNDStrategy {
  */
 enum class AlgorithmType {
     II,         // Iterative Improvement
-    VND         // Variable Neighbourhood Descent
+    VND,        // Variable Neighbourhood Descent
+    MEMETIC     // Memetic Algorithm
 };
 
 
@@ -75,7 +76,8 @@ enum class AlgorithmType {
  * @field pivotRule The pivoting rule to use. (only for Iterative Improvement)
  * @field neighbourhood The neighbourhood structure to use. (only for Iterative Improvement)
  * @field initMethod The initialization method to use. (only for Iterative Improvement)
- * @field vndStrategy The VND strategy to use (only for Variable Neighbourhood Descent).
+ * @field vndStrategy The VND strategy to use (only for Variable Neighbourhood Descent)
+ * @field populationSize The size of the population to use (only for Memetic algorithm)
  */
 class FlowShopConfig {
     AlgorithmType algorithmType;
@@ -86,6 +88,8 @@ class FlowShopConfig {
     InitializationMethod initMethod;
 
     VNDStrategy vndStrategy;
+
+    int populationSize;
 
     /**
      * @brief The parseArgumentsII function parses the command-line arguments for the Iterative Improvement algorithm.

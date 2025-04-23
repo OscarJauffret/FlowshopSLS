@@ -6,11 +6,9 @@
 #include <random>
 #include <chrono>
 
-#include "config.hpp"
 #include "../include/core/instance.hpp"
-#include "../include/core/flowShopII.hpp"
-#include "../include/core/flowShopVnd.hpp"
-#include "../include/utils/runAnalyzer.hpp"
+#include "../include/utils/runLogger.hpp"
+#include "../include/utils/factories.hpp"
 
 using std::cout;
 using std::endl;
@@ -26,27 +24,27 @@ int main(int argc, char* argv[]) {
         std::mt19937 rng(rd());
 
         FlowShopConfig config(argc, argv);
-        auto start = Clock::now();
         Instance instance(config.getInstancePath());
 
-        if (config.getAlgorithmType() == AlgorithmType::II) {
-            FlowShopII flowShopII(instance, config.getNeighbourhood(), config.getPivotRule(), config.getInitMethod(), rng);
-            Solution solution = flowShopII.run();
-            auto end = Clock::now();
-            double elapsed = std::chrono::duration<double, std::milli>(end - start).count();
+        auto start = Clock::now();
+        auto solver = createSolver(config, instance, rng);
+        Solution solution = solver->run();
+        auto end = Clock::now();
 
-            RunAnalyzer analyzer;
-            analyzer.logII(config.getInstancePath(), instance.jobs, config.getPivotRule(),
-                           config.getNeighbourhood(), config.getInitMethod(), elapsed, solution);
+        double elapsed = std::chrono::duration<double, std::milli>(end - start).count();
+
+        // For me, to control the logging of the results
+        bool log = false;
+        if (log) {
+            auto analyzer = createRunLogger(config);
+            analyzer->log(config, instance.jobs, elapsed, solution);
         } else {
-            FlowShopVND flowShopVND(instance, config.getVNDStrategy(), rng);
-            Solution solution = flowShopVND.run();
-            auto end = Clock::now();
-            double elapsed = std::chrono::duration<double, std::milli>(end - start).count();
-            RunAnalyzer analyzer;
-            analyzer.logVND(config.getInstancePath(), instance.jobs, config.getVNDStrategy(),
-                           elapsed, solution);
+            cout << "Instance: " << config.getInstancePath() << endl;
+            cout << "Number of jobs: " << (int) instance.jobs << endl;
+            cout << solution << endl;
+            cout << "Time: " << elapsed << " ms" << endl;
         }
+
     } catch (const std::exception &e) {
         cerr << "Error: " << e.what() << endl;
         return 1;

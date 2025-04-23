@@ -33,4 +33,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 clean:
 	rm -rf $(OBJ_DIR) bin
 
+re: clean all
+
 .PHONY: all clean
