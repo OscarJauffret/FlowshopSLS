@@ -10,7 +10,15 @@
 
 class FlowShopSolver {
 public:
+    /**
+     * @brief The run function runs the algorithm.
+     * @return The best solution found by the algorithm.
+     */
     virtual Solution run() = 0;
+
+    /**
+     * @brief Default destructor for the FlowShopSolver class. It is used for inheritance
+     */
     virtual ~FlowShopSolver() = default;
 };
 
