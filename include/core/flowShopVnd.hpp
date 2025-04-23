@@ -32,7 +32,6 @@ using std::unique_ptr;
  * </ul>
  */
 class FlowShopVND : public FlowShopSLS {
-private:
     vector<unique_ptr<NeighbourhoodIterator>> neighbourhoodIterators; // The neighbourhood iterators to use
 
     /**

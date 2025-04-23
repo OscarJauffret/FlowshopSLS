@@ -24,7 +24,6 @@ using std::unique_ptr;
  * </ul>
  */
 class FlowShopII : public FlowShopSLS {
-private:
     unique_ptr<NeighbourhoodIterator> neighbourhoodIterator; // The neighbourhood iterator to use
 
     /**

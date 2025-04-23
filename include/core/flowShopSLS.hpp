@@ -8,6 +8,11 @@
 #include "solution.hpp"
 #include "../initialization/initialization.hpp"
 #include "../utils/flowShopConfig.hpp"
+#include "../neighbourhoods/exchangeIterator.hpp"
+#include "../neighbourhoods/insertIterator.hpp"
+#include "../neighbourhoods/neighbourhoodIterator.hpp"
+#include "../neighbourhoods/transposeIterator.hpp"
+#include "flowShopSolver.hpp"
 
 
 
@@ -20,7 +25,7 @@
  * @field pivotingRule The pivoting rule to use.
  * @see flowShopII.hpp, flowShopVnd.hpp in the include/core directory
  */
-class FlowShopSLS {
+class FlowShopSLS: public FlowShopSolver {
 protected:
 
     Solution candidate;                                         // The current candidate solution
@@ -47,15 +52,10 @@ protected:
 public:
 
     /**
-     * @brief Destructor of the FlowShopSLS class, virtual to allow inheritance.
-     */
-    virtual ~FlowShopSLS() = default;
-
-    /**
      * @brief The run function runs the SLS algorithm until no improvement is found.
      * @return The best solution found by the algorithm.
      */
-    Solution run() {
+    Solution run() override {
         Solution prev(candidate);
         do {
             prev = candidate;
