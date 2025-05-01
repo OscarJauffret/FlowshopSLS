@@ -19,6 +19,10 @@ class FlowShopMemetic: public FlowShopSolver {
     int populationSize; // Size of the population
     double maxExecutionTime; // Maximum execution time for the algorithm, based on VND benchmark
     std::function<Solution(const Solution &)> localSearch; // Local search function to be used
+    std::mt19937 rng; // Random number generator
+
+    int numParentPieces; // Number of pieces into which the user wants to cut parent chromosomes P1 and P2 for recombination
+    vector<vector<int>> orthogonalArray; // Orthogonal array to be used in the crossover operator
 
 
     /**
@@ -46,6 +50,11 @@ class FlowShopMemetic: public FlowShopSolver {
      * @brief The applyLocalSearch function applies the local search algorithm to the population.
      */
     void applyLocalSearch();
+
+    /**
+     * @brief The generateOrthogonalArray function generates an orthogonal array of size numCuts.
+     */
+    void generateOrthogonalArray();
 
     /**
      * @brief The initializeLocalSearchFunction function initializes the local search function based on
