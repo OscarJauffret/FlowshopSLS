@@ -72,6 +72,10 @@ const vector<uint8_t> &Solution::getPermutation() const {
     return permutation;
 }
 
+void Solution::setPermutation(const vector<uint8_t>& permutation) {
+    this->permutation = permutation;
+}
+
 ostream &operator<<(ostream &os, const Solution &solution) {
     os << "Solution: " << solution.sumOfCompletionTimes << endl;
     os << "Permutation: ";

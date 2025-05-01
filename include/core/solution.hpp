@@ -75,13 +75,20 @@ class Solution {
          * @brief The getNumberOfJobs function returns the number of jobs in the instance.
          * @return The number of jobs in the instance.
          */
-         [[nodiscard]] uint8_t getNumberOfJobs() const;
+        [[nodiscard]] uint8_t getNumberOfJobs() const;
 
          /**
           * @brief The getPermutation function returns the permutation of the jobs.
           * @return The permutation of the jobs.
           */
-         [[nodiscard]] const vector<uint8_t>& getPermutation() const;
+        [[nodiscard]] const vector<uint8_t>& getPermutation() const;
+
+        /**
+         * @brief The setPermutation function sets the permutation of the jobs.
+         * @param permutation The new permutation of the jobs.
+         */
+        void setPermutation(const vector<uint8_t>& permutation);
+
 
         /**
          * @brief The << operator is overloaded to print the solution. It prints the sum of the completion times and the permutation of the jobs. This is useful for debugging.
@@ -104,7 +111,6 @@ class Solution {
          * @return True if the current solution is less than the other solution, false otherwise.
          */
         bool operator<(const Solution& other) const;
-
 };
 
 
