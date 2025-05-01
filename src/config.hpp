@@ -22,6 +22,8 @@ namespace config {
         const string resultsPathII = projectRoot + "/results/resultsII.csv";                      // Path to the results
         const string resultsPathVND = projectRoot + "/results/resultsVND.csv";                    // Path to the results
         const string resultsPathMemetic = projectRoot + "/results/resultsMemetic.csv";            // Path to the results
+
+        const string vndTimesPath = projectRoot + "/results/vnd/time_comparison.csv";             // Path to the VND times
     }
 
 }

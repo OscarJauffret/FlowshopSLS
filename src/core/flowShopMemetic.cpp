@@ -4,13 +4,19 @@
 
 #include "../../include/core/flowShopMemetic.hpp"
 #include "../../include/initialization/initialization.hpp"
+#include "../../include/utils/memeticTimeLimitProvider.hpp"
 #include <iostream>
 
 using std::endl;
 using std::cout;
 
 FlowShopMemetic::FlowShopMemetic(const Instance &instance, int populationSize, std::mt19937 rng)
-    : populationSize(populationSize), maxExecutionTime(0.0) {
+    : populationSize(populationSize) {
+    maxExecutionTime = MemeticTimeLimitProvider::getMemeticAllowedTime(instance.jobs);
+
+    cout << "Loaded an instance with " << (int) instance.jobs << " jobs" << endl;
+    cout << "Max execution time: " << (double) maxExecutionTime << " milliseconds" << endl;
+
     // Initialize the population with random solutions
     for (int i = 0; i < populationSize; ++i) {
         // Generate a random permutation of jobs
