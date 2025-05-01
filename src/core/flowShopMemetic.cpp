@@ -13,8 +13,11 @@
 
 #include "../config.hpp"
 
+namespace chrono = std::chrono;
+
 using std::endl;
 using std::cout;
+using chrono::steady_clock;
 
 FlowShopMemetic::FlowShopMemetic(const Instance& instance, int populationSize, LocalSearchMethod localSearchMethod,
                                  std::mt19937 rng)
@@ -22,7 +25,7 @@ FlowShopMemetic::FlowShopMemetic(const Instance& instance, int populationSize, L
     maxExecutionTime = MemeticTimeLimitProvider::getMemeticAllowedTime(instance.jobs);
 
     // Initialize the population with random solutions
-    for (int i = 0; i < populationSize; ++i) {
+    for (int i = 0; i < populationSize; i++) {
         // Generate a random permutation of jobs
         Solution solution = initialization::random(instance, rng);
         population.push_back(solution);
@@ -94,13 +97,13 @@ Solution FlowShopMemetic::mutate(const Solution &solution) {
     return solution; // Placeholder for mutation logic
 }
 
-std::vector<uint8_t> FlowShopMemetic::repair(const std::vector<uint8_t>& candidate, const Solution& reference) {
+vector<uint8_t> FlowShopMemetic::repair(const vector<uint8_t>& candidate, const Solution& reference) {
     std::set<uint8_t> seen;
-    std::vector<uint8_t> repaired = candidate;
-    std::vector<int> duplicatePositions;
+    vector<uint8_t> repaired = candidate;
+    vector<int> duplicatePositions;
 
     // Step 1: find duplicates
-    for (int i = 0; i < repaired.size(); ++i) {
+    for (int i = 0; i < repaired.size(); i++) {
         if (seen.count(repaired[i])) {      // .count() returns 1 if the element is already present, 0 otherwise
             duplicatePositions.push_back(i);
         } else {
@@ -109,7 +112,7 @@ std::vector<uint8_t> FlowShopMemetic::repair(const std::vector<uint8_t>& candida
     }
 
     // Step 2: find missing jobs
-    std::vector<uint8_t> missing;
+    vector<uint8_t> missing;
     for (uint8_t job : reference.getPermutation()) {
         if (!seen.count(job)) {
             missing.push_back(job);
@@ -117,7 +120,7 @@ std::vector<uint8_t> FlowShopMemetic::repair(const std::vector<uint8_t>& candida
     }
 
     // Step 3: replace duplicates with missing jobs
-    for (int i = 0; i < duplicatePositions.size(); ++i) {
+    for (int i = 0; i < duplicatePositions.size(); i++) {
         repaired[duplicatePositions[i]] = missing[i];
     }
 
@@ -148,7 +151,7 @@ Solution FlowShopMemetic::crossover(const Solution &parent1, const Solution &par
     // Repair if necessary
     // Split parents into segments
     std::vector<std::vector<uint8_t>> segmentsP1, segmentsP2;
-    for (int i = 0; i < numParentPieces; ++i) {
+    for (int i = 0; i < numParentPieces; i++) {
         int start = cutPoints[i];
         int end = cutPoints[i + 1];
         segmentsP1.emplace_back(parent1.getPermutation().begin() + start, parent1.getPermutation().begin() + end);
@@ -213,17 +216,19 @@ const Solution FlowShopMemetic::selectParent() {
 }
 
 Solution FlowShopMemetic::run() {
-    auto start = std::chrono::steady_clock::now();
+    auto start = steady_clock::now();
     applyLocalSearch();
     std::sort(population.begin(), population.end());
-    while (std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::steady_clock::now() - start).count() < maxExecutionTime) {
-        // Select parents for crossover
-        Solution parent1 = selectParent();
-        Solution parent2 = selectParent();
-        // Perform crossover
-        Solution child = crossover(parent1, parent2);
-        return child;
+    while (chrono::duration_cast<chrono::milliseconds>(steady_clock::now() - start).count() < maxExecutionTime) {
+        vector<Solution> newPopulation;
+        for (int i = 0; i < populationSize; i++) {
+            // Select parents for crossover
+            Solution parent1 = selectParent();
+            Solution parent2 = selectParent();
+            // Perform crossover
+            Solution child = crossover(parent1, parent2);
+            newPopulation.push_back(child);
+        }
     }
 
     return population[0]; // Return the best solution found
