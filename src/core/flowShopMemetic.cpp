@@ -67,7 +67,7 @@ void FlowShopMemetic::generateOrthogonalArray() {
     // For every pair of columns, each combination of 2-bit strings should occur the same number of times
     // The selected combinations are uniformly distributed over the whole space of all the possible combinations
     vector<int> firstColumn = config::memetic::getFirstColumnOfOrthogonalArray(numParentPieces + 1);
-    orthogonalArray.resize(numParentPieces + 1, vector<int>(numParentPieces));
+    orthogonalArray.resize(numParentPieces + 1, vector<int>(numParentPieces));  // numParentPieces + 1 rows and numParentPieces columns
     for (int i = 0; i < numParentPieces; i++) {
         orthogonalArray[i][0] = firstColumn[i];
     }
@@ -94,22 +94,115 @@ Solution FlowShopMemetic::mutate(const Solution &solution) {
     return solution; // Placeholder for mutation logic
 }
 
-Solution FlowShopMemetic::crossover(const Solution &parent1, const Solution &parent2) {
-    // Randomly choose numParentPieces–1 unique cut points to cut P1 and P2 into numParentPieces subsequences.
-    int jobs = parent1.getNumberOfJobs();
+std::vector<uint8_t> FlowShopMemetic::repair(const std::vector<uint8_t>& candidate, const Solution& reference) {
+    std::set<uint8_t> seen;
+    std::vector<uint8_t> repaired = candidate;
+    std::vector<int> duplicatePositions;
+
+    // Step 1: find duplicates
+    for (int i = 0; i < repaired.size(); ++i) {
+        if (seen.count(repaired[i])) {      // .count() returns 1 if the element is already present, 0 otherwise
+            duplicatePositions.push_back(i);
+        } else {
+            seen.insert(repaired[i]);
+        }
+    }
+
+    // Step 2: find missing jobs
+    std::vector<uint8_t> missing;
+    for (uint8_t job : reference.getPermutation()) {
+        if (!seen.count(job)) {
+            missing.push_back(job);
+        }
+    }
+
+    // Step 3: replace duplicates with missing jobs
+    for (int i = 0; i < duplicatePositions.size(); ++i) {
+        repaired[duplicatePositions[i]] = missing[i];
+    }
+
+    return repaired;
+}
+
+vector<int> FlowShopMemetic::generateCutPoints(int nJobs) {
     std::set<int> cutSet;
-    std::uniform_int_distribution<> dist(1, jobs - 1); // avoid 0 and jobs to keep valid segments
+    std::uniform_int_distribution<> dist(1, nJobs - 1); // avoid 0 and jobs to keep valid segments
     while (static_cast<int>(cutSet.size()) < numParentPieces - 1) {
         cutSet.insert(dist(rng));
     }
     std::vector<int> cutPoints = {0};
     cutPoints.insert(cutPoints.end(), cutSet.begin(), cutSet.end());
-    cutPoints.push_back(jobs);
+    cutPoints.push_back(nJobs);
     std::sort(cutPoints.begin(), cutPoints.end());
 
+    return cutPoints;
+}
 
 
-    return parent1; // Placeholder for crossover logic
+Solution FlowShopMemetic::crossover(const Solution &parent1, const Solution &parent2) {
+    // Randomly choose numParentPieces–1 unique cut points to cut P1 and P2 into numParentPieces subsequences.
+    vector<int> cutPoints = generateCutPoints(parent1.getNumberOfJobs());
+
+    // Generate sampled childs for each line of the OA. The subsequence is taken from P1 or P2 depending on the value of the OA.
+    // (0 = P1, 1 = P2)
+    // Repair if necessary
+    // Split parents into segments
+    std::vector<std::vector<uint8_t>> segmentsP1, segmentsP2;
+    for (int i = 0; i < numParentPieces; ++i) {
+        int start = cutPoints[i];
+        int end = cutPoints[i + 1];
+        segmentsP1.emplace_back(parent1.getPermutation().begin() + start, parent1.getPermutation().begin() + end);
+        segmentsP2.emplace_back(parent2.getPermutation().begin() + start, parent2.getPermutation().begin() + end);
+    }
+
+    // Generate candidate children from the orthogonal array
+    std::vector<Solution> candidates;
+    for (const auto& row : orthogonalArray) {
+        std::vector<uint8_t> candidatePermutation;
+
+        for (int j = 0; j < numParentPieces; ++j) {
+            const auto& segment = (row[j] == 0) ? segmentsP1[j] : segmentsP2[j];
+            candidatePermutation.insert(candidatePermutation.end(), segment.begin(), segment.end());
+        }
+
+        Solution candidate = parent1; // Create a new solution based on parent1
+        candidatePermutation = repair(candidatePermutation, parent1); // Repair the candidate
+        candidate.setPermutation(candidatePermutation);
+        candidate.evaluate(0);
+        candidates.emplace_back(candidate);
+    }
+
+    // Calculate the main effect  Fjk of factor j with level k, for j = [1, 2, .., N] and k = {0, 1}
+    vector mainEffect(numParentPieces, vector<double>(2, 0));
+    for (int i = 0; i < numParentPieces; i++) {
+        const auto& row = orthogonalArray[i];
+        double evaluation = 1.0 / static_cast<double>(candidates[i].getFitness());
+        for (int j = 0; j < numParentPieces; j++) {
+            int k = row[j];
+            mainEffect[j][k] += evaluation;
+        }
+    }
+
+    // Find the best level for each factor
+    vector<int> bestLevel(numParentPieces);
+    for (int j = 0; j < numParentPieces; ++j) {
+        bestLevel[j] = (mainEffect[j][0] > mainEffect[j][1]) ? 0 : 1;
+    }
+
+    // Generate new child based on the best levels (Taguchi's method)
+    vector<uint8_t> taguchiPermutation;
+    for (int j = 0; j < numParentPieces; ++j) {
+        const auto& segment = (bestLevel[j] == 0) ? segmentsP1[j] : segmentsP2[j];
+        taguchiPermutation.insert(taguchiPermutation.end(), segment.begin(), segment.end());
+    }
+
+    Solution taguchiChild = parent1;
+    taguchiPermutation = repair(taguchiPermutation, parent1);
+    taguchiChild.setPermutation(taguchiPermutation);
+    taguchiChild.evaluate(0);
+    candidates.push_back(taguchiChild);
+
+    return *std::min_element(candidates.begin(), candidates.end());
 }
 
 const Solution FlowShopMemetic::selectParent() {
@@ -130,7 +223,7 @@ Solution FlowShopMemetic::run() {
         Solution parent2 = selectParent();
         // Perform crossover
         Solution child = crossover(parent1, parent2);
-        return population[0];
+        return child;
     }
 
     return population[0]; // Return the best solution found

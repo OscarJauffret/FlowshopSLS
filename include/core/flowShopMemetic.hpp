@@ -41,6 +41,21 @@ class FlowShopMemetic: public FlowShopSolver {
     Solution crossover(const Solution &parent1, const Solution &parent2);
 
     /**
+     * @brief The generateCutPoints function generates cut points for the crossover operator.
+     * @param nJobs The parent solution to generate cut points from.
+     * @return A vector of cut points.
+     */
+    vector<int> generateCutPoints(int nJobs);
+
+    /**
+     * @brief The repair function repairs a candidate solution by replacing duplicate jobs with missing jobs from the reference solution.
+     * @param candidate The candidate solution to repair.
+     * @param reference The reference solution to use for repairing the candidate. (for missing jobs)
+     * @return The repaired solution.
+     */
+    static std::vector<uint8_t> repair(const std::vector<uint8_t>& candidate, const Solution& reference);
+
+    /**
     * @brief The selectParent function selects a parent solution from the population using a selection method.
     * @return The selected parent solution.
     */
