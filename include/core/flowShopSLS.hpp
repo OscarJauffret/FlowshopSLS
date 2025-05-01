@@ -14,7 +14,10 @@
 #include "../neighbourhoods/transposeIterator.hpp"
 #include "flowShopSolver.hpp"
 
+#include <iostream>
 
+using std::endl;
+using std::cout;
 
 /**
  * @file flowShopSLS.hpp
@@ -63,6 +66,16 @@ public:
         } while (candidate.getFitness() < prev.getFitness());
 
         return candidate;
+    }
+
+    /**
+     * @brief The run function runs the SLS algorithm with a given initial solution until no improvement is found.
+     * @param initialSolution The initial solution to start the algorithm with.
+     * @return The best solution found by the algorithm.
+     */
+    Solution run(const Solution& initialSolution) {
+        candidate = initialSolution;
+        return run();
     }
 };
 

@@ -7,7 +7,6 @@
 FlowShopVND::FlowShopVND(const Instance &instance, VNDStrategy neighbourhoodOrder, std::mt19937 rng)
                         : FlowShopSLS(instance, PivotingRule::FIRST_IMPROVEMENT,
                                       InitializationMethod::SIMPLIFIED_RZ, rng) {
-
     switch(neighbourhoodOrder) {
         case VNDStrategy::TEI:
             neighbourhoodIterators.push_back(std::make_unique<TransposeIterator>(candidate));
