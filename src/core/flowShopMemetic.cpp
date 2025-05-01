@@ -19,9 +19,10 @@ using std::endl;
 using std::cout;
 using chrono::steady_clock;
 
-FlowShopMemetic::FlowShopMemetic(const Instance& instance, int populationSize, LocalSearchMethod localSearchMethod,
+FlowShopMemetic::FlowShopMemetic(const Instance& instance, int populationSize, float mutationRate, LocalSearchMethod localSearchMethod,
                                  std::mt19937 rng)
-    : populationSize(populationSize), numParentPieces(config::memetic::getNumCuts(instance.jobs)), rng(rng) {
+    : populationSize(populationSize), mutationRate(mutationRate), rng(rng),
+      numParentPieces(config::memetic::getNumCuts(instance.jobs)) {
     maxExecutionTime = MemeticTimeLimitProvider::getMemeticAllowedTime(instance.jobs);
 
     // Initialize the population with random solutions
@@ -94,6 +95,7 @@ void FlowShopMemetic::generateOrthogonalArray() {
 
 
 Solution FlowShopMemetic::mutate(const Solution &solution) {
+
     return solution; // Placeholder for mutation logic
 }
 
@@ -245,8 +247,8 @@ Solution FlowShopMemetic::run() {
     std::sort(population.begin(), population.end());
     Solution best = population[0];
     while (chrono::duration_cast<chrono::milliseconds>(steady_clock::now() - start).count() < maxExecutionTime) {
+        // Crossover
         vector<Solution> newPopulation = constructNewPopulation();
-
         std::sort(newPopulation.begin(), newPopulation.end());
         if (newPopulation[0] < best) {
             best = newPopulation[0];
@@ -255,6 +257,15 @@ Solution FlowShopMemetic::run() {
             stuck++;
         }
 
+        // Mutation: apply to Ps * Pm individuals
+        int numMutations = static_cast<int>(std::round(mutationRate * populationSize));
+        std::uniform_int_distribution dist(0, populationSize - 1);
+        for (int i = 0; i < numMutations; i++) {
+            int idx = dist(rng);
+            Solution mutated = mutate(newPopulation[idx]);
+            mutated.evaluate(0);
+            newPopulation[idx] = mutated;
+        }
 
     }
 

@@ -17,6 +17,7 @@ using std::vector;
 class FlowShopMemetic: public FlowShopSolver {
     vector<Solution> population; // Population of solutions
     int populationSize; // Size of the population
+    float mutationRate; // Mutation rate
     int stuck = 0; // Number of iterations without improvement
 
     double maxExecutionTime; // Maximum execution time for the algorithm, based on VND benchmark
@@ -93,10 +94,11 @@ public:
     * @brief The constructor of the FlowShopMemetic class. It initializes the population with random solutions.
     * @param instance The instance of the problem.
     * @param populationSize The size of the population.
-    * @param localSearch The local search method to be used.
+    * @param mutationRate The mutation rate to use.
+    * @param localSearch The local search method to use.
     * @param rng The random number generator.
     */
-    FlowShopMemetic(const Instance &instance, int populationSize, LocalSearchMethod localSearch, std::mt19937 rng);
+    FlowShopMemetic(const Instance &instance, int populationSize, float mutationRate, LocalSearchMethod localSearch, std::mt19937 rng);
 
     /**
     * @brief The run function runs the memetic algorithm until convergence or a maximum number of iterations is reached.

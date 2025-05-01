@@ -39,13 +39,15 @@ inline std::unique_ptr<FlowShopSolver> createSolver(const FlowShopConfig& config
     switch (config.getAlgorithmType()) {
         case AlgorithmType::II: {
             auto& iiConfig = dynamic_cast<const FlowShopConfigII&>(config);
-            return std::make_unique<FlowShopII>(instance, iiConfig.getNeighbourhood(), iiConfig.getPivotRule(), iiConfig.getInitMethod(), rng);
+            return std::make_unique<FlowShopII>(instance, iiConfig.getNeighbourhood(), iiConfig.getPivotRule(),
+                iiConfig.getInitMethod(), rng);
         } case AlgorithmType::VND: {
             auto& vndConfig = dynamic_cast<const FlowShopConfigVND&>(config);
             return std::make_unique<FlowShopVND>(instance, vndConfig.getVNDStrategy(), rng);
         } case AlgorithmType::MEMETIC: {
             auto& memeticConfig = dynamic_cast<const FlowShopConfigMemetic&>(config);
-            return std::make_unique<FlowShopMemetic>(instance, memeticConfig.getPopulationSize(), memeticConfig.getLocalSearchMethod(), rng);
+            return std::make_unique<FlowShopMemetic>(instance, memeticConfig.getPopulationSize(),
+                memeticConfig.getMutationRate(), memeticConfig.getLocalSearchMethod(), rng);
         } default: {
             throw std::invalid_argument("Unsupported algorithm type");
         }

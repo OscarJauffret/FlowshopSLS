@@ -15,6 +15,7 @@ enum class LocalSearchMethod {
 
 class FlowShopConfigMemetic: public FlowShopConfig {
     int populationSize;
+    float mutationRate;
     LocalSearchMethod localSearchMethod;
 
 public:
@@ -27,13 +28,19 @@ public:
     FlowShopConfigMemetic(int argc, char* argv[]);
 
     /**
-     * The getPopulationSize function returns the population size for the FlowShopConfigMemetic class.
+     * @brief The getPopulationSize function returns the population size for the FlowShopConfigMemetic class.
      * @return The population size.
      */
     [[nodiscard]] int getPopulationSize() const;
 
     /**
-     * The getLocalSearchMethod function returns the local search method for the FlowShopConfigMemetic class.
+     * @brief The getMutationRate function returns the mutation rate for the FlowShopConfigMemetic class.
+     * @return The mutation rate.
+     */
+    [[nodiscard]] float getMutationRate() const;
+
+    /**
+     * @brief The getLocalSearchMethod function returns the local search method for the FlowShopConfigMemetic class.
      * @return The local search method.
      */
     [[nodiscard]] LocalSearchMethod getLocalSearchMethod() const;

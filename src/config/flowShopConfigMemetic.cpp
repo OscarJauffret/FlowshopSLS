@@ -13,9 +13,9 @@ using std::invalid_argument;
 FlowShopConfigMemetic::FlowShopConfigMemetic(int argc, char* argv[]): FlowShopConfig(argc, argv) {
     // If the algorithm type is MEMETIC, the following arguments are expected:
     // <population size> --local-search
-    if (argc != 5) {
+    if (argc != 6) {
         cerr << "Invalid number of arguments for MEMETIC!" << endl;
-        throw invalid_argument("Usage: ./pfsp --memetic --instance <population-size> --none|--ii|--vnd");
+        throw invalid_argument("Usage: ./pfsp --memetic --instance <population-size> <mutation-rate> --none|--ii|--vnd");
     }
 
     // The third argument is the population size
@@ -24,8 +24,14 @@ FlowShopConfigMemetic::FlowShopConfigMemetic(int argc, char* argv[]): FlowShopCo
         throw invalid_argument("Invalid population size! Use a positive integer.");
     }
 
-    // The fourth argument is the local search method
-    string localSearchArg = argv[4];
+    // The fourth argument is the mutation rate
+    mutationRate = std::stof(argv[4]);
+    if (mutationRate < 0.0f || mutationRate > 1.0f) {
+        throw invalid_argument("Invalid mutation rate! Use a float between 0 and 1.");
+    }
+
+    // The fifth argument is the local search method
+    string localSearchArg = argv[5];
     if (localSearchArg == "--ii") {
         localSearchMethod = LocalSearchMethod::II;
     } else if (localSearchArg == "--vnd") {
@@ -40,6 +46,10 @@ FlowShopConfigMemetic::FlowShopConfigMemetic(int argc, char* argv[]): FlowShopCo
 
 int FlowShopConfigMemetic::getPopulationSize() const {
     return populationSize;
+}
+
+float FlowShopConfigMemetic::getMutationRate() const {
+    return mutationRate;
 }
 
 LocalSearchMethod FlowShopConfigMemetic::getLocalSearchMethod() const {
