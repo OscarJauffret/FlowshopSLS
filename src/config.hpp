@@ -49,6 +49,8 @@ namespace config {
             default: return {0}; // Default value for other sizes (should never happen)
             }
         }
+
+        constexpr int thresholdLocalSearch = 10;    // Threshold for the number of iterations without improvement before starting the local search
     }
 }
 

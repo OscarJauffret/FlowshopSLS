@@ -219,15 +219,28 @@ Solution FlowShopMemetic::run() {
     auto start = steady_clock::now();
     applyLocalSearch();
     std::sort(population.begin(), population.end());
+    int stuck = 0;
     while (chrono::duration_cast<chrono::milliseconds>(steady_clock::now() - start).count() < maxExecutionTime) {
         vector<Solution> newPopulation;
-        for (int i = 0; i < populationSize; i++) {
+        while (newPopulation.size() < populationSize) {
             // Select parents for crossover
             Solution parent1 = selectParent();
             Solution parent2 = selectParent();
             // Perform crossover
             Solution child = crossover(parent1, parent2);
-            newPopulation.push_back(child);
+            if (child < parent1 || child < parent2) {
+                if (stuck > config::memetic::thresholdLocalSearch) {
+                    child = localSearch(child);
+                }
+                stuck = 0;
+            } else {
+                stuck++;
+            }
+            vector trio = {parent1, parent2, child};
+            std::sort(trio.begin(), trio.end());
+            // P1 and P2 are replaced by the best two of P1, P2, and child
+            newPopulation.push_back(trio[0]);
+            newPopulation.push_back(trio[1]);
         }
     }
 
