@@ -92,3 +92,7 @@ Solution &Solution::operator=(const Solution &other) {
     }
     return *this;
 }
+
+bool Solution::operator<(const Solution& other) const {
+    return this->sumOfCompletionTimes < other.sumOfCompletionTimes;
+}

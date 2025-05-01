@@ -98,6 +98,13 @@ class Solution {
          */
         Solution& operator=(const Solution& other);
 
+        /**
+         * @brief The less than operator is overloaded to compare two solutions. It compares the sum of the completion times of the solutions.
+         * @param other The solution to compare with.
+         * @return True if the current solution is less than the other solution, false otherwise.
+         */
+        bool operator<(const Solution& other) const;
+
 };
 
 
