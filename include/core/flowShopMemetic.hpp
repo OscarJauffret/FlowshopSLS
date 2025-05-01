@@ -15,8 +15,11 @@
 using std::vector;
 
 class FlowShopMemetic: public FlowShopSolver {
+    Solution best; // Best solution found
     vector<Solution> population; // Population of solutions
     int populationSize; // Size of the population
+    int stuck = 0; // Number of iterations without improvement
+
     double maxExecutionTime; // Maximum execution time for the algorithm, based on VND benchmark
     std::function<Solution(const Solution &)> localSearch; // Local search function to be used
     std::mt19937 rng; // Random number generator
@@ -60,6 +63,12 @@ class FlowShopMemetic: public FlowShopSolver {
     * @return The selected parent solution.
     */
     const Solution selectParent();
+
+    /**
+     * @brief The constructNewPopulation function constructs a new population of solutions by applying crossover
+     * @return A vector of new solutions.
+     */
+    vector<Solution> constructNewPopulation();
 
     /**
      * @brief The applyLocalSearch function applies the local search algorithm to the population.
