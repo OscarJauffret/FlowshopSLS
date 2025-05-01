@@ -83,12 +83,15 @@ class FlowShopConfig {
     AlgorithmType algorithmType;
     string instancePath;
 
+    // Iterative improvement
     PivotingRule pivotRule;
     NeighbourhoodStructure neighbourhood;
     InitializationMethod initMethod;
 
+    // Variable neighbourhood descent
     VNDStrategy vndStrategy;
 
+    // Memetic algorithm
     int populationSize;
 
     /**
@@ -104,6 +107,13 @@ class FlowShopConfig {
      * @param argv The command-line arguments.
      */
     void parseArgumentsVND(int argc, char* argv[]);
+
+    /**
+     * @brief The parseArgumentsMemetic function parses the command-line arguments for the memetic algorithm.
+     * @param argc The number of command-line arguments.
+     * @param argv The command-line arguments.
+     */
+    void parseArgumentsMemetic(int argc, char* argv[]);
 
 public:
 
@@ -149,6 +159,12 @@ public:
      * @return The VND strategy to use.
      */
     [[nodiscard]] VNDStrategy getVNDStrategy() const;
+
+    /**
+     * @brief The getPopulationSize function returns the population size to use.
+     * @return The population size to use.
+     */
+    [[nodiscard]] int getPopulationSize() const;
 };
 
 

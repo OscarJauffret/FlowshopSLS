@@ -16,7 +16,6 @@ FlowShopMemetic::FlowShopMemetic(const Instance &instance, int populationSize, s
         // Generate a random permutation of jobs
         Solution solution = initialization::random(instance, rng);
         population.push_back(solution);
-        cout << solution << endl;
     }
 }
 
@@ -37,5 +36,6 @@ const Solution FlowShopMemetic::selectParent() {
 }
 
 Solution FlowShopMemetic::run() {
+    cout << "Running memetic algorithm..." << endl;
     return population[0]; // Return the best solution found
 }

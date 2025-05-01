@@ -17,7 +17,7 @@ using std::invalid_argument;
 FlowShopConfig::FlowShopConfig(int argc, char* argv[]) {
     if (argc != 6 and argc != 4) {
         cerr << "Invalid number of arguments!" << endl;
-        throw invalid_argument("Usage: ./pfsp --ii|--vnd --instance <arguments>");
+        throw invalid_argument("Usage: ./pfsp --ii|--vnd|--memetic --instance <arguments>");
     }
 
     // Parse the arguments
@@ -27,8 +27,10 @@ FlowShopConfig::FlowShopConfig(int argc, char* argv[]) {
         algorithmType = AlgorithmType::II;
     } else if (algorithmArg == "--vnd") {
         algorithmType = AlgorithmType::VND;
+    } else if (algorithmArg == "--memetic") {
+        algorithmType = AlgorithmType::MEMETIC;
     } else {
-        throw invalid_argument("Invalid algorithm type! Use --ii or --vnd.");
+        throw invalid_argument("Invalid algorithm type! Use --ii, --vnd or --memetic.");
     }
 
     // The second argument is the instance path
@@ -42,10 +44,18 @@ FlowShopConfig::FlowShopConfig(int argc, char* argv[]) {
     }
     instancePath = path.string();
 
-    if (algorithmType == AlgorithmType::VND) {
-        parseArgumentsVND(argc, argv);
-    } else {
-        parseArgumentsII(argc, argv);
+    switch (getAlgorithmType()) {
+        case AlgorithmType::II:
+            parseArgumentsII(argc, argv);
+            break;
+        case AlgorithmType::VND:
+            parseArgumentsVND(argc, argv);
+            break;
+        case AlgorithmType::MEMETIC:
+            parseArgumentsMemetic(argc, argv);
+            break;
+        default:
+            throw invalid_argument("Invalid algorithm type!");
     }
 }
 
@@ -109,6 +119,20 @@ void FlowShopConfig::parseArgumentsVND(int argc, char* argv[]) {
 
 }
 
+void FlowShopConfig::parseArgumentsMemetic(int argc, char* argv[]) {
+    // If the algorithm type is MEMETIC, the only argument is the population size
+    if (argc != 4) {
+        cerr << "Invalid number of arguments for MEMETIC!" << endl;
+        throw invalid_argument("Usage: ./pfsp --memetic --instance <population-size>");
+    }
+
+    // The third argument is the population size
+    populationSize = std::stoi(argv[3]);
+    if (populationSize <= 0) {
+        throw invalid_argument("Invalid population size! Use a positive integer.");
+    }
+}
+
 AlgorithmType FlowShopConfig::getAlgorithmType() const {
     return algorithmType;
 }
@@ -118,29 +142,36 @@ string FlowShopConfig::getInstancePath() const {
 }
 
 PivotingRule FlowShopConfig::getPivotRule() const {
-    if (algorithmType == AlgorithmType::VND) {
-        throw invalid_argument("Pivoting rule is not applicable for VND!");
+    if (algorithmType != AlgorithmType::II) {
+        throw invalid_argument("Pivoting rule is only applicable for II!");
     }
     return pivotRule;
 }
 
 NeighbourhoodStructure FlowShopConfig::getNeighbourhood() const {
-    if (algorithmType == AlgorithmType::VND) {
-        throw invalid_argument("Neighbourhood structure is not applicable for VND!");
+    if (algorithmType != AlgorithmType::II) {
+        throw invalid_argument("Neighbourhood structure is only applicable for II!");
     }
     return neighbourhood;
 }
 
 InitializationMethod FlowShopConfig::getInitMethod() const {
-    if (algorithmType == AlgorithmType::VND) {
-        throw invalid_argument("Initialization method is not applicable for VND!");
+    if (algorithmType != AlgorithmType::II) {
+        throw invalid_argument("Initialization method is only applicable for II!");
     }
     return initMethod;
 }
 
 VNDStrategy FlowShopConfig::getVNDStrategy() const {
-    if (algorithmType == AlgorithmType::II) {
-        throw invalid_argument("VND strategy is not applicable for II!");
+    if (algorithmType != AlgorithmType::VND) {
+        throw invalid_argument("VND strategy is only applicable for VND!");
     }
     return vndStrategy;
+}
+
+int FlowShopConfig::getPopulationSize() const {
+    if (algorithmType != AlgorithmType::MEMETIC) {
+        throw invalid_argument("Population size is only applicable for MEMETIC!");
+    }
+    return populationSize;
 }

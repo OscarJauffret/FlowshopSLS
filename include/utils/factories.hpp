@@ -26,7 +26,7 @@ inline std::unique_ptr<FlowShopSolver> createSolver(const FlowShopConfig& config
     case AlgorithmType::VND:
         return std::make_unique<FlowShopVND>(instance, config.getVNDStrategy(), rng);
     case AlgorithmType::MEMETIC:
-        return std::make_unique<FlowShopMemetic>(instance, 0, rng);	//TODO: put population size
+        return std::make_unique<FlowShopMemetic>(instance, config.getPopulationSize(), rng);
     default:
         throw std::invalid_argument("Unsupported algorithm type");
     }
