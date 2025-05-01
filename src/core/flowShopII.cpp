@@ -5,8 +5,6 @@
 #include "../../include/core/flowShopII.hpp"
 #include <iostream>
 
-using std::cout;
-using std::endl;
 
 FlowShopII::FlowShopII(const Instance &instance, NeighbourhoodStructure neighbourhoodStructure, PivotingRule pivotRule,
                        InitializationMethod initMethod, std::mt19937 rng)

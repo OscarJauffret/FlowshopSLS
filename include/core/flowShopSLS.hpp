@@ -14,10 +14,6 @@
 #include "../neighbourhoods/transposeIterator.hpp"
 #include "flowShopSolver.hpp"
 
-#include <iostream>
-
-using std::endl;
-using std::cout;
 
 /**
  * @file flowShopSLS.hpp

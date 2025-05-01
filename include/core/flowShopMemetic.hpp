@@ -43,6 +43,11 @@ class FlowShopMemetic: public FlowShopSolver {
     const Solution selectParent();
 
     /**
+     * @brief The applyLocalSearch function applies the local search algorithm to the population.
+     */
+    void applyLocalSearch();
+
+    /**
      * @brief The initializeLocalSearchFunction function initializes the local search function based on
      * the provided local search method.
      * @param instance

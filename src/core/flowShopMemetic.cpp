@@ -52,6 +52,12 @@ void FlowShopMemetic::initializeLocalSearchFunction(const Instance& instance, Lo
     }
 }
 
+void FlowShopMemetic::applyLocalSearch() {
+    for (Solution& s : population) {
+        s = localSearch(s);
+    }
+}
+
 Solution FlowShopMemetic::mutate(const Solution &solution) {
     return solution; // Placeholder for mutation logic
 }
@@ -66,7 +72,7 @@ const Solution FlowShopMemetic::selectParent() {
 
 Solution FlowShopMemetic::run() {
     auto start = std::chrono::steady_clock::now();
-    Solution best = localSearch(population[0]);
+    applyLocalSearch();
 
-    return best; // Return the best solution found
+    return population[0]; // Return the best solution found
 }
