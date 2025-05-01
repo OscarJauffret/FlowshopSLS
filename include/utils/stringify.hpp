@@ -6,7 +6,7 @@
 #define PFSP_II_STRINGIFY_HPP
 
 #include <string>
-#include "flowShopConfig.hpp"
+#include "../config/flowShopConfig.hpp"
 
 using std::string;
 

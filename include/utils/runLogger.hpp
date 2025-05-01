@@ -7,7 +7,7 @@
 
 #include <unordered_map>
 #include <string>
-#include "flowShopConfig.hpp"
+#include "../config/flowShopConfig.hpp"
 #include "stringify.hpp"
 
 using std::unordered_map;

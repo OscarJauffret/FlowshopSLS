@@ -2,7 +2,7 @@
 // Created by oscar on 29/03/2025.
 //
 
-#include "../../include/utils/flowShopConfig.hpp"
+#include "../../include/config/flowShopConfig.hpp"
 #include "../config.hpp"
 
 #include <iostream>

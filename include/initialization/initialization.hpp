@@ -1,6 +1,8 @@
 //
 // Created by oscar on 09/03/2025.
 //
+#ifndef FLOWSHOPSLS_INITIALIZATION_HPP
+#define FLOWSHOPSLS_INITIALIZATION_HPP
 
 #include "../core/solution.hpp"
 #include <random>
@@ -37,3 +39,5 @@ namespace initialization {
      */
     Solution simplifiedRZ(const Instance &instance, std::mt19937 &rng);
 }
+
+#endif //FLOWSHOPSLS_INITIALIZATION_HPP

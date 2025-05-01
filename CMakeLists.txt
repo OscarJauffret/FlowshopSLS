@@ -12,7 +12,7 @@ add_executable(pfsp-ii
         src/core/flowShopII.cpp
         src/initialization/initialization.cpp
         src/utils/dataAnalysis.cpp
-        src/utils/flowShopConfig.cpp
+        src/config/flowShopConfig.cpp
         src/core/flowShopVnd.cpp
         src/utils/runLogger.cpp
         src/core/flowShopMemetic.cpp

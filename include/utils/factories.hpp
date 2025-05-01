@@ -5,7 +5,7 @@
 #ifndef SOLVERFACTORY_HPP
 #define SOLVERFACTORY_HPP
 
-#include "flowShopConfig.hpp"
+#include "../config/flowShopConfig.hpp"
 #include "../core/flowShopSolver.hpp"
 #include "../core/flowShopII.hpp"
 #include "../core/flowShopVnd.hpp"
