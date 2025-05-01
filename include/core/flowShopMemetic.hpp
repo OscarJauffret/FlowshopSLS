@@ -15,7 +15,6 @@
 using std::vector;
 
 class FlowShopMemetic: public FlowShopSolver {
-    Solution best; // Best solution found
     vector<Solution> population; // Population of solutions
     int populationSize; // Size of the population
     int stuck = 0; // Number of iterations without improvement

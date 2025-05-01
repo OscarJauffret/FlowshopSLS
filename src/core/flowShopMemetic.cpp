@@ -243,7 +243,7 @@ Solution FlowShopMemetic::run() {
     auto start = steady_clock::now();
     applyLocalSearch();
     std::sort(population.begin(), population.end());
-    best = population[0];
+    Solution best = population[0];
     while (chrono::duration_cast<chrono::milliseconds>(steady_clock::now() - start).count() < maxExecutionTime) {
         vector<Solution> newPopulation = constructNewPopulation();
 
