@@ -17,4 +17,9 @@ add_executable(pfsp-ii
         src/utils/runLogger.cpp
         src/core/flowShopMemetic.cpp
         src/utils/memeticTimeLimitProvider.cpp
+        src/config/flowShopConfigII.cpp
+        src/config/flowShopConfigVnd.cpp
+        include/config/flowShopConfigVnd.hpp
+        src/config/flowShopConfigMemetic.cpp
+        include/config/flowShopConfigMemetic.hpp
 )

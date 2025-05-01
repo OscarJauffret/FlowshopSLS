@@ -8,13 +8,16 @@
 #include <unordered_map>
 #include <string>
 #include "../config/flowShopConfig.hpp"
+#include "../config/flowShopConfigII.hpp"
+#include "../config/flowShopConfigVnd.hpp"
+#include "../config/flowShopConfigMemetic.hpp"
+
 #include "stringify.hpp"
 
 using std::unordered_map;
 using std::string;
 
 class RunLogger {
-protected:
     unordered_map<string, uint64_t> bestKnown;
 
     /**
@@ -46,38 +49,41 @@ public:
     RunLogger();
 
     /**
-     * @brief Destructor for the RunLogger (inheritance)
-     */
-    virtual ~RunLogger() = default;
-
-    /**
-    * @brief Log the results of a run to the results file.
-    * @param config The configuration of the flow shop algorithm.
+    * @brief Log iterative improvement results of a run to the results file.
+    * @param config The II configuration of the flow shop algorithm.
     * @param nJobs The number of jobs in the instance.
     * @param time The time taken to find the solution in milliseconds.
     * @param solution The solution found.
     */
-    virtual void log(const FlowShopConfig &config, uint8_t nJobs,
-                     double time, const Solution &solution) const = 0;
+    void log(const FlowShopConfigII &config, uint8_t nJobs, double time, const Solution &solution) const;
 
-};
+    /**
+    * @brief Log VND results of a run to the results file.
+    * @param config The VND configuration of the flow shop algorithm.
+    * @param nJobs The number of jobs in the instance.
+    * @param time The time taken to find the solution in milliseconds.
+    * @param solution The solution found.
+    */
+    void log(const FlowShopConfigVND &config, uint8_t nJobs, double time, const Solution &solution) const;
 
-class RunLoggerII final : public RunLogger {
-public:
-    void log(const FlowShopConfig &config, uint8_t nJobs,
-             double time, const Solution &solution) const override;
-};
+    /**
+    * @brief Log memetic results of a run to the results file.
+    * @param config The memetic configuration of the flow shop algorithm.
+    * @param nJobs The number of jobs in the instance.
+    * @param time The time taken to find the solution in milliseconds.
+    * @param solution The solution found.
+    */
+    void log(const FlowShopConfigMemetic &config, uint8_t nJobs, double time, const Solution &solution) const;
 
-class RunLoggerVND final : public RunLogger {
-public:
-    void log(const FlowShopConfig &config, uint8_t nJobs,
-             double time, const Solution &solution) const override;
-};
+    /**
+     * @brief Log results of a run to the results file.
+     * @param config The configuration of the flow shop algorithm.
+     * @param nJobs The number of jobs in the instance.
+     * @param time The time taken to find the solution in milliseconds.
+     * @param solution The solution found.
+     */
+    void log(const FlowShopConfig& config, uint8_t nJobs, double time, const Solution& solution) const;
 
-class RunLoggerMemetic final : public RunLogger {
-public:
-    void log(const FlowShopConfig &config, uint8_t nJobs,
-             double time, const Solution &solution) const override;
 };
 
 

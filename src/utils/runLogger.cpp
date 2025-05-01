@@ -56,7 +56,7 @@ string RunLogger::getInstanceName(const string &fullpath) {
     return fs::path(fullpath).filename().string();
 }
 
-void RunLoggerII::log(const FlowShopConfig &config, const uint8_t nJobs,
+void RunLogger::log(const FlowShopConfigII &config, const uint8_t nJobs,
                       const double time, const Solution &solution) const {
 
     uint64_t fitness = solution.getFitness();
@@ -78,7 +78,7 @@ void RunLoggerII::log(const FlowShopConfig &config, const uint8_t nJobs,
          << std::endl;
 }
 
-void RunLoggerVND::log(const FlowShopConfig &config, const uint8_t nJobs,
+void RunLogger::log(const FlowShopConfigVND &config, const uint8_t nJobs,
                        const double time, const Solution &solution) const {
 
     uint64_t fitness = solution.getFitness();
@@ -100,8 +100,8 @@ void RunLoggerVND::log(const FlowShopConfig &config, const uint8_t nJobs,
 
 }
 
-void RunLoggerMemetic::log(const FlowShopConfig &config, const uint8_t nJobs,
-                           const double time, const Solution &solution) const {
+void RunLogger::log(const FlowShopConfigMemetic &config, const uint8_t nJobs,
+                    const double time, const Solution &solution) const {
 
     uint64_t fitness = solution.getFitness();
     string instancePath = config.getInstancePath();
@@ -116,7 +116,24 @@ void RunLoggerMemetic::log(const FlowShopConfig &config, const uint8_t nJobs,
          << static_cast<int>(nJobs) << ","
          << fitness << ","
          << pctDev << ","
-         << 0 << ","   // TODO: put population size
+         << config.getPopulationSize() << ","
          << time
          << std::endl;
+}
+
+void RunLogger::log(const FlowShopConfig& config, const uint8_t nJobs,
+                    const double time, const Solution& solution) const {
+    switch (config.getAlgorithmType()) {
+    case AlgorithmType::II:
+        log(dynamic_cast<const FlowShopConfigII&>(config), nJobs, time, solution);
+        break;
+    case AlgorithmType::VND:
+        log(dynamic_cast<const FlowShopConfigVND&>(config), nJobs, time, solution);
+        break;
+    case AlgorithmType::MEMETIC:
+        log(dynamic_cast<const FlowShopConfigMemetic&>(config), nJobs, time, solution);
+        break;
+    default:
+        throw std::invalid_argument("Unknown algorithm type in logger.");
+    }
 }

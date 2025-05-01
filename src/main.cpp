@@ -23,23 +23,23 @@ int main(int argc, char* argv[]) {
         std::random_device rd;
         std::mt19937 rng(rd());
 
-        FlowShopConfig config(argc, argv);
-        Instance instance(config.getInstancePath());
+        auto config = parseConfig(argc, argv);
+        Instance instance(config->getInstancePath());
 
         auto start = Clock::now();
-        auto solver = createSolver(config, instance, rng);
+        auto solver = createSolver(*config, instance, rng);
         Solution solution = solver->run();
         auto end = Clock::now();
 
         double elapsed = std::chrono::duration<double, std::milli>(end - start).count();
 
         // For me, to control the logging of the results
-        bool log = false;
+        bool log = true;
         if (log) {
-            auto analyzer = createRunLogger(config);
-            analyzer->log(config, instance.jobs, elapsed, solution);
+            auto analyzer = RunLogger();
+            analyzer.log(*config, instance.jobs, elapsed, solution);
         } else {
-            cout << "Instance: " << config.getInstancePath() << endl;
+            cout << "Instance: " << config->getInstancePath() << endl;
             cout << "Number of jobs: " << (int) instance.jobs << endl;
             cout << solution << endl;
             cout << "Time: " << elapsed << " ms" << endl;

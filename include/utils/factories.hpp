@@ -6,11 +6,27 @@
 #define SOLVERFACTORY_HPP
 
 #include "../config/flowShopConfig.hpp"
+#include "../config/flowShopConfigII.hpp"
+#include "../config/flowShopConfigVnd.hpp"
+#include "../config/flowShopConfigMemetic.hpp"
 #include "../core/flowShopSolver.hpp"
 #include "../core/flowShopII.hpp"
 #include "../core/flowShopVnd.hpp"
 #include "../core/flowShopMemetic.hpp"
 #include "runLogger.hpp"
+
+inline std::unique_ptr<FlowShopConfig> parseConfig(int argc, char* argv[]) {
+    std::string algo = argv[1];
+    if (algo == "--ii") {
+        return std::make_unique<FlowShopConfigII>(argc, argv);
+    } else if (algo == "--vnd") {
+        return std::make_unique<FlowShopConfigVND>(argc, argv);
+    } else if (algo == "--memetic") {
+        return std::make_unique<FlowShopConfigMemetic>(argc, argv);
+    } else {
+        throw std::invalid_argument("Unknown algorithm type.");
+    }
+}
 
 /**
 * @brief The createSolver function creates a FlowShopSolver object based on the given configuration and instance.
@@ -21,35 +37,20 @@
 */
 inline std::unique_ptr<FlowShopSolver> createSolver(const FlowShopConfig& config, const Instance& instance, std::mt19937& rng) {
     switch (config.getAlgorithmType()) {
-    case AlgorithmType::II:
-        return std::make_unique<FlowShopII>(instance, config.getNeighbourhood(), config.getPivotRule(), config.getInitMethod(), rng);
-    case AlgorithmType::VND:
-        return std::make_unique<FlowShopVND>(instance, config.getVNDStrategy(), rng);
-    case AlgorithmType::MEMETIC:
-        return std::make_unique<FlowShopMemetic>(instance, config.getPopulationSize(), rng);
-    default:
-        throw std::invalid_argument("Unsupported algorithm type");
+        case AlgorithmType::II: {
+            auto& iiConfig = dynamic_cast<const FlowShopConfigII&>(config);
+            return std::make_unique<FlowShopII>(instance, iiConfig.getNeighbourhood(), iiConfig.getPivotRule(), iiConfig.getInitMethod(), rng);
+        } case AlgorithmType::VND: {
+            auto& vndConfig = dynamic_cast<const FlowShopConfigVND&>(config);
+            return std::make_unique<FlowShopVND>(instance, vndConfig.getVNDStrategy(), rng);
+        } case AlgorithmType::MEMETIC: {
+            auto& memeticConfig = dynamic_cast<const FlowShopConfigMemetic&>(config);
+            return std::make_unique<FlowShopMemetic>(instance, memeticConfig.getPopulationSize(), rng);
+        } default: {
+            throw std::invalid_argument("Unsupported algorithm type");
+        }
     }
 }
-
-/**
-* @brief The createRunLogger function creates a RunLogger object based on the given configuration.
-* @param config The configuration for the Flow Shop algorithm.
-* @return A unique pointer to the RunLogger object.
-*/
-inline std::unique_ptr<RunLogger> createRunLogger(const FlowShopConfig& config) {
-    switch (config.getAlgorithmType()) {
-    case AlgorithmType::II:
-        return std::make_unique<RunLoggerII>();
-    case AlgorithmType::VND:
-        return std::make_unique<RunLoggerVND>();
-    case AlgorithmType::MEMETIC:
-        return std::make_unique<RunLoggerMemetic>();
-    default:
-        throw std::invalid_argument("Unsupported algorithm type");
-    }
-}
-
 
 
 #endif //SOLVERFACTORY_HPP
