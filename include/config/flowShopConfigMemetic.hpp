@@ -7,9 +7,15 @@
 
 #include "flowShopConfig.hpp"
 
+enum class LocalSearchMethod {
+    NONE,
+    II,
+    VND
+};
 
 class FlowShopConfigMemetic: public FlowShopConfig {
     int populationSize;
+    LocalSearchMethod localSearchMethod;
 
 public:
 
@@ -25,6 +31,14 @@ public:
      * @return The population size.
      */
     [[nodiscard]] int getPopulationSize() const;
+
+    /**
+     * The getLocalSearchMethod function returns the local search method for the FlowShopConfigMemetic class.
+     * @return The local search method.
+     */
+    [[nodiscard]] LocalSearchMethod getLocalSearchMethod() const;
+
+
 };
 
 
