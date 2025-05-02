@@ -25,11 +25,13 @@ class FlowShopMemetic: public FlowShopSolver {
     std::mt19937 rng; // Random number generator
 
     int numParentPieces; // Number of pieces into which the user wants to cut parent chromosomes P1 and P2 for recombination
-    vector<vector<int>> orthogonalArray; // Orthogonal array to be used in the crossover operator
+    vector<vector<int>> crossoverOrthogonalArray; // Orthogonal array to be used in the crossover operator
+    vector<vector<int>> mutationOrthogonalArray;
 
 
     /**
     * @brief The mutate function applies a mutation operator to a solution.
+    * The implementation is my own simplified version of the one used in the paper of Lin-Yu Tseng and Ya-Tai Lin.
     * @param solution The solution to mutate.
     * @return The mutated solution.
     */
@@ -37,6 +39,7 @@ class FlowShopMemetic: public FlowShopSolver {
 
     /**
     * @brief The crossover function combines two parent solutions to create a new solution.
+    * The implementations is the one used in the paper of Lin-Yu Tseng and Ya-Tai Lin.
     * @param parent1 The first parent solution.
     * @param parent2 The second parent solution.
     * @return The new solution created by combining the two parents.
@@ -49,6 +52,15 @@ class FlowShopMemetic: public FlowShopSolver {
      * @return A vector of cut points.
      */
     vector<int> generateCutPoints(int nJobs);
+
+    /**
+     * @brief The findBestLevels function finds the best levels for the orthogonal array based on the candidates evaluationsa
+     * @param candidates The candidate solutions to evaluate.
+     * @param orthogonalArray The orthogonal array to use for the evaluation.
+     * @param numFactors The number of factors in the orthogonal array.
+     * @return A vector of best levels for each factor.
+     */
+    static vector<int> findBestLevels(const std::vector<Solution>& candidates, const vector<vector<int>>& orthogonalArray, int numFactors);
 
     /**
      * @brief The repair function repairs a candidate solution by replacing duplicate jobs with missing jobs from the reference solution.
@@ -78,7 +90,7 @@ class FlowShopMemetic: public FlowShopSolver {
     /**
      * @brief The generateOrthogonalArray function generates an orthogonal array of size numCuts.
      */
-    void generateOrthogonalArray();
+    static vector<vector<int>> generateOrthogonalArray(int size);
 
     /**
      * @brief The initializeLocalSearchFunction function initializes the local search function based on

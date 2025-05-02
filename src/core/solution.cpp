@@ -49,14 +49,16 @@ Solution Solution::exchange(uint8_t i, uint8_t j) const {
     return neighbor;
 }
 
-Solution Solution::insert(uint8_t from, uint8_t to, uint8_t calculateFitnessUpTo) const {
+Solution Solution::insert(uint8_t from, uint8_t to, uint8_t calculateFitnessUpTo, bool calculateFitness) const {
     Solution neighbor(*this);       // Create a copy of the current solution
     uint8_t job = neighbor.permutation[from];
 
     // Remove the job from the permutation and insert it in the new position
     neighbor.permutation.erase(neighbor.permutation.begin() + from);
     neighbor.permutation.insert(neighbor.permutation.begin() + to, job);
-    neighbor.evaluate(std::min(from, to), calculateFitnessUpTo);    // Evaluate the new solution, only the jobs that changed need to be evaluated
+    if (calculateFitness) {
+        neighbor.evaluate(std::min(from, to), calculateFitnessUpTo);    // Evaluate the new solution, only the jobs that changed need to be evaluated
+    }
     return neighbor;
 }
 

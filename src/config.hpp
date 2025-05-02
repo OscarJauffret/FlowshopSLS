@@ -50,7 +50,18 @@ namespace config {
             }
         }
 
+        inline vector<vector<int>> getMutationOrthogonalArray() {
+            // See Lin-Yu Tseng, Ya-Tai Lin
+            return {
+                    {0, 0, 0},
+                    {0, 1, 1},
+                    {1, 0, 1},
+                    {1, 1, 0}
+                };
+            }
+
         constexpr int thresholdLocalSearch = 10;    // Threshold for the number of iterations without improvement before starting the local search
+        constexpr int numberOfMutations = 3;       // Number of mutations to apply to an individual
     }
 }
 

@@ -33,7 +33,8 @@ FlowShopMemetic::FlowShopMemetic(const Instance& instance, int populationSize, f
     }
 
     initializeLocalSearchFunction(instance, localSearchMethod, rng);
-    generateOrthogonalArray();
+    crossoverOrthogonalArray = generateOrthogonalArray(numParentPieces);
+    mutationOrthogonalArray = config::memetic::getMutationOrthogonalArray();
 }
 
 void FlowShopMemetic::initializeLocalSearchFunction(const Instance& instance, LocalSearchMethod localSearchMethod, std::mt19937 rng) {
@@ -66,37 +67,74 @@ void FlowShopMemetic::applyLocalSearch() {
     }
 }
 
-void FlowShopMemetic::generateOrthogonalArray() {
+vector<vector<int>> FlowShopMemetic::generateOrthogonalArray(const int size) {
     // Any column should have the same number of 1s and 0s
     // For every pair of columns, each combination of 2-bit strings should occur the same number of times
     // The selected combinations are uniformly distributed over the whole space of all the possible combinations
-    vector<int> firstColumn = config::memetic::getFirstColumnOfOrthogonalArray(numParentPieces + 1);
-    orthogonalArray.resize(numParentPieces + 1, vector<int>(numParentPieces));  // numParentPieces + 1 rows and numParentPieces columns
-    for (int i = 0; i < numParentPieces; i++) {
+    vector<int> firstColumn = config::memetic::getFirstColumnOfOrthogonalArray(size + 1);
+    vector orthogonalArray(size + 1, vector<int>(size)); // size + 1 rows and size columns
+    for (int i = 0; i < size; i++) {
         orthogonalArray[i][0] = firstColumn[i];
     }
 
     // Fill the rest of the orthogonal array
-    for (int j = 1; j < numParentPieces; j++) {     // column j
-        for (int i = 0; i < numParentPieces; i++) { // row i
+    for (int j = 1; j < size; j++) {     // column j
+        for (int i = 0; i < size; i++) { // row i
             int index = i - 1;
             if (index == -1) {
-                index = numParentPieces - 1;
+                index = size - 1;
             }
             orthogonalArray[i][j] = orthogonalArray[index][j - 1];
         }
     }
 
     // The last row is all 0s
-    for (int i = 0; i < numParentPieces + 1; i++) {
-        orthogonalArray[i][numParentPieces - 1] = 0;
+    for (int i = 0; i < size + 1; i++) {
+        orthogonalArray[i][size - 1] = 0;
     }
-}
 
+    return orthogonalArray;
+}
 
 Solution FlowShopMemetic::mutate(const Solution &solution) {
 
-    return solution; // Placeholder for mutation logic
+    const int n = solution.getNumberOfJobs();
+    std::uniform_int_distribution dist(0, n - 1);
+    vector<std::pair<int, int>> mutationPositions;
+
+    while (mutationPositions.size() < config::memetic::numberOfMutations) {
+        int from = dist(rng);
+        int to = dist(rng);
+        if (from != to) {
+            mutationPositions.emplace_back(from, to);
+        }
+    }
+
+    std::vector<Solution> candidates;
+    for (const auto& row: mutationOrthogonalArray) {
+        Solution mutated = solution;
+        for (int j = 0; j < mutationPositions.size(); j++) {
+            if (row[j] == 1) {
+                mutated = mutated.insert(mutationPositions[j].first, mutationPositions[j].second, 0, false);
+            }
+        }
+        mutated.evaluate(0);
+        candidates.push_back(mutated);
+    }
+
+    vector<int> bestLevels = findBestLevels(candidates, mutationOrthogonalArray, config::memetic::numberOfMutations);
+
+    // Generate new child based on the best levels (Taguchi's method)
+    Solution taguchiMutation = solution;
+    for (int j = 0; j < config::memetic::numberOfMutations; ++j) {
+        if (bestLevels[j] == 1) {
+            taguchiMutation = taguchiMutation.insert(mutationPositions[j].first, mutationPositions[j].second, 0, false);
+        }
+    }
+    taguchiMutation.evaluate(0);
+    candidates.push_back(taguchiMutation);
+
+    return *std::min_element(candidates.begin(), candidates.end());
 }
 
 vector<uint8_t> FlowShopMemetic::repair(const vector<uint8_t>& candidate, const Solution& reference) {
@@ -143,6 +181,25 @@ vector<int> FlowShopMemetic::generateCutPoints(int nJobs) {
     return cutPoints;
 }
 
+vector<int> FlowShopMemetic::findBestLevels(const vector<Solution>& candidates, const vector<vector<int>>& orthogonalArray, int numFactors) {
+    vector mainEffect(numFactors, vector<double>(2, 0));
+    for (int i = 0; i < numFactors; i++) {
+        const auto& row = orthogonalArray[i];
+        double evaluation = 1.0 / static_cast<double>(candidates[i].getFitness());
+        for (int j = 0; j < numFactors; j++) {
+            int k = row[j];
+            mainEffect[j][k] += evaluation;
+        }
+    }
+
+    // Find the best level for each factor
+    vector<int> bestLevels(numFactors);
+    for (int j = 0; j < numFactors; ++j) {
+        bestLevels[j] = (mainEffect[j][0] > mainEffect[j][1]) ? 0 : 1;
+    }
+
+    return bestLevels;
+}
 
 Solution FlowShopMemetic::crossover(const Solution &parent1, const Solution &parent2) {
     // Randomly choose numParentPieces–1 unique cut points to cut P1 and P2 into numParentPieces subsequences.
@@ -162,7 +219,7 @@ Solution FlowShopMemetic::crossover(const Solution &parent1, const Solution &par
 
     // Generate candidate children from the orthogonal array
     std::vector<Solution> candidates;
-    for (const auto& row : orthogonalArray) {
+    for (const auto& row : crossoverOrthogonalArray) {
         std::vector<uint8_t> candidatePermutation;
 
         for (int j = 0; j < numParentPieces; ++j) {
@@ -178,26 +235,12 @@ Solution FlowShopMemetic::crossover(const Solution &parent1, const Solution &par
     }
 
     // Calculate the main effect  Fjk of factor j with level k, for j = [1, 2, .., N] and k = {0, 1}
-    vector mainEffect(numParentPieces, vector<double>(2, 0));
-    for (int i = 0; i < numParentPieces; i++) {
-        const auto& row = orthogonalArray[i];
-        double evaluation = 1.0 / static_cast<double>(candidates[i].getFitness());
-        for (int j = 0; j < numParentPieces; j++) {
-            int k = row[j];
-            mainEffect[j][k] += evaluation;
-        }
-    }
-
-    // Find the best level for each factor
-    vector<int> bestLevel(numParentPieces);
-    for (int j = 0; j < numParentPieces; ++j) {
-        bestLevel[j] = (mainEffect[j][0] > mainEffect[j][1]) ? 0 : 1;
-    }
+    vector<int> bestLevels = findBestLevels(candidates, crossoverOrthogonalArray, numParentPieces);
 
     // Generate new child based on the best levels (Taguchi's method)
     vector<uint8_t> taguchiPermutation;
     for (int j = 0; j < numParentPieces; ++j) {
-        const auto& segment = (bestLevel[j] == 0) ? segmentsP1[j] : segmentsP2[j];
+        const auto& segment = (bestLevels[j] == 0) ? segmentsP1[j] : segmentsP2[j];
         taguchiPermutation.insert(taguchiPermutation.end(), segment.begin(), segment.end());
     }
 
@@ -269,5 +312,5 @@ Solution FlowShopMemetic::run() {
 
     }
 
-    return population[0]; // Return the best solution found
+    return best; // Return the best solution found
 }

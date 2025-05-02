@@ -61,9 +61,10 @@ class Solution {
          * @param from The index of the job to insert.
          * @param to The index where the job will be inserted.
          * @param calculateFitnessUpTo The number of jobs to consider in the evaluation. If 0, all the jobs are considered. This parameter is used when evaluating the solutions in the Simplified RZ heuristic.
+         * @param calculateFitness
          * @return A new solution with the inserted job.
          */
-        [[nodiscard]] Solution insert(uint8_t from, uint8_t to, uint8_t calculateFitnessUpTo = 0) const;
+        [[nodiscard]] Solution insert(uint8_t from, uint8_t to, uint8_t calculateFitnessUpTo = 0, bool calculateFitness = true) const;
 
         /**
          * @brief The getFitness function returns the sum of the completion times of the jobs in the permutation.
