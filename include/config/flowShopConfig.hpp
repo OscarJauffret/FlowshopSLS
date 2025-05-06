@@ -62,7 +62,8 @@ enum class VNDStrategy {
 enum class AlgorithmType {
     II,         // Iterative Improvement
     VND,        // Variable Neighbourhood Descent
-    MEMETIC     // Memetic Algorithm
+    MEMETIC,    // Memetic Algorithm
+    TABU_SEARCH // Tabu Search
 };
 
 

@@ -12,7 +12,7 @@ using std::invalid_argument;
 
 FlowShopConfigMemetic::FlowShopConfigMemetic(int argc, char* argv[]): FlowShopConfig(argc, argv) {
     // If the algorithm type is MEMETIC, the following arguments are expected:
-    // <population size> --local-search
+    // <population size> <mutation-rate> --local-search
     if (argc != 6) {
         cerr << "Invalid number of arguments for MEMETIC!" << endl;
         throw invalid_argument("Usage: ./pfsp --memetic --instance <population-size> <mutation-rate> --none|--ii|--vnd");

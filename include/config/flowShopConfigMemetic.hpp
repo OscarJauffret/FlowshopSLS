@@ -13,6 +13,13 @@ enum class LocalSearchMethod {
     VND
 };
 
+/**
+ * @brief The FlowShopConfigMemetic class is a configuration class for the memetic algorithm.
+ * It inherits from the FlowShopConfig class and adds additional parameters specific to the memetic algorithm.
+ * @field populationSize - The size of the population for the memetic algorithm.
+ * @field mutationRate - The mutation rate for the memetic algorithm.
+ * @field localSearchMethod - The local search method to be used in the memetic algorithm.
+ */
 class FlowShopConfigMemetic: public FlowShopConfig {
     int populationSize;
     float mutationRate;

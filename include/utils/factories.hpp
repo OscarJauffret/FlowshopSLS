@@ -9,10 +9,13 @@
 #include "../config/flowShopConfigII.hpp"
 #include "../config/flowShopConfigVnd.hpp"
 #include "../config/flowShopConfigMemetic.hpp"
+#include "../config/flowShopConfigTabuSearch.hpp"
+
 #include "../core/flowShopSolver.hpp"
 #include "../core/flowShopII.hpp"
 #include "../core/flowShopVnd.hpp"
 #include "../core/flowShopMemetic.hpp"
+#include "../core/flowShopTabuSearch.hpp"
 #include "runLogger.hpp"
 
 inline std::unique_ptr<FlowShopConfig> parseConfig(int argc, char* argv[]) {
@@ -23,6 +26,8 @@ inline std::unique_ptr<FlowShopConfig> parseConfig(int argc, char* argv[]) {
         return std::make_unique<FlowShopConfigVND>(argc, argv);
     } else if (algo == "--memetic") {
         return std::make_unique<FlowShopConfigMemetic>(argc, argv);
+    } else if (algo == "--tabu") {
+        return std::make_unique<FlowShopConfigTabuSearch>(argc, argv);
     } else {
         throw std::invalid_argument("Unknown algorithm type.");
     }
@@ -48,6 +53,10 @@ inline std::unique_ptr<FlowShopSolver> createSolver(const FlowShopConfig& config
             auto& memeticConfig = dynamic_cast<const FlowShopConfigMemetic&>(config);
             return std::make_unique<FlowShopMemetic>(instance, memeticConfig.getPopulationSize(),
                 memeticConfig.getMutationRate(), memeticConfig.getLocalSearchMethod(), rng);
+        } case AlgorithmType::TABU_SEARCH: {
+            auto& tabuConfig = dynamic_cast<const FlowShopConfigTabuSearch&>(config);
+            return std::make_unique<FlowShopTabuSearch>(instance, tabuConfig.getTabuTenure(), tabuConfig.getAlpha(),
+                                                        tabuConfig.getMaxGenerations(), tabuConfig.getMaxStuck() ,rng);
         } default: {
             throw std::invalid_argument("Unsupported algorithm type");
         }

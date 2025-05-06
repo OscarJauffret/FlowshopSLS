@@ -17,7 +17,7 @@ using std::invalid_argument;
 FlowShopConfig::FlowShopConfig(int argc, char* argv[]) {
     if (argc < 3) {
         cerr << "Invalid number of arguments!" << endl;
-        throw invalid_argument("Usage: ./pfsp --ii|--vnd|--memetic --instance <arguments>");
+        throw invalid_argument("Usage: ./pfsp --ii|--vnd|--memetic|--tabu --instance <arguments>");
     }
 
     // Parse the arguments
@@ -29,8 +29,10 @@ FlowShopConfig::FlowShopConfig(int argc, char* argv[]) {
         algorithmType = AlgorithmType::VND;
     } else if (algorithmArg == "--memetic") {
         algorithmType = AlgorithmType::MEMETIC;
+    } else if (algorithmArg == "--tabu") {
+        algorithmType = AlgorithmType::TABU_SEARCH;
     } else {
-        throw invalid_argument("Invalid algorithm type! Use --ii, --vnd or --memetic.");
+        throw invalid_argument("Invalid algorithm type! Use --ii, --vnd,--memetic or --tabu.");
     }
 
     // The second argument is the instance path
