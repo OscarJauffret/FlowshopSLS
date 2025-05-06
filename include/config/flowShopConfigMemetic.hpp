@@ -10,7 +10,8 @@
 enum class LocalSearchMethod {
     NONE,
     II,
-    VND
+    VND,
+    TABU_SEARCH
 };
 
 /**

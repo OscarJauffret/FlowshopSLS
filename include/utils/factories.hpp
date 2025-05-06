@@ -19,6 +19,9 @@
 #include "runLogger.hpp"
 
 inline std::unique_ptr<FlowShopConfig> parseConfig(int argc, char* argv[]) {
+    if (argc < 2) {
+        throw std::invalid_argument("No algorithm type provided. Use --ii, --vnd, --memetic or --tabu.");
+    }
     std::string algo = argv[1];
     if (algo == "--ii") {
         return std::make_unique<FlowShopConfigII>(argc, argv);

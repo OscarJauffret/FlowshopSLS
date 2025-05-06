@@ -70,24 +70,31 @@ Solution FlowShopTabuSearch::run() {
             return a.second.getFitness() < b.second.getFitness();
         });
 
-        int from = neighbors[0].first.first;
-        int to = neighbors[0].first.second;
-        addToTabuList(from, to);  // Add the move to the tabu list
+        if (!neighbors.empty()) {
+            int from = neighbors[0].first.first;
+            int to = neighbors[0].first.second;
+            addToTabuList(from, to);  // Add the move to the tabu list
 
-        if (neighbors[0].second < candidate) {   // Means we found a better neighbor
-            candidate = neighbors[0].second;
-            stuck = 0;
-        } else {
-            stuck++;
-            if (stuck >= maxStuck) {
-                // If stuck, choose a new candidate randomly from the best neighbors, without considering the tabu list
-                std::uniform_int_distribution<> dist(1, std::min(config::memetic::tabu::neighborsConsideredInPerturbation, (int)neighbors.size() - 1));
-                candidate = neighbors[dist(rng)].second; // Choose a random neighbor from the list of neighbors
+            if (neighbors[0].second < candidate) {   // Means we found a better neighbor
+                candidate = neighbors[0].second;
                 stuck = 0;
+            } else {
+                stuck++;
+                if (stuck >= maxStuck) {
+                    if (neighbors.size() > 1) {
+                        std::uniform_int_distribution<> dist(
+                            1, std::min(config::memetic::tabu::neighborsConsideredInPerturbation, (int) neighbors.size() - 1)
+                        );
+                        candidate = neighbors[dist(rng)].second;
+                    } else {
+                        candidate = neighbors[0].second;
+                    }
+                }
             }
         }
         generations++;
         insertIterator.setSolution(candidate); // Reset the iterator with the candidate solution (possibly changed)
     }
+    tabuList.clear(); // Clear the tabu list at the end of the search
     return candidate;
 }

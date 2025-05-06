@@ -7,7 +7,9 @@
 #include "../../include/utils/memeticTimeLimitProvider.hpp"
 #include "../../include/core/flowShopII.hpp"
 #include "../../include/core/flowShopVnd.hpp"
+#include "../../include/core/flowShopTabuSearch.hpp"
 #include "../../include/config/flowShopConfig.hpp"
+#include "../config.hpp"
 #include <iostream>
 #include <set>
 #include <chrono>
@@ -34,12 +36,12 @@ FlowShopMemetic::FlowShopMemetic(const Instance& instance, int populationSize, f
         population.push_back(solution);
     }
 
-    initializeLocalSearchFunction(instance, localSearchMethod, rng);
+    initializeLocalSearchFunction(instance, localSearchMethod);
     crossoverOrthogonalArray = generateOrthogonalArray(numParentPieces);
     mutationOrthogonalArray = config::memetic::getMutationOrthogonalArray();
 }
 
-void FlowShopMemetic::initializeLocalSearchFunction(const Instance& instance, LocalSearchMethod localSearchMethod, std::mt19937 rng) {
+void FlowShopMemetic::initializeLocalSearchFunction(const Instance &instance, LocalSearchMethod localSearchMethod) {
     switch (localSearchMethod) {
         case LocalSearchMethod::II: {
             auto solver = std::make_shared<FlowShopII>(instance, NeighbourhoodStructure::INSERT,
@@ -50,6 +52,14 @@ void FlowShopMemetic::initializeLocalSearchFunction(const Instance& instance, Lo
         }
         case LocalSearchMethod::VND: {
             auto solver = std::make_shared<FlowShopVND>(instance, VNDStrategy::TEI, rng);
+            localSearch = [solver](const Solution& s) { return solver->run(s); };
+            break;
+        }
+        case LocalSearchMethod::TABU_SEARCH: {
+            auto solver = std::make_shared<FlowShopTabuSearch>(instance, config::memetic::tabu::tenure,
+                                                               config::memetic::tabu::neighborsConsideredInPerturbation,
+                                                               config::memetic::tabu::maxGenerations,
+                                                               config::memetic::tabu::maxStuck, rng);
             localSearch = [solver](const Solution& s) { return solver->run(s); };
             break;
         }

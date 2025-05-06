@@ -69,7 +69,7 @@ namespace config {
             constexpr int tenure = 7;       // Tenure of the tabu list in the memetic algo
             constexpr int maxGenerations = 50; // Maximum number of generations to run the algorithm (taken from the paper of Lin-Yu Tseng and Ya-Tai Lin)
             constexpr int maxStuck = 5;        // Maximum number of generations without improvement before perturbation step
-            constexpr int neighborsConsideredInPerturbation = 9; // Number of neighbors to consider in the perturbation step
+            constexpr int neighborsConsideredInPerturbation = 3; // Number of neighbors to consider in the perturbation step
         }
     }
 

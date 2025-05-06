@@ -15,7 +15,7 @@ FlowShopConfigMemetic::FlowShopConfigMemetic(int argc, char* argv[]): FlowShopCo
     // <population size> <mutation-rate> --local-search
     if (argc != 6) {
         cerr << "Invalid number of arguments for MEMETIC!" << endl;
-        throw invalid_argument("Usage: ./pfsp --memetic --instance <population-size> <mutation-rate> --none|--ii|--vnd");
+        throw invalid_argument("Usage: ./pfsp --memetic --instance <population-size> <mutation-rate> --none|--ii|--vnd|--tabu");
     }
 
     // The third argument is the population size
@@ -38,6 +38,8 @@ FlowShopConfigMemetic::FlowShopConfigMemetic(int argc, char* argv[]): FlowShopCo
         localSearchMethod = LocalSearchMethod::VND;
     } else if (localSearchArg == "--none") {
         localSearchMethod = LocalSearchMethod::NONE;
+    } else if (localSearchArg == "--tabu") {
+        localSearchMethod = LocalSearchMethod::TABU_SEARCH;
     } else {
         throw invalid_argument("Invalid local search method! Use --none, --ii or --vnd.");
     }

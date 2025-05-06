@@ -97,9 +97,8 @@ class FlowShopMemetic: public FlowShopSolver {
      * the provided local search method.
      * @param instance
      * @param localSearchMethod The local search method to be used.
-     * @param rng The random number generator to be used.
      */
-    void initializeLocalSearchFunction(const Instance& instance, LocalSearchMethod localSearchMethod, std::mt19937 rng);
+    void initializeLocalSearchFunction(const Instance &instance, LocalSearchMethod localSearchMethod);
 
 public:
     /**
