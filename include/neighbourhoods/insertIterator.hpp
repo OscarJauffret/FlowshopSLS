@@ -107,6 +107,22 @@ public:
         reset();
     }
 
+    /**
+     * @brief The getFrom function returns the index of the job to insert.
+     * @return The index of the job to insert.
+     */
+    [[nodiscard]] uint8_t getFrom() const {
+        return from;
+    }
+
+    /**
+     * @brief The getTo function returns the index where to insert the job.
+     * @return The index where to insert the job.
+     */
+    [[nodiscard]] uint8_t getTo() const {
+        return to;
+    }
+
 };
 
 #endif //FLOWSHOPSLS_INSERTITERATOR_HPP
