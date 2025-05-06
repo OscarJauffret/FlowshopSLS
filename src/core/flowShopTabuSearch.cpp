@@ -14,8 +14,8 @@ FlowShopTabuSearch::FlowShopTabuSearch(const Instance &instance, int tabuTenure,
 
 bool FlowShopTabuSearch::isTabu(int from, int to) {
     // The strategy is the one from Nowicki, E. and Smutnicki, C
-    // If from < to, a move (from, to) is tabu if the tabu list contains at least a  pair (permutation[j], permutation[from]), where j is in [from + 1, to]
-    // If from > to, a move (from, to) is tabu if the tabu list contains at least a  pair (permutation[from], permutation[j]), where j is in [to, from - 1]
+    // If from < to, a move (from, to) is tabu if the tabu list contains at least a pair (permutation[j], permutation[from]), where j is in [from + 1, to]
+    // If from > to, a move (from, to) is tabu if the tabu list contains at least a pair (permutation[from], permutation[j]), where j is in [to, from - 1]
     const auto& permutation = candidate.getPermutation();
 
     if (from < to) {
@@ -52,10 +52,12 @@ void FlowShopTabuSearch::addToTabuList(int from, int to) {
 Solution FlowShopTabuSearch::run() {
     int generations = 0;
     int stuck = 0;
+    insertIterator.setSolution(candidate);
 
     while (generations < maxGenerations) {
-        // Neighborhood search procedure, finds the best neighbor
+        // Neighborhood search procedure
         vector<pair<pair<int, int>, Solution>> neighbors;
+        vector<pair<pair<int, int>, Solution>> allNeighbors;
         while (insertIterator.hasNext()) {
             uint8_t from = insertIterator.getFrom();
             uint8_t to = insertIterator.getTo();
@@ -64,6 +66,7 @@ Solution FlowShopTabuSearch::run() {
             if (!isTabu(from, to) || neighbor < candidate) {
                 neighbors.emplace_back(std::make_pair(from, to), neighbor);
             }
+            allNeighbors.emplace_back(std::make_pair(from, to), neighbor);
         }
         // Sort the neighbors by fitness
         std::sort(neighbors.begin(), neighbors.end(), [](const auto &a, const auto &b) {
@@ -81,20 +84,24 @@ Solution FlowShopTabuSearch::run() {
             } else {
                 stuck++;
                 if (stuck >= maxStuck) {
-                    if (neighbors.size() > 1) {
+                    if (allNeighbors.size() > 1) {
+                        std::sort(allNeighbors.begin(), allNeighbors.end(), [](const auto &a, const auto &b) {
+                            return a.second.getFitness() < b.second.getFitness();
+                        });
                         std::uniform_int_distribution<> dist(
-                            1, std::min(config::memetic::tabu::neighborsConsideredInPerturbation, (int) neighbors.size() - 1)
+                            1, std::min(config::memetic::tabu::neighborsConsideredInPerturbation, (int) allNeighbors.size() - 1)
                         );
-                        candidate = neighbors[dist(rng)].second;
+                        candidate = allNeighbors[dist(rng)].second;
                     } else {
-                        candidate = neighbors[0].second;
+                        candidate = allNeighbors[0].second;
                     }
+                    stuck = 0;
                 }
             }
         }
         generations++;
         insertIterator.setSolution(candidate); // Reset the iterator with the candidate solution (possibly changed)
     }
-    tabuList.clear(); // Clear the tabu list at the end of the search
+    //tabuList.clear(); // Clear the tabu list at the end of the search
     return candidate;
 }

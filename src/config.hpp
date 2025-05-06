@@ -61,7 +61,7 @@ namespace config {
                 };
             }
 
-        constexpr int thresholdLocalSearch = 10;    // Threshold for the number of iterations without improvement before starting the local search
+        constexpr int thresholdLocalSearch = 5;    // Threshold for the number of iterations without improvement before starting the local search
         constexpr int numberOfMutations = 3;       // Number of mutations to apply to an individual
 
 
