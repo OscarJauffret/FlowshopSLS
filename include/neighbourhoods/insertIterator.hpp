@@ -16,11 +16,15 @@
  * @field current - The current solution.
  * @field from - The index of the job to insert.
  * @field to - The index where to insert the job.
+ * @field alpha - Used to limit the number of positions to insert the job.
+ * @field hasValid - Indicates if the iterator has a valid position to insert the job.
  * @see neighbourhoodIterator.hpp
  */
 class InsertIterator: public NeighbourhoodIterator {
     const Solution* current;
     uint8_t from, to;
+    const uint8_t alpha;
+    bool hasValid = false;
 
     /**
      * @brief The reset function resets the iterator to the beginning of the neighborhood. This is used when the solution changes.
@@ -36,12 +40,21 @@ class InsertIterator: public NeighbourhoodIterator {
      * Basically, it moves the iterator to the next position where from != to.
      */
     void moveToNextValid() {
-        while (from < current->getNumberOfJobs() && from == to) {
-            to++;
-            if (to >= current->getNumberOfJobs()) {
+        hasValid = false;
+        int n = current->getNumberOfJobs();
+        while (from < n) {
+            int maxTo = (alpha < 0 ? n - 1 : std::min(n - 1, from + alpha));
+            if (to > maxTo) {
+                // move to next from
                 from++;
-                to = 0;
+                to = (alpha < 0 ? 0 : std::max(0, from - alpha));
+                continue;
             }
+            if (to != from) {
+                hasValid = true;
+                break;
+            }
+            to++;
         }
     }
 
@@ -51,7 +64,16 @@ public:
      * @brief The constructor of the InsertIterator class. It initializes the iterator with the given solution.
      * @param sol The solution to iterate over.
      */
-    explicit InsertIterator(const Solution &sol): current(&sol), from(0), to(0) {
+    explicit InsertIterator(const Solution &sol): current(&sol), from(0), to(0), alpha(-1) {
+        moveToNextValid();
+    }
+
+    /**
+     * @brief The constructor of the InsertIterator class. It initializes the iterator with the given solution.
+     * @param sol The solution to iterate over.
+     * @param alpha The parameter that controls the extent of the neighborhood search.
+     */
+    explicit InsertIterator(const Solution &sol, uint8_t alpha): current(&sol), from(0), to(0), alpha(alpha) {
         moveToNextValid();
     }
 
@@ -61,7 +83,7 @@ public:
      * @return True if there are more neighbors to explore, false otherwise.
      */
     bool hasNext() override {
-        return from < current->getNumberOfJobs();
+        return hasValid;
     }
 
     /**
@@ -71,10 +93,6 @@ public:
      */
     Solution next() override {
         Solution neighbor = current->insert(from, to++);
-        if (to >= current->getNumberOfJobs()) {
-            from++;
-            to = 0;
-        }
         moveToNextValid();
         return neighbor;
     }

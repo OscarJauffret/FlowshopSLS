@@ -20,6 +20,7 @@ namespace config {
     namespace paths {
         inline const string projectRoot = PROJECT_SOURCE_DIR;                         // Path to the project root
         const string instancePath = projectRoot + "/instances/Benchmarks/";           // Path to the instances
+        const string customInstancePath = projectRoot + "/instances/instanceFromIntro"; // Path to the custom from intro
         const string bestKnownPath = projectRoot + "/instances/bestKnownTCT.txt";     // Path to the best known solutions
 
         const string resultsPathII = projectRoot + "/results/resultsII.csv";                      // Path to the results

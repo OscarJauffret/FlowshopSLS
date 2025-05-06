@@ -10,6 +10,8 @@
 #include "../../include/config/flowShopConfig.hpp"
 #include <iostream>
 #include <set>
+#include <chrono>
+
 
 #include "../config.hpp"
 
