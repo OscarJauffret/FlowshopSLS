@@ -22,4 +22,6 @@ add_executable(pfsp-ii
         include/config/flowShopConfigVnd.hpp
         src/config/flowShopConfigMemetic.cpp
         include/config/flowShopConfigMemetic.hpp
+        src/core/flowShopTabuSearch.cpp
+        include/core/flowShopTabuSearch.hpp
 )

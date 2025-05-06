@@ -62,7 +62,16 @@ namespace config {
 
         constexpr int thresholdLocalSearch = 10;    // Threshold for the number of iterations without improvement before starting the local search
         constexpr int numberOfMutations = 3;       // Number of mutations to apply to an individual
+
+
+        namespace tabu {
+            constexpr int tenure = 7;       // Tenure of the tabu list in the memetic algo
+            constexpr int maxGenerations = 50; // Maximum number of generations to run the algorithm (taken from the paper of Lin-Yu Tseng and Ya-Tai Lin)
+            constexpr int maxStuck = 5;        // Maximum number of generations without improvement before perturbation step
+
+        }
     }
+
 }
 
 #endif //FLOWSHOPSLS_CONFIG_HPP
