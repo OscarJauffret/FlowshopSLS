@@ -62,14 +62,20 @@ namespace config {
             }
 
         constexpr int thresholdLocalSearch = 5;    // Threshold for the number of iterations without improvement before starting the local search
-        constexpr int numberOfMutations = 3;       // Number of mutations to apply to an individual
+        constexpr int maxStuck = 10;               // Maximum number of iterations without improvement before stopping
 
+        namespace mutation {
+            constexpr int numberOfMutations = 3;        // Number of mutations to apply to an individual
+            constexpr int maxGenerations = 100;         // Number of generations to apply the mutation operator (taken from the paper of Lin-Yu Tseng and Ya-Tai Lin)
+            constexpr int maxStuck = 5;                 // Maximum number of generations in mutation without improvement
+            constexpr float replaceRate = 1.05;         // Multiplier by which the best solution is multiplied by to check if it should be replaced
+        }
 
         namespace tabu {
             constexpr int tenure = 7;       // Tenure of the tabu list in the memetic algo
             constexpr int maxGenerations = 50; // Maximum number of generations to run the algorithm (taken from the paper of Lin-Yu Tseng and Ya-Tai Lin)
             constexpr int maxStuck = 5;        // Maximum number of generations without improvement before perturbation step
-            constexpr int neighborsConsideredInPerturbation = 3; // Number of neighbors to consider in the perturbation step
+            constexpr int neighborsConsideredInPerturbation = 5; // Number of neighbors to consider in the perturbation step
         }
     }
 

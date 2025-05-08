@@ -30,12 +30,19 @@ class FlowShopMemetic: public FlowShopSolver {
 
 
     /**
-    * @brief The mutate function applies a mutation operator to a solution.
-    * The implementation is my own simplified version of the one used in the paper of Lin-Yu Tseng and Ya-Tai Lin.
-    * @param solution The solution to mutate.
+    * @brief The orthogonalArrayTest function finds the best combination of mutations among randomly selected
+    * This is the implementation of the OATest function from the paper of Lin-Yu Tseng and Ya-Tai Lin.
+    * @param solution The solution to orthogonalArrayTest.
     * @return The mutated solution.
     */
-    Solution mutate(const Solution &solution);
+    Solution orthogonalArrayTest(const Solution &solution);
+
+    /**
+    * @brief The mutate function mutates a solution by applying a mutation operator.
+    * @param solution The solution to orthogonalArrayTest.
+    * @return The mutated solution.
+    */
+    Solution mutate(Solution &solution);
 
     /**
     * @brief The crossover function combines two parent solutions to create a new solution.

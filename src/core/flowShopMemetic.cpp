@@ -14,9 +14,6 @@
 #include <set>
 #include <chrono>
 
-
-#include "../config.hpp"
-
 namespace chrono = std::chrono;
 
 using std::endl;
@@ -108,45 +105,28 @@ vector<vector<int>> FlowShopMemetic::generateOrthogonalArray(const int size) {
     return orthogonalArray;
 }
 
-Solution FlowShopMemetic::mutate(const Solution &solution) {
-
-    const int n = solution.getNumberOfJobs();
-    std::uniform_int_distribution dist(0, n - 1);
-    vector<std::pair<int, int>> mutationPositions;
-
-    while (mutationPositions.size() < config::memetic::numberOfMutations) {
-        int from = dist(rng);
-        int to = dist(rng);
-        if (from != to) {
-            mutationPositions.emplace_back(from, to);
-        }
-    }
-
-    std::vector<Solution> candidates;
-    for (const auto& row: mutationOrthogonalArray) {
-        Solution mutated = solution;
-        for (int j = 0; j < mutationPositions.size(); j++) {
-            if (row[j] == 1) {
-                mutated = mutated.insert(mutationPositions[j].first, mutationPositions[j].second, 0, false);
+vector<Solution> FlowShopMemetic::constructNewPopulation() {
+    vector<Solution> newPopulation;
+    while (newPopulation.size() < populationSize) {
+        // Select parents for crossover
+        Solution parent1 = selectParent();
+        Solution parent2 = selectParent();
+        // Perform crossover
+        Solution child = crossover(parent1, parent2);
+        if (child < parent1 || child < parent2) {
+            if (stuck > config::memetic::thresholdLocalSearch) {
+                child = localSearch(child);
             }
         }
-        mutated.evaluate(0);
-        candidates.push_back(mutated);
+        vector trio = {parent1, parent2, child};
+        std::sort(trio.begin(), trio.end());
+        // P1 and P2 are replaced by the best two of P1, P2, and child
+        newPopulation.push_back(trio[0]);
+        newPopulation.push_back(trio[1]);
     }
 
-    vector<int> bestLevels = findBestLevels(candidates, mutationOrthogonalArray, config::memetic::numberOfMutations);
+    return newPopulation;
 
-    // Generate new child based on the best levels (Taguchi's method)
-    Solution taguchiMutation = solution;
-    for (int j = 0; j < config::memetic::numberOfMutations; ++j) {
-        if (bestLevels[j] == 1) {
-            taguchiMutation = taguchiMutation.insert(mutationPositions[j].first, mutationPositions[j].second, 0, false);
-        }
-    }
-    taguchiMutation.evaluate(0);
-    candidates.push_back(taguchiMutation);
-
-    return *std::min_element(candidates.begin(), candidates.end());
 }
 
 vector<uint8_t> FlowShopMemetic::repair(const vector<uint8_t>& candidate, const Solution& reference) {
@@ -221,7 +201,7 @@ Solution FlowShopMemetic::crossover(const Solution &parent1, const Solution &par
     // (0 = P1, 1 = P2)
     // Repair if necessary
     // Split parents into segments
-    std::vector<std::vector<uint8_t>> segmentsP1, segmentsP2;
+    vector<vector<uint8_t>> segmentsP1, segmentsP2;
     for (int i = 0; i < numParentPieces; i++) {
         int start = cutPoints[i];
         int end = cutPoints[i + 1];
@@ -230,19 +210,28 @@ Solution FlowShopMemetic::crossover(const Solution &parent1, const Solution &par
     }
 
     // Generate candidate children from the orthogonal array
-    std::vector<Solution> candidates;
+    vector<Solution> candidates;
     for (const auto& row : crossoverOrthogonalArray) {
-        std::vector<uint8_t> candidatePermutation;
+        vector<uint8_t> candidatePermutation;
+        int startIndex = numParentPieces;       // index of the first segment where the parent changes
+        int baseParent = row[0];        // 0 = P1, 1 = P2
 
         for (int j = 0; j < numParentPieces; ++j) {
+            if (row[j] != baseParent && j < startIndex) {
+                startIndex = j;             // index of the first segment where the parent changes
+            }
             const auto& segment = (row[j] == 0) ? segmentsP1[j] : segmentsP2[j];
             candidatePermutation.insert(candidatePermutation.end(), segment.begin(), segment.end());
         }
 
-        Solution candidate = parent1; // Create a new solution based on parent1
+        // Create a new solution based on parent1 or parent2 depending on the first segment (this avoids to recompute the fitness up to the first segment change)
+        Solution candidate = baseParent == 0 ? parent1 : parent2;;
         candidatePermutation = repair(candidatePermutation, parent1); // Repair the candidate
         candidate.setPermutation(candidatePermutation);
-        candidate.evaluate(0);
+        if (startIndex != numParentPieces) {
+            candidate.evaluate(cutPoints[startIndex]);  // Evaluate the candidate only from the first point where the parent changes
+            // Don't need to re-evaluate if startIndex == numParentPieces because the candidate then comes entirely from a single parent
+        }
         candidates.emplace_back(candidate);
     }
 
@@ -272,28 +261,84 @@ const Solution FlowShopMemetic::selectParent() {
     return population[index];
 }
 
-vector<Solution> FlowShopMemetic::constructNewPopulation() {
-    vector<Solution> newPopulation;
-    while (newPopulation.size() < populationSize) {
-        // Select parents for crossover
-        Solution parent1 = selectParent();
-        Solution parent2 = selectParent();
-        // Perform crossover
-        Solution child = crossover(parent1, parent2);
-        if (child < parent1 || child < parent2) {
-            if (stuck > config::memetic::thresholdLocalSearch) {
-                child = localSearch(child);
-            }
+Solution FlowShopMemetic::orthogonalArrayTest(const Solution &solution) {
+
+    const int n = solution.getNumberOfJobs();
+    std::uniform_int_distribution dist(0, n - 1);
+    vector<std::pair<int, int>> mutationPositions;
+
+    while (mutationPositions.size() < config::memetic::mutation::numberOfMutations) {
+        int from = dist(rng);
+        int to = dist(rng);
+        if (from != to) {
+            mutationPositions.emplace_back(from, to);
         }
-        vector trio = {parent1, parent2, child};
-        std::sort(trio.begin(), trio.end());
-        // P1 and P2 are replaced by the best two of P1, P2, and child
-        newPopulation.push_back(trio[0]);
-        newPopulation.push_back(trio[1]);
     }
 
-    return newPopulation;
+    std::vector<Solution> candidates;
+    for (const auto& row: mutationOrthogonalArray) {
+        Solution mutated = solution;
+        int minFrom = n;
+        for (int j = 0; j < mutationPositions.size(); j++) {
+            if (row[j] == 1) {
+                int from = mutationPositions[j].first;
+                int to = mutationPositions[j].second;
+                mutated = mutated.insert(from, to, 0, false);
+                minFrom = std::min(minFrom, std::min(from, to));
+            }
+        }
+        mutated.evaluate(minFrom); // Evaluate the solution only for the first mutation position
+        candidates.push_back(mutated);
+    }
 
+    vector<int> bestLevels = findBestLevels(candidates, mutationOrthogonalArray, config::memetic::mutation::numberOfMutations);
+
+    // Generate new child based on the best levels (Taguchi's method)
+    Solution taguchiMutation = solution;
+    int minFromTaguchi = n;
+    for (int j = 0; j < config::memetic::mutation::numberOfMutations; ++j) {
+        if (bestLevels[j] == 1) {
+            int from = mutationPositions[j].first;
+            int to = mutationPositions[j].second;
+            taguchiMutation = taguchiMutation.insert(from, to, 0, false);
+            minFromTaguchi = std::min(minFromTaguchi, std::min(from, to));
+        }
+    }
+    taguchiMutation.evaluate(minFromTaguchi);
+    candidates.push_back(taguchiMutation);
+
+    return *std::min_element(candidates.begin(), candidates.end());
+}
+
+Solution FlowShopMemetic::mutate(Solution &solution) {
+    Solution mutated = solution;
+    bool isImproved = false;
+    int generation = 0;
+    int stuckMutation = 0;
+
+    while (generation < config::memetic::mutation::maxGenerations) {
+        Solution bestMutation = orthogonalArrayTest(solution);
+
+        if (bestMutation < solution) {
+            solution = bestMutation;
+            stuckMutation = 0;
+            if (bestMutation < mutated) {
+                mutated = bestMutation;
+                isImproved = true;
+            }
+        } else {
+            stuckMutation++;
+            if ((stuckMutation >= config::memetic::mutation::maxStuck) && (bestMutation.getFitness() < mutated.getFitness() * config::memetic::mutation::replaceRate)) {
+                solution = bestMutation;
+            }
+        }
+        generation++;
+    }
+    if (isImproved) {
+        return mutated;
+    } else {
+        return solution; // Return the original solution if no improvement was found
+    }
 }
 
 Solution FlowShopMemetic::run() {
@@ -318,9 +363,14 @@ Solution FlowShopMemetic::run() {
         for (int i = 0; i < numMutations; i++) {
             int idx = dist(rng);
             Solution mutated = mutate(newPopulation[idx]);
-            mutated.evaluate(0);
             newPopulation[idx] = mutated;
         }
+
+        if (stuck > config::memetic::maxStuck) {
+            return best; // Stop if no improvement is found for a while
+        }
+
+        population = newPopulation; // Update the population with the new individuals
 
     }
 
