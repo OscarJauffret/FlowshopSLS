@@ -31,13 +31,13 @@ FlowShopConfigTabuSearch::FlowShopConfigTabuSearch(int argc, char **argv) : Flow
 
     // The fifth argument is the maximum number of generations
     maxGenerations = std::stoi(argv[5]);
-    if (maxGenerations <= 0) {
-        throw invalid_argument("Invalid maximum number of generations! Use a positive integer.");
+    if (maxGenerations < 0) {
+        throw invalid_argument("Invalid maximum number of generations! Use a positive integer or zero to have the limit set by the VND times");
     }
 
     // The sixth argument is the maximum number of generations without improvement
     maxStuck = std::stoi(argv[6]);
-    if (maxStuck <= 0 || maxStuck > maxGenerations) {
+    if (maxStuck < 0 || (maxStuck > maxGenerations && maxGenerations != 0)) {
         throw invalid_argument("Invalid maximum number of generations without improvement! Use a positive integer less than the maximum number of generations.");
     }
 }
