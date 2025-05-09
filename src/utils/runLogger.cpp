@@ -56,12 +56,11 @@ string RunLogger::getInstanceName(const string &fullpath) {
     return fs::path(fullpath).filename().string();
 }
 
-void RunLogger::log(const FlowShopConfigII &config, const uint8_t nJobs,
-                      const double time, const Solution &solution) const {
+void RunLogger::log(const FlowShopConfigII &config, double pctDev, double time, const Solution &solution,
+                    uint8_t nJobs) const {
 
     uint64_t fitness = solution.getFitness();
     string instancePath = config.getInstancePath();
-    double pctDev = getPercentDeviation(instancePath, fitness);
 
     std::ofstream file(config::paths::resultsPathII, std::ios_base::app);
     if (!file.is_open()) {
@@ -78,12 +77,11 @@ void RunLogger::log(const FlowShopConfigII &config, const uint8_t nJobs,
          << std::endl;
 }
 
-void RunLogger::log(const FlowShopConfigVND &config, const uint8_t nJobs,
-                       const double time, const Solution &solution) const {
+void RunLogger::log(const FlowShopConfigVND &config, double pctDev, double time, const Solution &solution,
+                    uint8_t nJobs) const {
 
     uint64_t fitness = solution.getFitness();
     string instancePath = config.getInstancePath();
-    double pctDev = getPercentDeviation(instancePath, fitness);
 
     std::ofstream file(config::paths::resultsPathVND, std::ios_base::app);
     if (!file.is_open()) {
@@ -100,12 +98,11 @@ void RunLogger::log(const FlowShopConfigVND &config, const uint8_t nJobs,
 
 }
 
-void RunLogger::log(const FlowShopConfigMemetic &config, const uint8_t nJobs,
-                    const double time, const Solution &solution) const {
+void RunLogger::log(const FlowShopConfigMemetic &config, double pctDev, double time, const Solution &solution,
+                    uint8_t nJobs) const {
 
     uint64_t fitness = solution.getFitness();
     string instancePath = config.getInstancePath();
-    double pctDev = getPercentDeviation(instancePath, fitness);
 
     std::ofstream file(config::paths::resultsPathMemetic, std::ios_base::app);
     if (!file.is_open()) {
@@ -121,11 +118,10 @@ void RunLogger::log(const FlowShopConfigMemetic &config, const uint8_t nJobs,
          << std::endl;
 }
 
-void RunLogger::log(const FlowShopConfigTabuSearch &config, uint8_t nJobs,
-                    double time, const Solution &solution) const {
+void RunLogger::log(const FlowShopConfigTabuSearch &config, double pctDev, double time, const Solution &solution,
+                    uint8_t nJobs) const {
     uint64_t fitness = solution.getFitness();
     string instancePath = config.getInstancePath();
-    double pctDev = getPercentDeviation(instancePath, fitness);
 
     std::ofstream file(config::paths::resultsPathTabu, std::ios_base::app);
     if (!file.is_open()) {
@@ -145,20 +141,19 @@ void RunLogger::log(const FlowShopConfigTabuSearch &config, uint8_t nJobs,
 
 }
 
-void RunLogger::log(const FlowShopConfig& config, const uint8_t nJobs,
-                    const double time, const Solution& solution) const {
+void RunLogger::log(const FlowShopConfig &config, double pctDev, double time, const Solution &solution, uint8_t nJobs) const {
     switch (config.getAlgorithmType()) {
     case AlgorithmType::II:
-        log(dynamic_cast<const FlowShopConfigII&>(config), nJobs, time, solution);
+        log(dynamic_cast<const FlowShopConfigII &>(config), pctDev, time, solution, nJobs);
         break;
     case AlgorithmType::VND:
-        log(dynamic_cast<const FlowShopConfigVND&>(config), nJobs, time, solution);
+        log(dynamic_cast<const FlowShopConfigVND &>(config), pctDev, time, solution, nJobs);
         break;
     case AlgorithmType::MEMETIC:
-        log(dynamic_cast<const FlowShopConfigMemetic&>(config), nJobs, time, solution);
+        log(dynamic_cast<const FlowShopConfigMemetic &>(config), pctDev, time, solution, nJobs);
         break;
     case AlgorithmType::TABU_SEARCH:
-        log(dynamic_cast<const FlowShopConfigTabuSearch&>(config), nJobs, time, solution);
+        log(dynamic_cast<const FlowShopConfigTabuSearch &>(config), pctDev, time, solution, nJobs);
         break;
     default:
         throw std::invalid_argument("Unknown algorithm type in logger.");
