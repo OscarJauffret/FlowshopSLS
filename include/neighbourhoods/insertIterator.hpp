@@ -23,7 +23,7 @@
 class InsertIterator: public NeighbourhoodIterator {
     const Solution* current;
     uint8_t from, to;
-    const uint8_t alpha;
+    const int alpha;
     bool hasValid = false;
 
     /**
@@ -73,7 +73,7 @@ public:
      * @param sol The solution to iterate over.
      * @param alpha The parameter that controls the extent of the neighborhood search.
      */
-    explicit InsertIterator(const Solution &sol, uint8_t alpha): current(&sol), from(0), to(0), alpha(alpha) {
+    explicit InsertIterator(const Solution &sol, int alpha): current(&sol), from(0), to(0), alpha(alpha) {
         moveToNextValid();
     }
 
