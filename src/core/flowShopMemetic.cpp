@@ -26,10 +26,9 @@ FlowShopMemetic::FlowShopMemetic(const Instance& instance, int populationSize, f
       numParentPieces(config::memetic::getNumCuts(instance.jobs)) {
     maxExecutionTime = MemeticTimeLimitProvider::getMemeticAllowedTime(instance.jobs);
 
-    // Initialize the population with random solutions
+    // Initialize the population with srz solutions
     for (int i = 0; i < populationSize; i++) {
-        // Generate a random permutation of jobs
-        Solution solution = initialization::random(instance, rng);
+        Solution solution = initialization::simplifiedRZ(instance, rng);
         population.push_back(solution);
     }
 
@@ -42,7 +41,7 @@ void FlowShopMemetic::initializeLocalSearchFunction(const Instance &instance, Lo
     switch (localSearchMethod) {
         case LocalSearchMethod::II: {
             auto solver = std::make_shared<FlowShopII>(instance, NeighbourhoodStructure::INSERT,
-                                                       PivotingRule::BEST_IMPROVEMENT, InitializationMethod::RANDOM,
+                                                       PivotingRule::FIRST_IMPROVEMENT, InitializationMethod::RANDOM,
                                                        rng);
             localSearch = [solver](const Solution& s) { return solver->run(s); };
             break;
