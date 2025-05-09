@@ -4,10 +4,18 @@
 
 #include "../../include/core/flowShopTabuSearch.hpp"
 #include "../../include/initialization/initialization.hpp"
+#include "../../include/utils/memeticTimeLimitProvider.hpp"
 #include "../config.hpp"
+#include <chrono>
+
+namespace chrono = std::chrono;
+using chrono::steady_clock;
+using chrono::milliseconds;
+using chrono::duration_cast;
+
 
 FlowShopTabuSearch::FlowShopTabuSearch(const Instance &instance, int tabuTenure, int alpha, int maxGenerations, int maxStuck, std::mt19937 &rng)
-                                       : candidate(initialization::random(instance, rng)), tabuTenure(tabuTenure),
+                                       : candidate(initialization::simplifiedRZ(instance, rng)), tabuTenure(tabuTenure),
                                          maxGenerations(maxGenerations), maxStuck(maxStuck), insertIterator(candidate, alpha), rng(rng) {
 
 }
@@ -54,7 +62,15 @@ Solution FlowShopTabuSearch::run() {
     int stuck = 0;
     insertIterator.setSolution(candidate);
 
-    while (generations < maxGenerations) {
+    int allowedTime = 0;
+    auto start = steady_clock::now();
+
+    if (maxGenerations == 0) {
+        allowedTime = MemeticTimeLimitProvider::getMemeticAllowedTime(candidate.getNumberOfJobs());
+    }
+
+    while ((maxGenerations > 0 && generations < maxGenerations) ||
+           (maxGenerations == 0 && duration_cast<milliseconds>(steady_clock::now() - start).count() < allowedTime)) {
         // Neighborhood search procedure
         vector<pair<pair<int, int>, Solution>> neighbors;
         vector<pair<pair<int, int>, Solution>> allNeighbors;
@@ -102,6 +118,6 @@ Solution FlowShopTabuSearch::run() {
         generations++;
         insertIterator.setSolution(candidate); // Reset the iterator with the candidate solution (possibly changed)
     }
-    //tabuList.clear(); // Clear the tabu list at the end of the search
+    tabuList.clear(); // Clear the tabu list at the end of the search
     return candidate;
 }
