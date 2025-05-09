@@ -11,6 +11,7 @@
 #include "../config/flowShopConfigII.hpp"
 #include "../config/flowShopConfigVnd.hpp"
 #include "../config/flowShopConfigMemetic.hpp"
+#include "../config/flowShopConfigTabuSearch.hpp"
 
 #include "stringify.hpp"
 
@@ -74,6 +75,15 @@ public:
     * @param solution The solution found.
     */
     void log(const FlowShopConfigMemetic &config, uint8_t nJobs, double time, const Solution &solution) const;
+
+    /**
+    * @brief Log tabu search results of a run to the results file.
+    * @param config The tabu search configuration of the flow shop algorithm.
+    * @param nJobs The number of jobs in the instance.
+    * @param time The time taken to find the solution in milliseconds.
+    * @param solution The solution found.
+    */
+    void log(const FlowShopConfigTabuSearch &config, uint8_t nJobs, double time, const Solution &solution) const;
 
     /**
      * @brief Log results of a run to the results file.

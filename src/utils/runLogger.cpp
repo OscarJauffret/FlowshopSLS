@@ -109,7 +109,7 @@ void RunLogger::log(const FlowShopConfigMemetic &config, const uint8_t nJobs,
 
     std::ofstream file(config::paths::resultsPathMemetic, std::ios_base::app);
     if (!file.is_open()) {
-        throw std::runtime_error("Could not open results file: " + config::paths::resultsPathVND);
+        throw std::runtime_error("Could not open results file: " + config::paths::resultsPathMemetic);
     }
 
     file << getInstanceName(instancePath) << ","
@@ -119,6 +119,30 @@ void RunLogger::log(const FlowShopConfigMemetic &config, const uint8_t nJobs,
          << config.getPopulationSize() << ","
          << time
          << std::endl;
+}
+
+void RunLogger::log(const FlowShopConfigTabuSearch &config, uint8_t nJobs,
+                    double time, const Solution &solution) const {
+    uint64_t fitness = solution.getFitness();
+    string instancePath = config.getInstancePath();
+    double pctDev = getPercentDeviation(instancePath, fitness);
+
+    std::ofstream file(config::paths::resultsPathTabu, std::ios_base::app);
+    if (!file.is_open()) {
+        throw std::runtime_error("Could not open results file: " + config::paths::resultsPathTabu);
+    }
+
+    file << getInstanceName(instancePath) << ","
+         << static_cast<int>(nJobs) << ","
+         << fitness << ","
+         << pctDev << ","
+         << config.getTabuTenure() << ","
+         << config.getAlpha() << ","
+         << config.getMaxGenerations() << ","
+         << config.getMaxStuck() << ","
+         << time
+         << std::endl;
+
 }
 
 void RunLogger::log(const FlowShopConfig& config, const uint8_t nJobs,
@@ -132,6 +156,9 @@ void RunLogger::log(const FlowShopConfig& config, const uint8_t nJobs,
         break;
     case AlgorithmType::MEMETIC:
         log(dynamic_cast<const FlowShopConfigMemetic&>(config), nJobs, time, solution);
+        break;
+    case AlgorithmType::TABU_SEARCH:
+        log(dynamic_cast<const FlowShopConfigTabuSearch&>(config), nJobs, time, solution);
         break;
     default:
         throw std::invalid_argument("Unknown algorithm type in logger.");
