@@ -7,9 +7,9 @@ INSTANCE=$4
 shift 4 || error "Not enough parameters"
 CONFIG_PARAMS=("$@")
 
-INSTANCE=$(basename "$INSTANCE_PATH")
+INSTANCE=$(basename "$INSTANCE")
 
-OUTPUT=$(./pfsp --tabu --"$INSTANCE" "${CONFIG_PARAMS[@]}")
+OUTPUT=$(./pfsp --tabu --"$INSTANCE" "${CONFIG_PARAMS[0]}" "${CONFIG_PARAMS[1]}" 0 "${CONFIG_PARAMS[2]}")
 
 # Extract the percentage deviation from the output
 [ -z "$OUTPUT" ] && echo 9999 || echo "$OUTPUT"
