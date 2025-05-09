@@ -25,8 +25,8 @@ FlowShopConfigTabuSearch::FlowShopConfigTabuSearch(int argc, char **argv) : Flow
 
     // The fourth argument is the alpha parameter
     alpha = std::stoi(argv[4]);
-    if (alpha <= 0) {
-        throw invalid_argument("Invalid alpha parameter! Use a positive integer.");
+    if (alpha < -1) {
+        throw invalid_argument("Invalid alpha parameter! Use a positive integer or -1 to explore the whole neighborhood.");
     }
 
     // The fifth argument is the maximum number of generations
