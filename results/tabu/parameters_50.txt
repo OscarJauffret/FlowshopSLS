@@ -1,0 +1,4 @@
+# name      switch  type        values
+alpha       ""      i           (-1,50)
+tenure      ""      i           (5,10)
+max_stuck   ""      i           (3,20)

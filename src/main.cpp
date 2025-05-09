@@ -34,10 +34,12 @@ int main(int argc, char* argv[]) {
         double elapsed = std::chrono::duration<double, std::milli>(end - start).count();
 
         // For me, to control the logging of the results
-        bool log = false;
+        bool log = true;
         if (log) {
             auto analyzer = RunLogger();
-            analyzer.log(*config, instance.jobs, elapsed, solution);
+            double pctDev = analyzer.getPercentDeviation(config->getInstancePath(), solution.getFitness());
+            analyzer.log(*config, pctDev, elapsed, solution, instance.jobs);
+            cout << pctDev << endl;     // This is for irace
         } else {
             cout << "Instance: " << config->getInstancePath() << endl;
             cout << "Number of jobs: " << (int) instance.jobs << endl;

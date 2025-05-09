@@ -1,0 +1,16 @@
+#!/bin/bash
+
+CONFIGURATION=$1
+INSTANCEID=$2
+SEED=$3
+INSTANCE=$4
+shift 4 || error "Not enough parameters"
+CONFIG_PARAMS=("$@")
+
+INSTANCE=$(basename "$INSTANCE_PATH")
+
+OUTPUT=$(./pfsp --tabu --"$INSTANCE" "${CONFIG_PARAMS[@]}")
+
+# Extract the percentage deviation from the output
+[ -z "$OUTPUT" ] && echo 9999 || echo "$OUTPUT"
+
