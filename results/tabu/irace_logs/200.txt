@@ -1,0 +1,116 @@
+# 2025-05-10 11:42:11 CEST: Reading parameter file '/Users/oscar/code/c/FlowshopSLS/results/tabu/parameters/200.txt'.
+# 2025-05-10 11:42:11 CEST: Initialization
+# Elitist race
+# Elitist new instances: 1
+# Elitist limit: 2
+# nbIterations: 1
+# minNbSurvival: 7
+# nbParameters: 3
+# seed: 1424703351
+# confidence level: 0.95
+# budget: 100
+# mu: 9
+# deterministic: FALSE
+
+# 2025-05-10 11:42:11 CEST: Iteration 1 of 1
+# experimentsUsed: 0
+# remainingBudget: 100
+# currentBudget: 100
+# nbConfigurations: 10
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          1|         10|          8|     3.739200000|         10|00:32:32|   NA|  NA|    NA|
+|x|          2|         10|          8|     3.452985000|         20|00:32:31|+0.81|0.90|0.1177|
+|x|          3|         10|          8|     3.735036667|         30|00:32:27|+0.62|0.75|0.2718|
+|x|          4|         10|          8|     3.856857500|         40|00:32:30|+0.58|0.68|0.2723|
+|-|          5|          5|          9|     3.771712000|         50|00:32:29|-0.14|0.09|0.9226|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best configuration for the instances in this race: 9
+Best-so-far configuration:           1    mean value:      3.905332000
+Description of the best-so-far configuration:
+  .ID. tenure alpha max_stuck .PARENT.
+1    1     14   118        32       NA
+
+# 2025-05-10 14:24:42 CEST: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+  tenure alpha max_stuck
+1     14   118        32
+9      7   130        41
+8     27    92        38
+6     36   143        26
+4     23   168        44
+# Total CPU user time: 62384.55, CPU sys time: 10230.56, Wall-clock time: 9751.293
+# 2025-05-10 14:24:42 CEST: Starting post-selection:
+# Configurations selected: 1, 9, 8, 6, 4, 2, 3, 5, 7, 10.
+# Pending instances: 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.
+# 2025-05-10 14:24:42 CEST: seed: 1424703351
+# Configurations: 10
+# Available experiments: 50
+# minSurvival: 1
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|.|          2|         10|          8|     3.166770000|          0|00:00:00|   NA|  NA|    NA|
+|.|          4|         10|          8|     3.694545000|          0|00:00:00|+0.54|0.77|0.1690|
+|.|          3|         10|          8|     3.896076667|          0|00:00:00|+0.47|0.65|0.3141|
+|.|          5|         10|          8|     3.834962500|          0|00:00:00|+0.58|0.68|0.2474|
+|.|          1|         10|          8|     3.815810000|          0|00:00:00|+0.63|0.70|0.2431|
+|-|          6|          5|          9|     3.822141667|         10|00:32:31|-0.07|0.11|0.8501|
+|=|          7|          5|          9|     3.701020000|         15|00:32:25|-0.04|0.11|0.8430|
+|=|          8|          5|          9|     3.706618750|         20|00:32:16|+0.01|0.14|0.8220|
+|=|          9|          5|          9|     3.687226667|         25|00:32:18|-0.02|0.09|0.8157|
+|=|         10|          5|          9|     3.727188000|         30|00:32:23|-0.07|0.04|0.8531|
+|=|         11|          5|          9|     3.767356364|         35|00:32:11|-0.06|0.04|0.8529|
+|=|         12|          5|          9|     3.722970000|         40|00:32:27|-0.04|0.05|0.8360|
+|=|         13|          5|          9|     3.750960000|         45|00:32:23|-0.06|0.02|0.8488|
+Error : == irace == l'exécution de la commande ''/Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner' 1 6 1983547932 ../../instances/Benchmarks/ta106  14 118 32 2>&1' renvoie un statut 126
+== irace == The call to targetRunner was:
+/Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner 1 6 1983547932 ../../instances/Benchmarks/ta106  14 118 32
+== irace == The output was:
+sh: /Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner: Permission denied
+== irace == This is not a bug in irace, but means that something failed when running the command(s) above or they were terminated before completion. Try to run the command(s) above from the execution directory '/Users/oscar/code/c/FlowshopSLS/bin' to investigate the issue. See also Appendix B (targetRunner troubleshooting checklist) of the User Guide (https://cran.r-project.org/package=irace/vignettes/irace-package.pdf).
+ Error : == irace == l'exécution de la commande ''/Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner' 4 6 1983547932 ../../instances/Benchmarks/ta106  23 168 44 2>&1' renvoie un statut 126
+== irace == The call to targetRunner was:
+/Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner 4 6 1983547932 ../../instances/Benchmarks/ta106  23 168 44
+== irace == The output was:
+sh: /Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner: Permission denied
+== irace == This is not a bug in irace, but means that something failed when running the command(s) above or they were terminated before completion. Try to run the command(s) above from the execution directory '/Users/oscar/code/c/FlowshopSLS/bin' to investigate the issue. See also Appendix B (targetRunner troubleshooting checklist) of the User Guide (https://cran.r-project.org/package=irace/vignettes/irace-package.pdf).
+ Error : == irace == l'exécution de la commande ''/Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner' 6 6 1983547932 ../../instances/Benchmarks/ta106  36 143 26 2>&1' renvoie un statut 126
+== irace == The call to targetRunner was:
+/Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner 6 6 1983547932 ../../instances/Benchmarks/ta106  36 143 26
+== irace == The output was:
+sh: /Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner: Permission denied
+== irace == This is not a bug in irace, but means that something failed when running the command(s) above or they were terminated before completion. Try to run the command(s) above from the execution directory '/Users/oscar/code/c/FlowshopSLS/bin' to investigate the issue. See also Appendix B (targetRunner troubleshooting checklist) of the User Guide (https://cran.r-project.org/package=irace/vignettes/irace-package.pdf).
+ Error : == irace == l'exécution de la commande ''/Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner' 8 6 1983547932 ../../instances/Benchmarks/ta106  27 92 38 2>&1' renvoie un statut 126
+== irace == The call to targetRunner was:
+/Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner 8 6 1983547932 ../../instances/Benchmarks/ta106  27 92 38
+== irace == The output was:
+sh: /Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner: Permission denied
+== irace == This is not a bug in irace, but means that something failed when running the command(s) above or they were terminated before completion. Try to run the command(s) above from the execution directory '/Users/oscar/code/c/FlowshopSLS/bin' to investigate the issue. See also Appendix B (targetRunner troubleshooting checklist) of the User Guide (https://cran.r-project.org/package=irace/vignettes/irace-package.pdf).
+ Error : == irace == l'exécution de la commande ''/Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner' 9 6 1983547932 ../../instances/Benchmarks/ta106  7 130 41 2>&1' renvoie un statut 126
+== irace == The call to targetRunner was:
+/Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner 9 6 1983547932 ../../instances/Benchmarks/ta106  7 130 41
+== irace == The output was:
+sh: /Users/oscar/code/c/FlowshopSLS/results/tabu/target_runner: Permission denied
+== irace == This is not a bug in irace, but means that something failed when running the command(s) above or they were terminated before completion. Try to run the command(s) above from the execution directory '/Users/oscar/code/c/FlowshopSLS/bin' to investigate the issue. See also Appendix B (targetRunner troubleshooting checklist) of the User Guide (https://cran.r-project.org/package=irace/vignettes/irace-package.pdf).
+Erreur : == irace == A child process triggered a fatal error
+De plus : Message d'avis :
+Dans parallel::mclapply(experiments, exec_target_runner, mc.preschedule = !scenario$loadBalancing,  :
+  les appels de fonction 5 ont produit une erreur
+Exécution arrêtée
