@@ -316,6 +316,9 @@ Solution FlowShopMemetic::mutate(Solution &solution) {
     int stuckMutation = 0;
 
     while (generation < config::memetic::mutation::maxGenerations) {
+        if (isTimeLimitReached()) {
+            break; // Stop if the time limit is reached
+        }
         Solution bestMutation = orthogonalArrayTest(solution);
 
         if (bestMutation < solution) {
@@ -340,12 +343,17 @@ Solution FlowShopMemetic::mutate(Solution &solution) {
     }
 }
 
+bool FlowShopMemetic::isTimeLimitReached() const {
+    return duration_cast<chrono::milliseconds>(steady_clock::now() - startTime).count() >= maxExecutionTime;
+}
+
+
 Solution FlowShopMemetic::run() {
-    auto start = steady_clock::now();
+    startTime = steady_clock::now();
     applyLocalSearch();
     std::sort(population.begin(), population.end());
     Solution best = population[0];
-    while (chrono::duration_cast<chrono::milliseconds>(steady_clock::now() - start).count() < maxExecutionTime) {
+    while (chrono::duration_cast<chrono::milliseconds>(steady_clock::now() - startTime).count() < maxExecutionTime) {
         // Crossover
         vector<Solution> newPopulation = constructNewPopulation();
         std::sort(newPopulation.begin(), newPopulation.end());

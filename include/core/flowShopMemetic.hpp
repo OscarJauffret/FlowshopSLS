@@ -11,8 +11,12 @@
 #include <vector>
 #include <random>
 #include <functional>
+#include <chrono>
+
+namespace chrono = std::chrono;
 
 using std::vector;
+using chrono::steady_clock;
 
 class FlowShopMemetic: public FlowShopSolver {
     vector<Solution> population; // Population of solutions
@@ -21,6 +25,7 @@ class FlowShopMemetic: public FlowShopSolver {
     int stuck = 0; // Number of iterations without improvement
 
     double maxExecutionTime; // Maximum execution time for the algorithm, based on VND benchmark
+    steady_clock::time_point startTime;
     std::function<Solution(const Solution &)> localSearch; // Local search function to be used
     std::mt19937 rng; // Random number generator
 
@@ -106,6 +111,12 @@ class FlowShopMemetic: public FlowShopSolver {
      * @param localSearchMethod The local search method to be used.
      */
     void initializeLocalSearchFunction(const Instance &instance, LocalSearchMethod localSearchMethod);
+
+    /**
+     * @brief The isTimeLimitReached function checks if the time limit for the algorithm has been reached.
+     * @return True if the time limit is reached, false otherwise.
+     */
+    [[nodiscard]] bool isTimeLimitReached() const;
 
 public:
     /**
