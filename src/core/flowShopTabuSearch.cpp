@@ -72,44 +72,50 @@ Solution FlowShopTabuSearch::run() {
     while ((maxGenerations > 0 && generations < maxGenerations) ||
            (maxGenerations == 0 && duration_cast<milliseconds>(steady_clock::now() - start).count() < allowedTime)) {
         // Neighborhood search procedure
-        vector<pair<pair<int, int>, Solution>> neighbors;
-        vector<pair<pair<int, int>, Solution>> allNeighbors;
+        pair<pair<int, int>, Solution> bestNeighbor = {{-1, -1}, candidate};
+        vector<pair<pair<int, int>, uint64_t>> allNeighbors;
+        bool firstNeighbor = true;
         while (insertIterator.hasNext()) {
             uint8_t from = insertIterator.getFrom();
             uint8_t to = insertIterator.getTo();
             Solution neighbor = insertIterator.next();
-            // Check if the move is tabu, but if the neighbor is better than the candidate, we can consider it
-            if (!isTabu(from, to) || neighbor < candidate) {
-                neighbors.emplace_back(std::make_pair(from, to), neighbor);
-            }
-            allNeighbors.emplace_back(std::make_pair(from, to), neighbor);
-        }
-        // Sort the neighbors by fitness
-        std::sort(neighbors.begin(), neighbors.end(), [](const auto &a, const auto &b) {
-            return a.second.getFitness() < b.second.getFitness();
-        });
 
-        if (!neighbors.empty()) {
-            int from = neighbors[0].first.first;
-            int to = neighbors[0].first.second;
+            if (!isTabu(from, to) || neighbor < candidate) {
+                if (firstNeighbor || neighbor < bestNeighbor.second) {
+                    // If the neighbor is the first one or better than the best one, update the best neighbor
+                    // If we do not check if the neighbor is the first one, we would only consider the neighbors
+                    // that lead to a better solution than the current one because bestNeighbor is initialized with the current solution
+                    bestNeighbor = {{from, to}, neighbor};
+                }
+                firstNeighbor = false;
+            }
+            allNeighbors.emplace_back(std::make_pair(from, to), neighbor.getFitness());
+
+        }
+        if (bestNeighbor.first.first != -1 && bestNeighbor.first.second != -1) {
+            int from = bestNeighbor.first.first;
+            int to = bestNeighbor.first.second;
             addToTabuList(from, to);  // Add the move to the tabu list
 
-            if (neighbors[0].second < candidate) {   // Means we found a better neighbor
-                candidate = neighbors[0].second;
+            if (bestNeighbor.second < candidate) {
+                candidate = bestNeighbor.second;
                 stuck = 0;
             } else {
                 stuck++;
                 if (stuck >= maxStuck) {
                     if (allNeighbors.size() > 1) {
-                        std::sort(allNeighbors.begin(), allNeighbors.end(), [](const auto &a, const auto &b) {
-                            return a.second.getFitness() < b.second.getFitness();
+                        std::sort(allNeighbors.begin(), allNeighbors.end(), [](const auto& a, const auto& b) {
+                            return a.second < b.second;
                         });
-                        std::uniform_int_distribution<> dist(
-                            1, std::min(config::memetic::tabu::neighborsConsideredInPerturbation, (int) allNeighbors.size() - 1)
-                        );
-                        candidate = allNeighbors[dist(rng)].second;
+                        std::uniform_int_distribution<> dist(1, std::min(config::memetic::tabu::neighborsConsideredInPerturbation,
+                                        static_cast<int>(allNeighbors.size()) - 1));
+                        int selected = dist(rng);
+                        int f = allNeighbors[selected].first.first;
+                        int t = allNeighbors[selected].first.second;
+                        Solution recomputed = candidate.insert(f, t);
+                        candidate = recomputed;
                     } else {
-                        candidate = allNeighbors[0].second;
+                        candidate = bestNeighbor.second;
                     }
                     stuck = 0;
                 }
