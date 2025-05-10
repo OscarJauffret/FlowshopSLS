@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# === Configuration ===
+EXEC="../bin/pfsp"
+INSTANCE_DIR="../instances/Benchmarks"
+MAX_JOBS=12
+ALPHA=24
+TENURE=8
+MAX_STUCK=14
+MAX_GENERATIONS=0
+
+# === Build job queue ===
+JOBS=()
+for instance_file in "$INSTANCE_DIR"/*; do
+    instance_name=$(basename "$instance_file")
+    REPEAT=10
+    [[ "$instance_name" == ta1* ]] && REPEAT=3
+
+    for ((i = 1; i <= REPEAT; i++)); do
+        JOBS+=("$EXEC --tabu --$instance_name $TENURE $ALPHA $MAX_GENERATIONS $MAX_STUCK # $instance_name [$i/$REPEAT]")
+    done
+done
+
+i=0
+total=${#JOBS[@]}
+
+for full_cmd in "${JOBS[@]}"; do
+    ((i++))
+    display_cmd=$(echo "$full_cmd" | sed 's/#/→/')
+    echo "[$i/$total] $display_cmd"
+    eval "${full_cmd%%#*}" > /dev/null &
+
+    while (( $(jobs -r | wc -l) >= MAX_JOBS )); do sleep 0.2; done
+done
+
+
+wait
+echo "All runs completed."
