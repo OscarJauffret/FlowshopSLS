@@ -1,0 +1,8 @@
+parameterFile = "./parameters/50.txt"
+execDir = "../../bin"
+trainInstancesFile = "./instances/instances_50.txt"
+maxExperiments = 3000
+
+targetRunner = "./target_runner"
+parallel = 15
+logFile = "./irace_log.Rdata"

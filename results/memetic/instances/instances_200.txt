@@ -1,0 +1,10 @@
+../../instances/Benchmarks/ta101
+../../instances/Benchmarks/ta102
+../../instances/Benchmarks/ta103
+../../instances/Benchmarks/ta104
+../../instances/Benchmarks/ta105
+../../instances/Benchmarks/ta106
+../../instances/Benchmarks/ta107
+../../instances/Benchmarks/ta108
+../../instances/Benchmarks/ta109
+../../instances/Benchmarks/ta110
