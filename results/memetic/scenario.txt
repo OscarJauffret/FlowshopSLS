@@ -1,7 +1,7 @@
-parameterFile = "./parameters/50.txt"
+parameterFile = "./parameters/100.txt"
 execDir = "../../bin"
-trainInstancesFile = "./instances/instances_50.txt"
-maxExperiments = 3000
+trainInstancesFile = "./instances/instances_100.txt"
+maxExperiments = 400
 
 targetRunner = "./target_runner"
 parallel = 15
