@@ -1,0 +1,170 @@
+# 2025-05-10 10:32:37 CEST: Reading parameter file '/mnt/a/C Projects/FlowshopSLS/results/tabu/parameters/100.txt'.
+# 2025-05-10 10:32:37 CEST: Initialization
+# Elitist race
+# Elitist new instances: 1
+# Elitist limit: 2
+# nbIterations: 3
+# minNbSurvival: 3
+# nbParameters: 3
+# seed: 950476316
+# confidence level: 0.95
+# budget: 400
+# mu: 5
+# deterministic: FALSE
+
+# 2025-05-10 10:32:37 CEST: Iteration 1 of 3
+# experimentsUsed: 0
+# remainingBudget: 400
+# currentBudget: 133
+# nbConfigurations: 22
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          1|         22|         18|     3.364410000|         22|00:21:01|   NA|  NA|    NA|
+|x|          2|         22|         18|     3.591075000|         44|00:21:01|+0.41|0.71|0.3163|
+|x|          3|         22|         18|     3.722493333|         66|00:21:01|+0.37|0.58|0.3525|
+|x|          4|         22|         12|     3.952310000|         88|00:21:01|+0.40|0.55|0.3251|
+|-|          5|         16|         12|     3.722814000|        110|00:21:00|-0.07|0.14|1.0188|
+|=|          6|         16|         14|     3.730363333|        126|00:21:00|+0.01|0.18|0.9133|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:          14    mean value:      3.730363333
+Description of the best-so-far configuration:
+   .ID. tenure alpha max_stuck .PARENT.
+14   14     16    81        13       NA
+
+# 2025-05-10 12:38:43 CEST: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+   tenure alpha max_stuck
+14     16    81        13
+9      18    68        30
+12      6    93        23
+# 2025-05-10 12:38:43 CEST: Iteration 2 of 3
+# experimentsUsed: 126
+# remainingBudget: 274
+# currentBudget: 137
+# nbConfigurations: 22
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          7|         22|         14|     4.503480000|         22|00:21:02|   NA|  NA|    NA|
+|x|          3|         22|         14|     4.232120000|         41|00:21:01|-0.12|0.44|1.3065|
+|x|          4|         22|         25|     3.896913333|         60|00:21:01|-0.18|0.21|1.2905|
+|x|          2|         22|         38|     4.082617500|         79|00:21:01|-0.13|0.15|1.2002|
+|=|          5|         22|         12|     3.885508000|         98|00:21:01|-0.15|0.08|1.1262|
+|=|          1|         22|         38|     3.811275000|        117|00:21:01|-0.10|0.08|1.0711|
+|=|          6|         22|         14|     3.840808571|        136|00:21:01|-0.06|0.09|0.9897|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:          14    mean value:      3.840808571
+Description of the best-so-far configuration:
+   .ID. tenure alpha max_stuck .PARENT.
+14   14     16    81        13       NA
+
+# 2025-05-10 15:05:52 CEST: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+   tenure alpha max_stuck
+14     16    81        13
+9      18    68        30
+26      9    78        19
+# 2025-05-10 15:05:52 CEST: Iteration 3 of 3
+# experimentsUsed: 262
+# remainingBudget: 138
+# currentBudget: 138
+# nbConfigurations: 19
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          8|         19|         56|     2.908090000|         19|00:21:01|   NA|  NA|    NA|
+|x|          4|         19|         56|     3.081795000|         35|00:21:00|+0.23|0.62|0.6298|
+|x|          6|         19|         56|     3.338226667|         51|00:21:00|+0.35|0.57|0.5912|
+|x|          3|         19|         56|     3.539865000|         67|00:21:00|-0.01|0.25|0.9954|
+|=|          5|         19|          9|     3.457380000|         83|00:21:00|-0.07|0.15|1.0198|
+|=|          1|         19|          9|     3.477773333|         99|00:21:00|-0.00|0.17|0.9459|
+|=|          2|         19|         44|     3.675157143|        115|00:21:00|-0.05|0.10|0.9828|
+|=|          7|         19|         44|     3.778697500|        131|00:21:00|-0.02|0.10|0.9351|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:          44    mean value:      3.778697500
+Description of the best-so-far configuration:
+   .ID. tenure alpha max_stuck .PARENT.
+44   44     10    79        17       26
+
+# 2025-05-10 17:53:58 CEST: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+   tenure alpha max_stuck
+44     10    79        17
+9      18    68        30
+26      9    78        19
+# 2025-05-10 17:53:58 CEST: Stopped because there is not enough budget left to race more than the minimum (3).
+# You may either increase the budget or set 'minNbSurvival' to a lower value.
+# Iteration: 4
+# nbIterations: 4
+# experimentsUsed: 393
+# timeUsed: 0
+# remainingBudget: 7
+# currentBudget: 7
+# number of elites: 3
+# nbConfigurations: 3
+# Total CPU user time: 220240.3, CPU sys time: 27636.18, Wall-clock time: 26480.94
+# 2025-05-10 17:53:58 CEST: Starting post-selection:
+# Configurations selected: 44, 9, 26, 14, 42, 43, 45.
+# Pending instances: 0, 0, 0, 0, 0, 0, 0.
+# 2025-05-10 17:53:58 CEST: seed: 950476316
+# Configurations: 7
+# Available experiments: 7
+# minSurvival: 1
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|.|          6|          7|          9|     3.883710000|          0|00:00:00|   NA|  NA|    NA|
+|.|          3|          7|          9|     3.922235000|          0|00:00:00|+0.00|0.50|0.4286|
+|.|          8|          7|          9|     3.634443333|          0|00:00:00|+0.10|0.40|0.4662|
+|.|          7|          7|          9|     3.851702500|          0|00:00:00|+0.06|0.30|0.3759|
+|.|          1|          7|          9|     3.797310000|          0|00:00:00|+0.06|0.25|0.4514|
+|.|          2|          7|          9|     3.938383333|          0|00:00:00|+0.07|0.22|0.5529|
+|.|          4|          7|          9|     3.887005714|          0|00:00:00|-0.04|0.11|0.6394|
+|.|          5|          7|          9|     3.751733750|          0|00:00:00|-0.03|0.10|0.5561|
+|=|          9|          7|          9|     3.847361111|          7|00:10:30|-0.03|0.08|0.6010|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:           9    mean value:      3.847361111
+Description of the best-so-far configuration:
+  .ID. tenure alpha max_stuck .PARENT.
+9    9     18    68        30       NA
+
+# 2025-05-10 18:04:29 CEST: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+   tenure alpha max_stuck
+9      18    68        30
+26      9    78        19
+44     10    79        17
+# Total CPU user time: 224128.8, CPU sys time: 28161.2, Wall-clock time: 27111.79
+   .ID. tenure alpha max_stuck .PARENT. .RANK.  .WEIGHT.
+9     9     18    68        30       NA     29 0.5000000
+26   26      9    78        19       12     34 0.3333333
+44   44     10    79        17       26     34 0.1666667
