@@ -16,10 +16,10 @@ BEST100_TENURE=18
 BEST100_ALPHA=68
 BEST100_MAX_STUCK=30
 
-# === Parameters to define manually for 200-job instances (ta1*) ===
-BEST200_TENURE=??      # <-- Fill in your chosen value
-BEST200_ALPHA=??       # <-- Fill in your chosen value
-BEST200_MAX_STUCK=??   # <-- Fill in your chosen value
+# === Best parameters from irace for 200-job instances (ta1*) ===
+BEST200_TENURE=7
+BEST200_ALPHA=130
+BEST200_MAX_STUCK=41
 
 # === Build the job queue ===
 JOBS=()
