@@ -344,7 +344,7 @@ Solution FlowShopMemetic::mutate(Solution &solution) {
 }
 
 bool FlowShopMemetic::isTimeLimitReached() const {
-    return duration_cast<chrono::milliseconds>(steady_clock::now() - startTime).count() >= maxExecutionTime;
+    return chrono::duration_cast<chrono::milliseconds>(steady_clock::now() - startTime).count() >= maxExecutionTime;
 }
 
 
