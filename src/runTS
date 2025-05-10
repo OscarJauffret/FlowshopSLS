@@ -1,26 +1,60 @@
 #!/bin/bash
 
-# === Configuration ===
+# === General Configuration ===
 EXEC="../bin/pfsp"
 INSTANCE_DIR="../instances/Benchmarks"
 MAX_JOBS=12
-ALPHA=24
-TENURE=8
-MAX_STUCK=14
 MAX_GENERATIONS=0
 
-# === Build job queue ===
+# === Default parameters for 50-job instances (ta05*, ta06*) ===
+DEFAULT_TENURE=8
+DEFAULT_ALPHA=24
+DEFAULT_MAX_STUCK=14
+
+# === Best parameters from irace for 100-job instances (ta08*, ta09*) ===
+BEST100_TENURE=18
+BEST100_ALPHA=68
+BEST100_MAX_STUCK=30
+
+# === Parameters to define manually for 200-job instances (ta1*) ===
+BEST200_TENURE=??      # <-- Fill in your chosen value
+BEST200_ALPHA=??       # <-- Fill in your chosen value
+BEST200_MAX_STUCK=??   # <-- Fill in your chosen value
+
+# === Build the job queue ===
 JOBS=()
 for instance_file in "$INSTANCE_DIR"/*; do
     instance_name=$(basename "$instance_file")
     REPEAT=10
+
+    # Use fewer repetitions for larger instances
     [[ "$instance_name" == ta1* ]] && REPEAT=3
 
+    # Select the correct parameter set depending on instance size
+    if [[ "$instance_name" == ta0[56]* ]]; then
+        TENURE=$DEFAULT_TENURE
+        ALPHA=$DEFAULT_ALPHA
+        MAX_STUCK=$DEFAULT_MAX_STUCK
+    elif [[ "$instance_name" == ta0[89]* ]]; then
+        TENURE=$BEST100_TENURE
+        ALPHA=$BEST100_ALPHA
+        MAX_STUCK=$BEST100_MAX_STUCK
+    elif [[ "$instance_name" == ta1* ]]; then
+        TENURE=$BEST200_TENURE
+        ALPHA=$BEST200_ALPHA
+        MAX_STUCK=$BEST200_MAX_STUCK
+    else
+        echo "⚠️ Skipping unknown instance format: $instance_name"
+        continue
+    fi
+
+    # Add repeated runs for this instance
     for ((i = 1; i <= REPEAT; i++)); do
         JOBS+=("$EXEC --tabu --$instance_name $TENURE $ALPHA $MAX_GENERATIONS $MAX_STUCK # $instance_name [$i/$REPEAT]")
     done
 done
 
+# === Execute jobs in parallel, with a maximum of $MAX_JOBS concurrent jobs ===
 i=0
 total=${#JOBS[@]}
 
@@ -30,9 +64,10 @@ for full_cmd in "${JOBS[@]}"; do
     echo "[$i/$total] $display_cmd"
     eval "${full_cmd%%#*}" > /dev/null &
 
+    # Wait if too many jobs are running
     while (( $(jobs -r | wc -l) >= MAX_JOBS )); do sleep 0.2; done
 done
 
-
+# Wait for all jobs to finish
 wait
 echo "All runs completed."
