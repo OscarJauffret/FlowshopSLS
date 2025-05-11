@@ -13,6 +13,7 @@
 #include "../neighbourhoods/neighbourhoodIterator.hpp"
 #include "../neighbourhoods/transposeIterator.hpp"
 #include "flowShopSolver.hpp"
+#include <chrono>
 
 
 /**
@@ -52,11 +53,20 @@ public:
 
     /**
      * @brief The run function runs the SLS algorithm until no improvement is found.
+     * @param timeLimit The time limit for the algorithm in milliseconds. If -1, the algorithm runs until no improvement is found.
      * @return The best solution found by the algorithm.
      */
-    Solution run() override {
+    Solution run(int timeLimit) override {
+        auto startTime = std::chrono::high_resolution_clock::now();
         Solution prev(candidate);
         do {
+            if (timeLimit != -1) {
+                auto now = std::chrono::high_resolution_clock::now();
+                int elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - startTime).count();
+                if (elapsed >= timeLimit) {
+                    break;
+                }
+            }
             prev = candidate;
             candidate = step();
         } while (candidate.getFitness() < prev.getFitness());
@@ -67,11 +77,12 @@ public:
     /**
      * @brief The run function runs the SLS algorithm with a given initial solution until no improvement is found.
      * @param initialSolution The initial solution to start the algorithm with.
+     * @param timeLimit The time limit for the algorithm in milliseconds. If -1, the algorithm runs until no improvement is found.
      * @return The best solution found by the algorithm.
      */
-    Solution run(const Solution& initialSolution) {
+    Solution run(const Solution &initialSolution, int timeLimit) {
         candidate = initialSolution;
-        return run();
+        return run(timeLimit);
     }
 };
 

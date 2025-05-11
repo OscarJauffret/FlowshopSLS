@@ -57,20 +57,46 @@ void FlowShopTabuSearch::addToTabuList(int from, int to) {
     }
 }
 
-Solution FlowShopTabuSearch::run() {
+bool FlowShopTabuSearch::shouldStop(int generations, steady_clock::time_point start, int timeLimit) const {
+    // The thing is that a time limit can either come from the user, when he sets maxGenerations to 0, in which case there should be no time limit
+    // But the memetic algorithm can also set a time limit, in which case this time limit prevails over maxGenerations = 0.
+    // The timeLimit parameter cannot be set by the user, it is set by the memetic algorithm
+    int elapsed = duration_cast<milliseconds>(steady_clock::now() - start).count();
+
+    // 1: If both limits are set, we stop when we reach either of them
+    if (maxGenerations > 0 && timeLimit != -1) {
+        return generations >= maxGenerations || elapsed >= timeLimit;
+    }
+
+    // 2: If maxGenerations is set, but not timeLimit, we stop when we reach maxGenerations
+    if (maxGenerations > 0 && timeLimit == -1) {
+        return generations >= maxGenerations;
+    }
+
+    // 3: If timeLimit is set, but not maxGenerations, we stop when we reach the time limit
+    // This is the case when the user sets maxGenerations to 0, but the memetic algorithm sets a time limit
+    // This never happens in the current implementation because if the memetic calls the tabu search, it sets
+    // maxGenerations to a value greater than 0 to limit the number of generations
+    if (maxGenerations == 0 && timeLimit != -1) {
+        return elapsed >= timeLimit;
+    }
+
+    // 4: If neither limit is set, we don't stop
+    if (maxGenerations == 0 && timeLimit == -1) {
+        return false;
+    }
+
+    return false;
+}
+
+Solution FlowShopTabuSearch::run(int timeLimit) {
     int generations = 0;
     int stuck = 0;
     insertIterator.setSolution(candidate);
 
-    int allowedTime = 0;
     auto start = steady_clock::now();
 
-    if (maxGenerations == 0) {
-        allowedTime = MemeticTimeLimitProvider::getMemeticAllowedTime(candidate.getNumberOfJobs());
-    }
-
-    while ((maxGenerations > 0 && generations < maxGenerations) ||
-           (maxGenerations == 0 && duration_cast<milliseconds>(steady_clock::now() - start).count() < allowedTime)) {
+    while (!shouldStop(generations, start, timeLimit)) {
         // Neighborhood search procedure
         pair<pair<int, int>, Solution> bestNeighbor = {{-1, -1}, candidate};
         vector<pair<pair<int, int>, uint64_t>> allNeighbors;

@@ -1,0 +1,4 @@
+# name              switch  type        values
+population_size     ""      i           (5,500)
+mutation_rate       ""      r           (0,1)
+local_search        "--"    c           (none, ii, vnd, tabu)

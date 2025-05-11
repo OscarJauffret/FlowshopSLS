@@ -26,7 +26,7 @@ class FlowShopMemetic: public FlowShopSolver {
 
     double maxExecutionTime; // Maximum execution time for the algorithm, based on VND benchmark
     steady_clock::time_point startTime;
-    std::function<Solution(const Solution &)> localSearch; // Local search function to be used
+    std::function<Solution(const Solution &, int timeMs)> localSearch; // Local search function to be used
     std::mt19937 rng; // Random number generator
 
     int numParentPieces; // Number of pieces into which the user wants to cut parent chromosomes P1 and P2 for recombination
@@ -118,6 +118,12 @@ class FlowShopMemetic: public FlowShopSolver {
      */
     [[nodiscard]] bool isTimeLimitReached() const;
 
+    /**
+     * @brief The timeRemaining function calculates the remaining time for the algorithm.
+     * @return The remaining time in milliseconds.
+     */
+    [[nodiscard]] int timeRemaining() const;
+
 public:
     /**
     * @brief The constructor of the FlowShopMemetic class. It initializes the population with random solutions.
@@ -133,7 +139,7 @@ public:
     * @brief The run function runs the memetic algorithm until convergence or a maximum number of iterations is reached.
     * @return The best solution found by the algorithm.
     */
-    Solution run() override;
+    Solution run(int timeLimit) override;
 };
 
 

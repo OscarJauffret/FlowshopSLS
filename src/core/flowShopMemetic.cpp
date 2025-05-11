@@ -43,12 +43,12 @@ void FlowShopMemetic::initializeLocalSearchFunction(const Instance &instance, Lo
             auto solver = std::make_shared<FlowShopII>(instance, NeighbourhoodStructure::INSERT,
                                                        PivotingRule::FIRST_IMPROVEMENT, InitializationMethod::RANDOM,
                                                        rng);
-            localSearch = [solver](const Solution& s) { return solver->run(s); };
+            localSearch = [solver](const Solution& s, int timeMs) { return solver->run(s, timeMs); };
             break;
         }
         case LocalSearchMethod::VND: {
             auto solver = std::make_shared<FlowShopVND>(instance, VNDStrategy::TEI, rng);
-            localSearch = [solver](const Solution& s) { return solver->run(s); };
+            localSearch = [solver](const Solution& s, int timeMs) { return solver->run(s, timeMs); };
             break;
         }
         case LocalSearchMethod::TABU_SEARCH: {
@@ -56,11 +56,11 @@ void FlowShopMemetic::initializeLocalSearchFunction(const Instance &instance, Lo
                                                                config::memetic::tabu::neighborsConsideredInPerturbation,
                                                                config::memetic::tabu::maxGenerations,
                                                                config::memetic::tabu::maxStuck, rng);
-            localSearch = [solver](const Solution& s) { return solver->run(s); };
+            localSearch = [solver](const Solution& s, int timeMs) { return solver->run(s, timeMs); };
             break;
         }
         case LocalSearchMethod::NONE: {
-            localSearch = [](const Solution& s) { return s; };
+            localSearch = [](const Solution& s, int timeMs) { return s; };
             break;
         }
         default: {
@@ -71,7 +71,7 @@ void FlowShopMemetic::initializeLocalSearchFunction(const Instance &instance, Lo
 
 void FlowShopMemetic::applyLocalSearch() {
     for (Solution& s : population) {
-        s = localSearch(s);
+        s = localSearch(s, timeRemaining());
     }
 }
 
@@ -106,7 +106,7 @@ vector<vector<int>> FlowShopMemetic::generateOrthogonalArray(const int size) {
 
 vector<Solution> FlowShopMemetic::constructNewPopulation() {
     vector<Solution> newPopulation;
-    while (newPopulation.size() < populationSize) {
+    while (newPopulation.size() < populationSize && !isTimeLimitReached()) {    // Check time limit
         // Select parents for crossover
         Solution parent1 = selectParent();
         Solution parent2 = selectParent();
@@ -114,7 +114,7 @@ vector<Solution> FlowShopMemetic::constructNewPopulation() {
         Solution child = crossover(parent1, parent2);
         if (child < parent1 || child < parent2) {
             if (stuck > config::memetic::thresholdLocalSearch) {
-                child = localSearch(child);
+                child = localSearch(child, timeRemaining());
             }
         }
         vector trio = {parent1, parent2, child};
@@ -211,6 +211,9 @@ Solution FlowShopMemetic::crossover(const Solution &parent1, const Solution &par
     // Generate candidate children from the orthogonal array
     vector<Solution> candidates;
     for (const auto& row : crossoverOrthogonalArray) {
+        if (isTimeLimitReached()) {     // For instances with a lot of jobs, checking the OA can take a lot of time
+            return parent1;
+        }
         vector<uint8_t> candidatePermutation;
         int startIndex = numParentPieces;       // index of the first segment where the parent changes
         int baseParent = row[0];        // 0 = P1, 1 = P2
@@ -315,10 +318,7 @@ Solution FlowShopMemetic::mutate(Solution &solution) {
     int generation = 0;
     int stuckMutation = 0;
 
-    while (generation < config::memetic::mutation::maxGenerations) {
-        if (isTimeLimitReached()) {
-            break; // Stop if the time limit is reached
-        }
+    while (generation < config::memetic::mutation::maxGenerations && !isTimeLimitReached()) {
         Solution bestMutation = orthogonalArrayTest(solution);
 
         if (bestMutation < solution) {
@@ -347,13 +347,18 @@ bool FlowShopMemetic::isTimeLimitReached() const {
     return chrono::duration_cast<chrono::milliseconds>(steady_clock::now() - startTime).count() >= maxExecutionTime;
 }
 
+int FlowShopMemetic::timeRemaining() const {
+    return static_cast<int>(maxExecutionTime) -
+           static_cast<int>(chrono::duration_cast<chrono::milliseconds>(steady_clock::now() - startTime).count());
+}
 
-Solution FlowShopMemetic::run() {
+
+Solution FlowShopMemetic::run(int timeLimit) {
     startTime = steady_clock::now();
     applyLocalSearch();
     std::sort(population.begin(), population.end());
     Solution best = population[0];
-    while (chrono::duration_cast<chrono::milliseconds>(steady_clock::now() - startTime).count() < maxExecutionTime) {
+    while (!isTimeLimitReached()) {
         // Crossover
         vector<Solution> newPopulation = constructNewPopulation();
         std::sort(newPopulation.begin(), newPopulation.end());
@@ -364,10 +369,14 @@ Solution FlowShopMemetic::run() {
             stuck++;
         }
 
+        if (isTimeLimitReached()) {
+            break; // Stop if the time limit is reached
+        }
+
         // Mutation: apply to Ps * Pm individuals
         int numMutations = static_cast<int>(std::round(mutationRate * populationSize));
         std::uniform_int_distribution dist(0, populationSize - 1);
-        for (int i = 0; i < numMutations; i++) {
+        for (int i = 0; i < numMutations && !isTimeLimitReached(); i++) {
             int idx = dist(rng);
             Solution mutated = mutate(newPopulation[idx]);
             newPopulation[idx] = mutated;
@@ -381,5 +390,7 @@ Solution FlowShopMemetic::run() {
 
     }
 
-    return best; // Return the best solution found
+    std::sort(population.begin(), population.end());
+
+    return population[0]; // Return the best solution found
 }

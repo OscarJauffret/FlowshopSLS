@@ -1,8 +1,12 @@
-parameterFile = "./parameters/100.txt"
+parameterFile = "./parameters/200.txt"
 execDir = "../../bin"
-trainInstancesFile = "./instances/instances_100.txt"
-maxExperiments = 400
+trainInstancesFile = "./instances/instances_200.txt"
+maxExperiments = 100
 
 targetRunner = "./target_runner"
 parallel = 15
 logFile = "./irace_log.Rdata"
+
+nbIterations = 1
+mu = 9
+minNbSurvival = 7

@@ -12,9 +12,10 @@ class FlowShopSolver {
 public:
     /**
      * @brief The run function runs the algorithm.
+     * @param timeLimit The time limit for the algorithm in milliseconds. If -1, the algorithm runs until no improvement is found.
      * @return The best solution found by the algorithm.
      */
-    virtual Solution run() = 0;
+    virtual Solution run(int timeLimit) = 0;
 
     /**
      * @brief Default destructor for the FlowShopSolver class. It is used for inheritance

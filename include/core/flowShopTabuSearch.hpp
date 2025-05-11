@@ -10,9 +10,11 @@
 #include <deque>
 #include <utility>
 #include <random>
+#include <chrono>
 
 using std::pair;
 using std::deque;
+using std::chrono::steady_clock;
 
 /**
  * @class FlowShopTabuSearch
@@ -51,6 +53,15 @@ class FlowShopTabuSearch: public FlowShopSolver {
      */
     void addToTabuList(int from, int to);
 
+    /**
+     * @brief The shouldStop function checks if the algorithm should stop.
+     * @param generations The current number of generations.
+     * @param start The start time of the algorithm.
+     * @param timeLimit The time limit for the algorithm in milliseconds. If -1, the algorithm runs until no improvement is found.
+     * @return True if the algorithm should stop, false otherwise.
+     */
+    [[nodiscard]] bool shouldStop(int generations, steady_clock::time_point start, int timeLimit) const;
+
 public:
     /**
      * @brief The constructor of the FlowShopTabuSearch class. It initializes the candidate solution, tabuTenure, alpha, maxGenerations, maxStuck and rng.
@@ -66,18 +77,20 @@ public:
 
     /**
      * @brief The run function runs the Tabu Search algorithm. It iteratively improves the candidate solution by exploring the neighborhood and applying tabu search.
+     * @param timeLimit The time limit for the algorithm in milliseconds. If -1, the algorithm runs until no improvement is found.
      * @return The best solution found during the search.
      */
-    Solution run() override;
+    Solution run(int timeLimit) override;
 
     /**
      * @brief The run function runs the Tabu Search algorithm with a given initial solution. It iteratively improves the candidate solution by exploring the neighborhood and applying tabu search.
      * @param initialSolution The initial solution to start the search from.
+     * @param timeLimit The time limit for the algorithm in milliseconds. If -1, the algorithm runs until no improvement is found.
      * @return The best solution found during the search.
      */
-    Solution run(const Solution& initialSolution) {
+    Solution run(const Solution& initialSolution, int timeLimit) {
         candidate = initialSolution;
-        return run();
+        return run(timeLimit);
     }
 };
 

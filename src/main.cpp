@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
 
         auto start = Clock::now();
         auto solver = createSolver(*config, instance, rng);
-        Solution solution = solver->run();
+        Solution solution = solver->run(-1);
         auto end = Clock::now();
 
         double elapsed = std::chrono::duration<double, std::milli>(end - start).count();
