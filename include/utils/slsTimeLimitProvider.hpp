@@ -9,16 +9,16 @@
 #include <string>
 
 /**
-* @class MemeticTimeLimitProvider
-* @brief Class that provides time limits for the memetic algorithm based on the instance size and the VND time.
+* @class SLSTimeLimitProvider
+* @brief Class that provides time limits for the SLS algorithms based on the instance size and the VND time.
 */
-class MemeticTimeLimitProvider {
+class SLSTimeLimitProvider {
     static std::unordered_map<int, int> vndTimes;
     static bool isLoaded;
 
 public:
     static void loadVNDTimes();
-    static int getMemeticAllowedTime(int instanceSize);
+    static int getAllowedTime(int instanceSize);
 
 };
 

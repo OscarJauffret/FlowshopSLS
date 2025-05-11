@@ -4,7 +4,7 @@
 
 #include "../../include/core/flowShopMemetic.hpp"
 #include "../../include/initialization/initialization.hpp"
-#include "../../include/utils/memeticTimeLimitProvider.hpp"
+#include "../../include/utils/slsTimeLimitProvider.hpp"
 #include "../../include/core/flowShopII.hpp"
 #include "../../include/core/flowShopVnd.hpp"
 #include "../../include/core/flowShopTabuSearch.hpp"
@@ -24,7 +24,7 @@ FlowShopMemetic::FlowShopMemetic(const Instance& instance, int populationSize, f
                                  std::mt19937 rng)
     : populationSize(populationSize), mutationRate(mutationRate), rng(rng),
       numParentPieces(config::memetic::getNumCuts(instance.jobs)) {
-    maxExecutionTime = MemeticTimeLimitProvider::getMemeticAllowedTime(instance.jobs);
+    maxExecutionTime = SLSTimeLimitProvider::getAllowedTime(instance.jobs);
 
     // Initialize the population with srz solutions
     for (int i = 0; i < populationSize; i++) {

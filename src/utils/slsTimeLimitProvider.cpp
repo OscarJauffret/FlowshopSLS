@@ -2,7 +2,7 @@
 // Created by Oscar Jauffret on 01/05/2025.
 //
 
-#include "../../include/utils/memeticTimeLimitProvider.hpp"
+#include "../../include/utils/slsTimeLimitProvider.hpp"
 #include "../config.hpp"
 
 #include <fstream>
@@ -12,10 +12,10 @@
 
 using std::string;
 
-std::unordered_map<int, int> MemeticTimeLimitProvider::vndTimes;
-bool MemeticTimeLimitProvider::isLoaded = false;
+std::unordered_map<int, int> SLSTimeLimitProvider::vndTimes;
+bool SLSTimeLimitProvider::isLoaded = false;
 
-void MemeticTimeLimitProvider::loadVNDTimes() {
+void SLSTimeLimitProvider::loadVNDTimes() {
     const string filename = config::paths::vndTimesPath;
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -50,7 +50,7 @@ void MemeticTimeLimitProvider::loadVNDTimes() {
     isLoaded = true;
 }
 
-int MemeticTimeLimitProvider::getMemeticAllowedTime(const int instanceSize) {
+int SLSTimeLimitProvider::getAllowedTime(const int instanceSize) {
     if (!isLoaded) {
         loadVNDTimes();
     }

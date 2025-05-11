@@ -4,7 +4,7 @@
 
 #include "../../include/core/flowShopTabuSearch.hpp"
 #include "../../include/initialization/initialization.hpp"
-#include "../../include/utils/memeticTimeLimitProvider.hpp"
+#include "../../include/utils/slsTimeLimitProvider.hpp"
 #include "../config.hpp"
 #include <chrono>
 
@@ -17,7 +17,11 @@ using chrono::duration_cast;
 FlowShopTabuSearch::FlowShopTabuSearch(const Instance &instance, int tabuTenure, int alpha, int maxGenerations, int maxStuck, std::mt19937 &rng)
                                        : candidate(initialization::simplifiedRZ(instance, rng)), tabuTenure(tabuTenure),
                                          maxGenerations(maxGenerations), maxStuck(maxStuck), insertIterator(candidate, alpha), rng(rng) {
-
+    if (maxGenerations == 0) {
+        allowedTime = SLSTimeLimitProvider::getAllowedTime(candidate.getNumberOfJobs());
+    } else {
+        allowedTime = 0;
+    }
 }
 
 bool FlowShopTabuSearch::isTabu(int from, int to) {
@@ -73,17 +77,19 @@ bool FlowShopTabuSearch::shouldStop(int generations, steady_clock::time_point st
         return generations >= maxGenerations;
     }
 
-    // 3: If timeLimit is set, but not maxGenerations, we stop when we reach the time limit
+    // From here, maxGenerations = 0. When this is the case, a time limit is set by the SLStTimeLimitProvider
+
+    // 3: If timeLimit is set, and maxGenerations = 0, we stop when we reach the time limit or the time allowed by SLSTimeLimitProvider
     // This is the case when the user sets maxGenerations to 0, but the memetic algorithm sets a time limit
     // This never happens in the current implementation because if the memetic calls the tabu search, it sets
     // maxGenerations to a value greater than 0 to limit the number of generations
     if (maxGenerations == 0 && timeLimit != -1) {
-        return elapsed >= timeLimit;
+        return elapsed >= timeLimit || elapsed >= allowedTime;
     }
 
-    // 4: If neither limit is set, we don't stop
+    // 4: If timeLimit is not set, but maxGenerations is set to 0, we stop when we reach the allowed time
     if (maxGenerations == 0 && timeLimit == -1) {
-        return false;
+        return elapsed >= allowedTime;
     }
 
     return false;

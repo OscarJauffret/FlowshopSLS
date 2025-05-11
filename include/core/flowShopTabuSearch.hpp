@@ -35,6 +35,8 @@ class FlowShopTabuSearch: public FlowShopSolver {
     int maxGenerations;
     int maxStuck;
 
+    int allowedTime;
+
     deque<pair<uint8_t , uint8_t>> tabuList;
     InsertIterator insertIterator;
     std::mt19937& rng;
