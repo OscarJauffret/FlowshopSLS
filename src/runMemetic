@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# === General Configuration ===
+EXEC="../bin/pfsp"
+INSTANCE_DIR="../instances/Benchmarks"
+MAX_JOBS=12
+MAX_GENERATIONS=0
+
+# === Default parameters for 50-job instances (ta05*, ta06*) ===
+DEFAULT_POPULATION_SIZE=272
+DEFAULT_MUTATION_RATE=0.8836
+DEFAULT_LOCAL_SEARCH="--none"
+
+# === Best parameters from irace for 100-job instances (ta08*, ta09*) ===
+BEST100_POPULATION_SIZE=263
+BEST100_MUTATION_RATE=0.6916
+BEST100_LOCAL_SEARCH="--none"
+
+# === Best parameters from irace for 200-job instances (ta1*) ===
+BEST200_POPULATION_SIZE=299
+BEST200_MUTATION_RATE=0.2216
+BEST200_LOCAL_SEARCH="--ii"
+
+# === Build the job queue ===
+JOBS=()
+for instance_file in "$INSTANCE_DIR"/*; do
+    instance_name=$(basename "$instance_file")
+    REPEAT=10
+
+    # Use fewer repetitions for larger instances
+    [[ "$instance_name" == ta1* ]] && REPEAT=3
+
+    # Select the correct parameter set depending on instance size
+    if [[ "$instance_name" == ta0[56]* ]]; then
+        POPULATION_SIZE=$DEFAULT_POPULATION_SIZE
+        MUTATION_RATE=$DEFAULT_MUTATION_RATE
+        LOCAL_SEARCH=$DEFAULT_LOCAL_SEARCH
+    elif [[ "$instance_name" == ta0[89]* ]]; then
+        POPULATION_SIZE=$BEST100_POPULATION_SIZE
+        MUTATION_RATE=$BEST100_MUTATION_RATE
+        LOCAL_SEARCH=$BEST100_LOCAL_SEARCH
+    elif [[ "$instance_name" == ta1* ]]; then
+        POPULATION_SIZE=$BEST200_POPULATION_SIZE
+        MUTATION_RATE=$BEST200_MUTATION_RATE
+        LOCAL_SEARCH=$BEST200_LOCAL_SEARCH
+    else
+        echo "⚠️ Skipping unknown instance format: $instance_name"
+        continue
+    fi
+
+    # Add repeated runs for this instance
+    for ((i = 1; i <= REPEAT; i++)); do
+        JOBS+=("$EXEC --memetic --$instance_name $POPULATION_SIZE $MUTATION_RATE $LOCAL_SEARCH # $instance_name [$i/$REPEAT]")
+    done
+done
+
+# === Execute jobs in parallel, with a maximum of $MAX_JOBS concurrent jobs ===
+i=0
+total=${#JOBS[@]}
+
+for full_cmd in "${JOBS[@]}"; do
+    ((i++))
+    display_cmd=$(echo "$full_cmd" | sed 's/#/→/')
+    echo "[$i/$total] $display_cmd"
+    eval "${full_cmd%%#*}" > /dev/null &
+
+    # Wait if too many jobs are running
+    while (( $(jobs -r | wc -l) >= MAX_JOBS )); do sleep 0.2; done
+done
+
+# Wait for all jobs to finish
+wait
+echo "All runs completed."
