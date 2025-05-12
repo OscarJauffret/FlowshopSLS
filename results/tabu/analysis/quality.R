@@ -89,7 +89,7 @@ for (nj in unique(merged$n_jobs)) {
 
 write.csv(comparison_results, "tabu_vs_vnd.csv", row.names = FALSE)
 
-
+comparison_results <- data.frame()
 merged <- merge(tabu, memetic, by = "instance", suffixes = c("_1", "_2"))
 merged$n_jobs <- merged$n_jobs_1
 
@@ -105,7 +105,7 @@ for (nj in unique(merged$n_jobs)) {
 
 write.csv(comparison_results, "tabu_vs_memetic.csv", row.names = FALSE)
 
-
+comparison_results <- data.frame()
 merged <- merge(memetic, vnd, by = "instance", suffixes = c("_1", "_2"))
 merged$n_jobs <- merged$n_jobs_1
 
