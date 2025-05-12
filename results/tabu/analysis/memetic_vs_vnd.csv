@@ -1,0 +1,4 @@
+"cmp1","cmp2","n_jobs","mean1","mean2","p_wilcoxon","p_ttest","significant_wilcoxon","significant_ttest","better","agreement"
+"memetic","vnd",50,1.899,3.01,6.35473355445443e-165,0,TRUE,TRUE,"memetic",TRUE
+"memetic","vnd",100,2.855,3.492,4.9264316493516e-133,1.00521991657082e-173,TRUE,TRUE,"memetic",TRUE
+"memetic","vnd",200,3.061,3.526,7.77666350498668e-33,8.61297622304509e-45,TRUE,TRUE,"memetic",TRUE

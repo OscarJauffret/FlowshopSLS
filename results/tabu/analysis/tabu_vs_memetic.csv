@@ -1,0 +1,4 @@
+"cmp1","cmp2","n_jobs","mean1","mean2","p_wilcoxon","p_ttest","significant_wilcoxon","significant_ttest","better","agreement"
+"tabu","memetic",50,2.736,1.899,8.28279431650541e-163,1.00568192509478e-300,TRUE,TRUE,"memetic",TRUE
+"tabu","memetic",100,3.938,2.855,2.92508106400879e-161,1.2134252261861e-320,TRUE,TRUE,"memetic",TRUE
+"tabu","memetic",200,3.686,3.061,2.45111752889984e-14,2.45048483615994e-19,TRUE,TRUE,"memetic",TRUE

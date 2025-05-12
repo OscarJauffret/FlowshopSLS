@@ -1,0 +1,4 @@
+"cmp1","cmp2","n_jobs","mean1","mean2","p_wilcoxon","p_ttest","significant_wilcoxon","significant_ttest","better","agreement"
+"tabu","vnd",50,2.736,3.01,9.44429407746255e-45,4.09343666043746e-48,TRUE,TRUE,"tabu",TRUE
+"tabu","vnd",100,3.938,3.492,9.48388629135304e-108,9.79476451745259e-134,TRUE,TRUE,"vnd",TRUE
+"tabu","vnd",200,3.686,3.526,1.887295152029e-08,2.76676176668921e-06,TRUE,TRUE,"vnd",TRUE
