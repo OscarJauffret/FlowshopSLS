@@ -26,7 +26,7 @@ Solution FlowShopVND::step() {
 
     // Iterate through the neighbourhoods.
     for (auto &neighborhoodIterator : neighbourhoodIterators) {
-        neighborhoodIterator->setSolution(current);     // Set the current solution to the iterator.
+        neighborhoodIterator->setSolution(current, true);     // Set the current solution to the iterator.
 
         while (neighborhoodIterator->hasNext()) {
             Solution neighbor = neighborhoodIterator->next();

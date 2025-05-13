@@ -45,8 +45,9 @@ public:
     /**
      * @brief The setSolution function sets the solution to explore the neighbourhood of.
      * @param newSolution The new solution to explore the neighbourhood of.
+     * @param reset If true, the iterator will be reset to the beginning of the neighbourhood.
      */
-    virtual void setSolution(const Solution& newSolution) = 0;
+    virtual void setSolution(const Solution& newSolution, bool reset) = 0;
 };
 
 #endif //FLOWSHOPSLS_neighbourHOODITERATOR_HPP

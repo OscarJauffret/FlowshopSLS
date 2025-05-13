@@ -98,7 +98,7 @@ bool FlowShopTabuSearch::shouldStop(int generations, steady_clock::time_point st
 Solution FlowShopTabuSearch::run(int timeLimit) {
     int generations = 0;
     int stuck = 0;
-    insertIterator.setSolution(candidate);
+    insertIterator.setSolution(candidate, true);
 
     auto start = steady_clock::now();
 
@@ -154,7 +154,7 @@ Solution FlowShopTabuSearch::run(int timeLimit) {
             }
         }
         generations++;
-        insertIterator.setSolution(candidate); // Reset the iterator with the candidate solution (possibly changed)
+        insertIterator.setSolution(candidate, true); // Reset the iterator with the candidate solution (possibly changed)
     }
     tabuList.clear(); // Clear the tabu list at the end of the search
     return candidate;

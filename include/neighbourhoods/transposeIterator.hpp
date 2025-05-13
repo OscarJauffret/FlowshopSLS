@@ -52,12 +52,15 @@ public:
     }
 
     /**
-     * @brief The setSolution function sets the solution to explore the neighborhood of.
-     * @param newSolution The new solution to explore the neighborhood of.
+     * @brief The setSolution function sets the current solution to iterate over.
+     * @param newSolution The new solution to iterate over.
+     * @param resetNeighbourhood If true, the iterator is reset to the beginning of the neighbourhood.
      */
-    void setSolution(const Solution& newSolution) override {
+    void setSolution(const Solution& newSolution, bool resetNeighbourhood) override {
         current = &newSolution;
-        reset();
+        if (resetNeighbourhood) {
+            reset();
+        }
     }
 
 };

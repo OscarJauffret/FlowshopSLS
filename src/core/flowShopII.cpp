@@ -26,14 +26,15 @@ FlowShopII::FlowShopII(const Instance &instance, NeighbourhoodStructure neighbou
 Solution FlowShopII::step() {
     Solution best = candidate;
 
-    neighbourhoodIterator->setSolution(candidate);
+    neighbourhoodIterator->setSolution(candidate, true);
 
     while(neighbourhoodIterator->hasNext()) {
         Solution neighbor = neighbourhoodIterator->next();   // Get the next neighbor. The fitness will be calculated here.
 
         if (neighbor.getFitness() < best.getFitness()) {
             if (pivotingRule == PivotingRule::FIRST_IMPROVEMENT) {
-                return neighbor;
+                best = neighbor;
+                neighbourhoodIterator->setSolution(best, false);       // Continue with the new solution
             } else {
                 best = neighbor;
             }

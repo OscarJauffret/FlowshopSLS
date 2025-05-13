@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
         double elapsed = std::chrono::duration<double, std::milli>(end - start).count();
 
         // For me, to control the logging of the results
-        bool log = true;
+        bool log = false;
         if (log) {
             auto analyzer = RunLogger();
             double pctDev = analyzer.getPercentDeviation(config->getInstancePath(), solution.getFitness());
