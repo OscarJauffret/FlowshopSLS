@@ -18,6 +18,22 @@ namespace chrono = std::chrono;
 using std::vector;
 using chrono::steady_clock;
 
+/**
+ * @file flowShopMemetic.hpp
+ * @class FlowShopMemetic
+ * @brief The FlowShopMemetic class implements a memetic algorithm for the FlowShop problem. The implementation is based on the paper of Lin-Yu Tseng and Ya-Tai Lin.
+ * @field population The population of solutions.
+ * @field populationSize The size of the population.
+ * @field mutationRate The mutation rate to use.
+ * @field stuck The number of iterations without improvement.
+ * @field maxExecutionTime The maximum execution time for the algorithm, based on VND benchmark.
+ * @field startTime The start time of the algorithm.
+ * @field localSearch The local search function to be used.
+ * @field rng The random number generator.
+ * @field numParentPieces The number of pieces into which the user wants to cut parent chromosomes P1 and P2 for recombination.
+ * @field crossoverOrthogonalArray The orthogonal array to be used in the crossover operator.
+ * @field mutationOrthogonalArray The orthogonal array to be used in the mutation operator.
+ */
 class FlowShopMemetic: public FlowShopSolver {
     vector<Solution> population; // Population of solutions
     int populationSize; // Size of the population

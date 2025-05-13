@@ -18,6 +18,12 @@
 #include "../core/flowShopTabuSearch.hpp"
 #include "runLogger.hpp"
 
+/**
+ * @brief The parseConfig function parses the command line arguments and creates the appropriate FlowShopConfig object.
+ * @param argc The number of command line arguments.
+ * @param argv The command line arguments.
+ * @return The FlowShopConfig object created from the command line arguments.
+ */
 inline std::unique_ptr<FlowShopConfig> parseConfig(int argc, char* argv[]) {
     if (argc < 2) {
         throw std::invalid_argument("No algorithm type provided. Use --ii, --vnd, --memetic or --tabu.");

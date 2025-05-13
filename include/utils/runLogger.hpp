@@ -18,6 +18,13 @@
 using std::unordered_map;
 using std::string;
 
+/**
+ * @file runLogger.hpp
+ * @class RunLogger
+ * @brief The RunLogger class is responsible for logging the results of the runs of the flow shop algorithm.
+ * It loads the best-known solutions from a file and calculates the percent deviation of the solutions found from the best-known solutions.
+ * @field bestKnown A map that stores the best-known solutions for each instance.
+ */
 class RunLogger {
     unordered_map<string, uint64_t> bestKnown;
 

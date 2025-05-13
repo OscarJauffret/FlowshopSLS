@@ -22,9 +22,11 @@ using std::chrono::steady_clock;
  * It extends the FlowShopSolver class and provides a specific implementation of the run method.
  * @field candidate The current candidate solution.
  * @field tabuTenure The tabuTenure of the tabu list.
- * @field tabuList The list of tabu moves.
  * @field maxGenerations The maximum number of generations to run the algorithm.
  * @field maxStuck The maximum number of generations without improvement before stopping the algorithm.
+ * @field allowedTime The maximum execution time for the algorithm, based on VND benchmark.
+ * @field tabuList The list of tabu moves.
+ * @field insertIterator The insert iterator to use for the neighborhood search.
  * @field rng The random number generator to use for the algorithm.
  */
 class FlowShopTabuSearch: public FlowShopSolver {

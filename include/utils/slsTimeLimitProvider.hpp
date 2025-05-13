@@ -11,6 +11,8 @@
 /**
 * @class SLSTimeLimitProvider
 * @brief Class that provides time limits for the SLS algorithms based on the instance size and the VND time.
+ * @field vndTimes A map that stores the VND times for each instance size.
+ * @field isLoaded A boolean that indicates if the VND times have been loaded.
 */
 class SLSTimeLimitProvider {
     static std::unordered_map<int, int> vndTimes;

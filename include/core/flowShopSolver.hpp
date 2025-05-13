@@ -7,7 +7,11 @@
 
 #include "solution.hpp"
 
-
+/**
+ * @file flowShopSolver.hpp
+ * @class FlowShopSolver
+ * @brief The FlowShopSolver class is an abstract class that represents a solver for the Flow Shop Scheduling Problem.
+ */
 class FlowShopSolver {
 public:
     /**
