@@ -3,7 +3,7 @@
 ## Description
 This project is a heuristic optimization implementation for the Flowshop scheduling problem using an Iterative Improvement algorithms.
 > [!Note]
-> This is a university project for the course of Heuristic Optimization. The instructions for the project can be found in the file `implementation_1_2025.pdf`, in the `doc`directory.
+> This is a university project for the course of Heuristic Optimization. The instructions and the report can be found in the `doc` directory.
 
 ---
 
@@ -11,7 +11,7 @@ This project is a heuristic optimization implementation for the Flowshop schedul
 
 - `src`: Contains the source code of the project.
 - `include`: Contains the header files of the project and the documentation for the classes is there.
-- `doc`: Contains the instructions for the project and the report.
+- `doc`: Contains the instructions for the project and the reports.
 - `results`: Contains the results of the tests.
 - `instances`: Contains the instances and the best known solutions for the instances.
 - `bin`: Contains the executable files of the project.
